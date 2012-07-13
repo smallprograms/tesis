@@ -1,0 +1,45 @@
+
+The 3D scene reconstruction problem consists in take the
+necessary information from a real scene in order to reconstruct
+it in a three dimensional space, usually to be displayed 
+in a computer. 
+
+The objetive is to represent in the most accurate way the geometric scene details, obtaining rich 
+information about the scene that is not explicity contained on a single image and then use this 
+to reconstruct the scene or use it to perform a more advanced task that depends of the scene geometry. 
+Some applications of 3D scene reconstruction are : Autonumous vehicle or robot navigation, where there is crucial to have 
+the scene geometry in order to locate paths and obstacles. Augmented Reallity, where a virtual 3D object
+ is added to a real video of the scene. Parts inspection in a manufacturing plant, where is necesary to detect
+ fabrication defects on some objects. Statues and Buildings preservation, in order to have a digital representation 
+of the objects and beign able to reproduce or mantain them.
+
+ 
+In general the information is acquired
+ from the scene with optical devices, such as RGB cameras or depth sensors.
+Most of 3D scene reconstruction methods can be classified in passive methods and active methods \cite{lanman}.
+The passive methods works without controlling the light in the scene, they just receipt light (ordinary cameras). 
+By the other hand active methods alter the light in the scene, with a light emisor and its corresponding 
+receptor, projecting patterns of light in order to simplify the matching process prior to the triangulation. 
+There are also some active methods that touch the object in order to reconstruct it, but they are beyond 
+the scope of this thesis. 
+
+The most accurate and expensive method to perform 3D scene reconstruction is the Laser Scanning, because it has 
+an hight accuracy (about xx mm). But nowadays there are emerging cheaper devices that potentially could perform 
+a similar reconstruction at a pair of orders of magnitude low cost, due to this there are every year new publications 
+related to this low cost reconstruction systems and its known that the main drawback is on the computational power and 
+the used algorithms, because using the same devices more accurate reconstructions are performed at each time. 
+
+One of the most classical approaches is to use multiple 2D
+ images taken from known camera viewpoints and estimate the distance of each
+ relevant pixel with triangulation (Stereo Vision, Multiview Vision), with this 
+approaches the depth map must be generated using the geometrical information contained
+ on the images. Nowadays is common to find devices that generate depth maps accesible
+ to everyday users and automatize the depth map generation step, this devices are called depth sensors. 
+Depth sensors give to each pixel of the image a depth value, related
+with the distance of the real object from the sensor, offering a more
+accurate data to perform 3D reconstruction. With the appearance
+of cheap depth sensors for gaming and entertainment (such as
+Kinect). There is a growing interest in the develop of low cost
+3D reconstruction systems. 
+
+
