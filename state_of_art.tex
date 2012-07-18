@@ -55,11 +55,18 @@ cost of a laser scanner that is used as ground truth.
 In \cite{may2009} a ToF camera is used in combination with an industrial robot arm (KUKA KR 16) in order to register an indor scene,
 they use an improved version of the ICP algorithm called ICP Frustum, where at each iteration the points that are not overlaping with the previous frame are removed. The industrial robot arm is used to move the camera and get a ground truth camera path to evaluate the performance of their ICP algorithm. 
 
-Its possible to find more elaborated reconstructions using a laser scanner, but its a more expensive method. In 
-\cite{binney} there is a interesting work where a reconstruction of tree branches is performed using a laser range 
-data. They use a probabilistic approach and use knowledge about the tree structure to guide an iterative reconstruction 
-process. In \cite{keqiang} a 3D reconstruction for mobile robots is performed, also with a laser scanner, 
-using the ICP algorithm and a volumetric representation.
+%Its possible to find more elaborated reconstructions using a laser scanner, but its a more expensive method. In 
+%\cite{binney} there is a interesting work where a reconstruction of tree branches is performed using a laser range 
+%data. They use a probabilistic approach and use knowledge about the tree structure to guide an iterative reconstruction 
+%process. 
+
+%done
+In \cite{keqiang} a 3D reconstruction is performed with a laser range finder (SICK 2D ) and a mobile robot, 
+using the ICP algorithm and a volumetric representation. In the matching phase of the ICP algorithm not all
+ points are used, instead they just use edge points, reducing the computational cost of the process. The scene 
+ representation is simplyfied removing redundant points, this is done dividing the scene into voxels and at each 
+ voxel preserving just the point closer to the center. Their system produces a scene with data points evenly 
+ distributed.
 
 
 In \cite{wei} a CCD camera and a 2D laser scanner is used to perform indoor scene reconstruction, 
