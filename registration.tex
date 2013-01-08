@@ -1,0 +1,28 @@
+One of the first fundamental steps to reconstruct a 3D scene is the 
+positioning of the 3D points on a common coordinate system, conserving 
+the original scene structure. This step is called registration. 
+
+In general, when the sensor is collecting the 3D points from the scene, 
+ its necessary to move or rotate it in order to capture new objects and surfaces from 
+the scene, adding more information to the reconstructed scene. But in order to be 
+able to infer the correct position of each capture, is necessary to have part 
+of the view in common between two captures (an overlaping area). Thus is posible 
+to position a new capture with respect to an old one in the scene, using this overlaping 
+area to correctly align both captures.
+ 
+The overlaping areas of the different captures of a scene must be correctly 
+aligned when registering the points in a common coordinate system, 
+thus with each new capture more information is added to the scene, 
+getting closer to the desired result. 
+
+The most used algorithm for solve this problem is called 
+ICP (Iterative Closest Point) Algorithm. Given two point clouds, 
+this algorithm find the best rigid transformation to align both clouds 
+(minimize distance between puntos emparejados). In order to make this, 
+the algorithm starts with an initial guess of the transformation. 
+At each iteration the algorithm matchs points of each cloud and then 
+find the best transformation. 
+
+
+
+
