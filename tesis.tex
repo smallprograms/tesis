@@ -1,0 +1,255 @@
+\documentclass[spanish,english,12pt,letterpaper,oneside]{book}
+\usepackage{layout}
+\usepackage[spanish]{babel}
+\usepackage{calc}
+\usepackage[latin1]{inputenc}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{fancybox}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\usepackage{relsize}
+\usepackage{pgf,pgfarrows,pgfnodes}
+\usepackage{tikz}
+\usepackage{rotating}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{float}
+\usepackage{index}
+%\usepackage{wasysym}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage[pdftex,hyperindex,breaklinks]{hyperref}%,colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
+
+\usepackage[left=4cm,top=3.0cm,right=3.4cm,bottom=3.9cm]{geometry}
+
+%Para activar el doble espacio
+%\renewcommand{\baselinestretch}{2} 
+
+\usepackage[ruled,Algoritmo]{algorithm}
+
+%\usepackage[noend]{algpseudocode}
+\usepackage{algpseudocode}
+
+
+
+
+
+
+
+\usepackage{algpseudocode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NEW PACKAGES INTRODUCED BY LSC FOR REVIEWING PURPOSES
+%\usepackage{ulem}
+%\usepackage{boxedminipage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------MY_\em-STYLE theorems -------------
+%%% http://www.stat.umn.edu/~charlie/amslatex.html#theorem
+%\usepackage{amsthm}
+%\newtheoremstyle{itarikaj}
+%{2ex}%   Before skip
+%{2ex}%   After skip
+%{\footnotesize\sl }%      Body font (empty=\rm)
+%{}%      Indent amount (empty=no indent, \parindent=para indent)
+%{\footnotesize\bf\itshape}%   Thm head font
+%{:}%     Punctuation after thm head
+%{1em}%   Space after thm head (\newline=linebreak)
+%{}%      Thm head spec (can be left empty, meaning `normal')
+%{ }%\thmname{#1}\thmnumber{ #2}\thmnote{ #3} }% Thm head spec
+%\theoremstyle{itarikaj}
+%\newtheorem{nudecom}{Comentario-LS-}
+%\newtheorem{myrem}{Remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NEW ENVIRONMENT INTRODUCED BY LSC FOR REVIEWING PURPOSES
+%\newenvironment{com}%
+%{\mbox{} \\
+ % \begin{flushleft}\begin{boxedminipage}[t]{120mm}\begin{nudecom}}
+%{\end{nudecom}\end{boxedminipage}\end{flushleft}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+\renewcommand{\headrulewidth}{1pt}
+%\renewcommand{\footrulewidth}{0.5pt}
+
+
+\newcounter{myfootertablecounter}
+
+\newcommand\myfootnotemark{%
+  %\refstepcounter{footnote}%
+  \addtocounter{footnote}{1}%
+  \footnotemark[\thefootnote]%
+}%
+
+\newcommand\myfootnotetext[1]{%
+  \addtocounter{myfootertablecounter}{1}
+  \footnotetext[\value{myfootertablecounter}]{#1}
+}
+
+% from now on, myfootnote has to be used rather than footnote to
+% adapt the myfootercounter
+\newcommand\myfootnote[1]{%
+  \addtocounter{myfootertablecounter}{1}
+  \footnote{#1}
+}%
+
+
+\pagestyle{fancy}
+
+\rhead[]{\leftmark}
+\lhead[\rightmark]{}
+%\lfoot[\thepage]{ATLAS Grid Information System}
+\rfoot[ATLAS Grid Information System]{\thepage}
+\cfoot{} 
+
+
+%\renewcommand{\listalgorithmname}{\'Indice de algoritmos}
+\renewcommand{\chaptermark}[1]{\markleft{\thechapter #1}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection #1}}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername \ \thechapter. #1}{}}
+
+\newcommand{\contrib}[3]{#1\quad$<$\texttt{#2}$>$%
+{\small\\\quad\textit{#3}}\\[1ex]}
+
+\pgfdeclareimage[width=3cm]{logo-utfsm}{images/logo-utfsm}
+\pgfdeclareimage[width=11cm]{trigger}{images/trigger2}
+\pgfdeclareimage[width=11cm]{tiercloud}{images/tiercloud3}
+\pgfdeclareimage[width=5cm]{atlasoverview}{images/atlasoverview2}
+
+\pgfdeclareimage[width=7cm]{gridArchitecture}{images/gridArchitecture2}
+\pgfdeclareimage[width=12cm]{GT4figure}{images/GT4figure}
+\pgfdeclareimage[width=10cm]{gLitefigure}{images/gLitefigure2}
+\pgfdeclareimage[width=12cm]{ARCarch}{images/Arc-architecture}
+
+\pgfdeclareimage[width=10cm]{apel}{images/apel}
+\pgfdeclareimage[width=10cm]{sgas}{images/sgas}
+\pgfdeclareimage[width=6cm]{accsys}{images/accsys}
+\pgfdeclareimage[width=8cm]{apelCollector}{images/apelCollector2}
+\pgfdeclareimage[width=8cm]{gratiaCollector}{images/gratiaCollector2}
+\pgfdeclareimage[width=10cm]{databaseSchemaAPEL}{images/databaseSchemaAPEL}
+
+\pgfdeclareimage[width=7cm]{MDS2}{images/MDS2v2}
+\pgfdeclareimage[width=10cm]{GRISGIIS}{images/GRISGIIS}
+\pgfdeclareimage[width=7cm]{BDII}{images/BDII2}
+\pgfdeclareimage[width=5cm]{BDIIInstance}{images/bdiiTWiki}
+\pgfdeclareimage[width=14cm]{ARCTree}{images/ARCTree}
+\pgfdeclareimage[width=8cm]{RGMA}{images/R-GMA}
+\pgfdeclareimage[width=12cm]{RGMAVirtual}{images/virtual_db}
+\pgfdeclareimage[width=10cm]{MDS4DataFlow}{images/webServiceGIS}
+
+
+
+\pgfdeclareimage[width=8cm]{DDMarchitecture}{images/ddmArchitecture}
+\pgfdeclareimage[width=8cm]{pandaOverview}{images/pandaoverview}
+\pgfdeclareimage[width=8cm]{ToACVS}{images/ToACVS}
+\pgfdeclareimage[width=11cm]{AGISArchitecture}{images/AGISArchitecture5}
+%\pgfdeclareimage[width=11cm]{databaseSchemaAGIS}{images/EntityRelationship}
+\pgfdeclareimage[width=11cm]{databaseSchemaAGIS}{images/databaseSchemaAGIS}
+
+\pgfdeclareimage[width=10cm]{plotGetCloud50}{images/cloudTest10SMCU50}
+\pgfdeclareimage[width=12cm]{plotGetCloud25}{images/cloudTest10SMCU25}
+\pgfdeclareimage[width=12cm]{plotGetCloud75}{images/cloudTest10SMCU75}
+\pgfdeclareimage[width=12cm]{plotGetCloud100}{images/cloudTest10SMCU100}
+\pgfdeclareimage[width=16cm]{plotSite25}{images/siteTest10SMCU25}
+\pgfdeclareimage[width=16cm]{plotSite50}{images/siteTest10SMCU50}
+\pgfdeclareimage[width=16cm]{plotTopo25}{images/topologyTest10SMCU25}
+\pgfdeclareimage[width=16cm]{plotTopo50}{images/topologyTest10SMCU50}
+
+\pgfdeclareimage[width=10cm]{plotService}{images/plotService}
+\pgfdeclareimage[width=10cm]{plotTopology}{images/plotTopology}
+
+
+\pgfdeclareimage[width=14cm]{RDFAGISArchitecture}{images/RDFAGISArchitecture}
+\pgfdeclareimage[width=10cm]{RDPComponent}{images/RDPComponent}
+\pgfdeclareimage[width=8cm]{RDFgraph}{RDFgraph}
+\pgfdeclareimage[width=14cm]{coregrid}{images/coregrid}
+\pgfdeclareimage[width=14cm]{ATLASontology}{images/ATLASontology}
+\pgfdeclareimage[width=7cm]{hybrid}{images/hybrid}
+
+
+%\addto\captionsspanish{%
+%  \def\listtablename{\'Indice de tablas}%
+%  \def\tablename{Tabla}%
+%}
+
+
+\title{3D Scene Reconstruction}
+
+\author{
+  Juan Reyes \\ \texttt{jareyes@alumnos.inf.utfsm.cl}
+}
+
+\date{$\infty$}
+
+\frenchspacing
+
+\makeindex
+
+\begin{document}
+\frontmatter
+
+\include{titulo}
+\include{abstract}
+
+\addcontentsline{toc}{section}{\contentsname}
+\tableofcontents
+
+%\addcontentsline{toc}{subsection}{\listalgorithmname}
+%\listofalgorithms
+\addcontentsline{toc}{subsection}{\listfigurename}
+\listoffigures
+\addcontentsline{toc}{subsection}{\listtablename}
+\listoftables
+
+\mainmatter
+
+\chapter{Introducction}
+\label{introduccion}
+\index{Introducction}
+\input{introduction.tex}
+
+\chapter{State of Art}
+\index{State Of Art}
+\input{state_of_art.tex}
+
+\chapter{Registration}
+\index{Registration}
+\input{registration.tex}
+
+\chapter{Point Features}
+\index{Point Features}
+\input{point_features.tex}
+
+\chapter{Conclusions}
+\label{conclusions}
+\index{Conclusions}
+\input{conclusions.tex}
+
+\appendix
+
+\addcontentsline{toc}{chapter}{Appendix}
+
+
+\chapter{Acronyms}
+\label{acronyms}
+\index{acronyms}
+\input{acronyms.tex}
+
+
+
+
+\backmatter
+
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{plain}
+\bibliography{tesis}
+
+\end{document}
+
