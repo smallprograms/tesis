@@ -1,0 +1,39 @@
+ 
+
+
+There are several techniques to track an object. If there is information about the object of interest the problem 
+can be simplyfied using this information to restrict the search space, for example to certain color or shape.
+ By the other hand if the object to track is unknown, it is necessary to find a more general feature, that is 
+more likely to be found on the unknown interest objects. The corners are good features for this purpose. A corner 
+is a point on the image where there are gradient variations on two orthogonal directions.
+
+The most common definition of a corner is gived by Harris :
+
+$$
+E(u,v) = \begin{bmatrix} u & v \end{bmatrix} \sum\limits_{x,y} w(x,y) \begin{bmatrix} {I_x}^2 & I_x I_y \\ I_x I_y & {I_y}^2 \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix}
+$$
+
+We loop over a neighboorhood defined by different values of (x,y) and calculate 
+the difference of each pixel located at (x,y) with some other pixel located at (x+u,y+v). 
+The function w(x,y) is used to give some weight to each pixel. 
+
+
+Optical Flow
+
+The optical flow methods are used to calculate motion between two sucesive image frames which are taken
+ at two different times: t and \delta t.
+
+This methods have three main supositions about the frames:
+
+1.- The intensity remains constant
+2.- They are geometricaly consistent
+3.- There is a rigid transformation between one frame and the next
+
+There are two kinds of optical flow: dense and sparse. Dense optical flow means  calculate direction vector for each pixel of the image and sparse optical flow is calculate direction vector just those pixels of the image 
+who satisfy certain conditions.
+
+Dense optical flow is computationally expensive and its difficult to find the direction vector for plain color areas. For example an image of a white paper, there are a lot of pixels with the same properties and its necesary to perform some kind of interpolation to lidiar with this pixels. By the other hand, sparse optical flow just consider pixels with more odds of been matched between the two frames.
+
+
+
+
