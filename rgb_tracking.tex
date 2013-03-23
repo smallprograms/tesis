@@ -21,7 +21,7 @@ The function w(x,y) is used to give some weight to each pixel.
 Optical Flow
 
 The optical flow methods are used to calculate motion between two sucesive image frames which are taken
- at two different times: $t$ and $\delta t$.
+ at two different times: $t$ and $t + \Delta t$.
 
 This methods have two main assumptions about the frames (citar image processing analisis and comp. vision 2008):
 
@@ -36,13 +36,63 @@ Dense optical flow is computationally expensive and its difficult to find the di
 for plain color areas. For example in an image of a white paper or a wall
 there are a lot of pixels with the same properties and its necesary to perform some kind of interpolation to give a direction vector
  to each one of this pixels. 
-By the other hand, sparse optical flow just consider pixels with more odds of been matched between the two frames.
+By the other hand, sparse optical flow just consider pixels with more odds of matching between the two frames.
 
 Lukas-Kanade method
 
-The Lukas-Kanade method is an sparse optical flow method, that assumes that 
+The Lukas-Kanade method is an sparse optical flow method, that 
 uses a search window for each pixel of interest and assums that all the pixels 
 inside the search window have the same direction vector.
+
+
+We have two images: $I(x,y,t)$ and $I(x,y,t+\Delta t)$ 
+
+If optical flow conditions are meet :
+
+\begin{equation}
+\label{eq:oflowrel}
+I(x + \Delta x,y + \Delta y, t + \Delta t) = I(x,y,t)
+\end{equation}
+
+We can express $I(x + \Delta x, y + \Delta y, t + \Delta t)$ using taylor series as:
+
+\begin{equation}
+\label{eq:oflowtaylor}
+I(x + \Delta x, y + \Delta y, t + \Delta t) = I(x,y,t) + \frac{\partial I}{\partial y} \Delta y + \
+ \frac{\partial I}{\partial x} \Delta x  + \frac{\partial I}{\partial t} \Delta t + Higher Order Terms 
+\end{equation}
+
+If we combine \ref{eq:oflowrel} and \ref{eq:oflowtaylor} we obtain the general optical flow equation :
+
+
+$$ I(x,y,t) + \frac{\partial I}{\partial y} \Delta y + \
+ \frac{\partial I}{\partial x} \Delta x  + \frac{\partial I}{\partial t} \Delta t + Higher Order Terms = I(x,y,t) $$
+
+
+$$ \frac{\partial I}{\partial y} \Delta y + \
+ \frac{\partial I}{\partial x} \Delta x  + \frac{\partial I}{\partial t} \Delta t \approx 0 \hspace{0.5cm} \backslash \cdot \frac{1}{\Delta t} $$
+
+
+$$ \frac{\partial I}{\partial y} \frac{\Delta y}{\Delta t} + \
+ \frac{\partial I}{\partial x} \frac{\Delta x}{\Delta t}  + \frac{\partial I}{\partial t}  \approx 0 $$
+
+
+Let :
+
+$$ V_x = \frac{\Delta x}{\Delta t} $$
+$$ V_y = \frac{\Delta y}{\Delta t} $$
+$$ I_x = \frac{\partial I}{\partial x}$$
+$$ I_y = \frac{\partial I}{\partial y}$$
+
+and finally we get :
+
+$$ I_x V_x + I_y V_y = -I_t $$
+
+\begin{equation}
+\label{eq:oflowgeneral}
+\nabla{\vec{I}} \cdot \vec{V} = -I_t
+\end{equation}
+
 
 This method tries to minimize the following error:
 
@@ -52,7 +102,7 @@ Where $v=(vx,vy)$ is the movement of the pixels of the search window, from the i
 
 $(px,py)$ is the center of the search window
 
-A and B are two images, taken at instants $t$ and $t+\delta t$.
+A and B are two images, taken at instants $t$ and $t+\Delta t$.
 
 
 In order to solve this lest squares problem a Taylor development is used :
