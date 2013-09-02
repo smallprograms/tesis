@@ -106,6 +106,15 @@ see figure \ref{fig:cui}.
 \end{center}
 \end{figure}
 
+In \cite{huhle} a ToF camera and a RGB camera are used generate a 3D model, they combine geometric and color information, 
+using SIFT to determine matching features between the RGB images, 
+this 2D points are then converted into 3D points using the depth information. They use  Normal Distributions Transform (NDT) \cite{biber03} to exploit the geometrical 
+information. NTD is a registration algorithm that use a different principle than ICP, it doesn't need point matches 
+between sucesive frames. NTD build a grid on the 2D depth image, calculating the mean and the covariance matrix for each 
+ cell. The respective normal distributions are used to estimate the probability of any transformed point $T(x_i)$ to fall 
+inside some cell. Then they define a function that depends on the RGB matching features and NTD, in order to find the desired 
+rigid transformation.
+
  
 %done
 A very interesting work is made in \cite{izadi}, they use a low cost RGB-D camera (Kinect) in order to perform
@@ -117,7 +126,15 @@ simulations during the reconstruction, allowing thousands of virtual particles i
 user can interact with the scene during the reconstruction process. This is one of the most advanced 
 reconstruction systems, due to its uniques features.
 
+In \cite{weise08} the user move the object using his hands in front of an RGB-D sensor (In-hand modeling), the hands are 
+eliminated using a color skin detector and the user can see the reconstruction in real time, in order to correctly 
+move the object.  The object is registered with Fast ICP, which instead of searching for the closest 
+point, projects a transformated source point on the 2D target depth image in order to perform the matching. They use point
+ to plane distance. This ICP variation is also used in \cite{jaeggli03}. \cite{weise08} uses geometrical and visual 
+information to perform a correct registration. Imposing geometrical contraints based on the cameras lines of sight and visual 
+contraints applying Gaussian derivative kernels to both images and measuring similarities.
  see figure \ref{fig:izadi}.
+
 
 \begin{figure}[h!]
 \begin{center}
@@ -135,14 +152,9 @@ the reconstruction will fail. Similar problems can occur with laser scanners.
 Some materials such as glass or water can ruin the reconstruction.
 
 
-%must be correctly located
-In \cite{weise08} the user move the object using his hands in front of an RGB-D sensor (In-hand modeling), the hands are 
-eliminated using a color skin detector and the user can see the reconstruction in real time, in order to correctly 
-move the object.  The object is registered with Fast ICP, which instead of searching for the closest 
-point, projects a transformated source point on the 2D target depth image in order to perform the matching. They use point
- to plane distance. This ICP variation is also used in \cite{jaeggli03}. \cite{weise08} uses geometrical and visual 
-information to perform a correct registration. Imposing geometrical contraints based on the cameras lines of sight and visual 
-contraints applying Gaussian derivative kernels to both images and measuring similarities.
+
+
+
 
 
 
