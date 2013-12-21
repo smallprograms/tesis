@@ -1,5 +1,7 @@
  
 
+\index{Tracking with Optical FLow}
+\section{Tracking with Optical Flow}
 
 There are several techniques to track an object. If there is information about the object of interest the problem 
 can be simplyfied using this information to restrict the search space, for example to certain color or shape.
@@ -93,20 +95,84 @@ $$ I_x V_x + I_y V_y = -I_t $$
 \nabla{\vec{I}} \cdot \vec{V} = -I_t
 \end{equation}
 
+We have an equation with two unknowns $V_x$ and $V_y$, we can't solve it without additional restrictions.
 
-This method tries to minimize the following error:
+The Lukas-Kanade method assumes that all the pixels inside a window have satisfy this equation for the same 
+values of $V_x$ and $V_y$. Thus if we have a $5x5$ window, we have 25 equations with two unknowns :
 
-$$e(v)= \sum\limits_{x=px-wx}^{px+wx} \sum\limits_{y=py-wy}^{py+wy} (A(x,y) - B(x+v_x,y+v_y))^2$$
+$$
+\begin{bmatrix}
+I_x(p1) & I_y(p1) \\
+I_x(p2) & I_y(p2) \\
+... & ... \\
+I_x(p25) & I_y(p25)\\
+\end{bmatrix}  
+\begin{bmatrix}
+V_x \\
+V_y\\
+\end{bmatrix}
+=
+-\begin{bmatrix}
+I_t(p1) \\
+I_t(p2) \\
+...     \\
+I_t(p25) 
+\end{bmatrix}
+$$
 
-Where $v=(vx,vy)$ is the movement of the pixels of the search window, from the image A to the image B.
+Where $p_1, p_2, ..., p_25$ are pixel 1, pixel 2, etc.
 
-$(px,py)$ is the center of the search window
+Let 
 
-A and B are two images, taken at instants $t$ and $t+\Delta t$.
+$$
+A = 
+\begin{bmatrix}
+I_x(p1) & I_y(p1) \\
+I_x(p2) & I_y(p2) \\
+... & ... \\
+I_x(p25) & I_y(p25)\\
+\end{bmatrix}  
+$$
+
+$$
+x=
+\begin{bmatrix}
+V_x \\
+V_y\\
+\end{bmatrix}
+$$
+
+$$
+b=
+-\begin{bmatrix}
+I_t(p1) \\
+I_t(p2) \\
+...     \\
+I_t(p25) 
+\end{bmatrix}
+$$
+
+Then we have the classical problem
+
+$$ 
+Ax = b
+$$
+
+A solution can be obtained by least squares, using partial derivatives of the unknowns and igualando a cero, the following expresion
+ is obtained:
+
+$$
+x = (A^T A)^{-1} A^T b
+$$
+
+Invertibility 
+
+$A^T A$ will be invertible depending on the pixels of the image, in order to increment the odds of obtain a solution the Lukas Kanade method use corners.
+
+Even if $A^T A $ is invertible, if its values are very small it can be ill conditioned.
+
+For this reason its necesary to check the eigenvalues of $A^T A$, if they are zero or very small, then it not possible to find a solution.
 
 
-In order to solve this lest squares problem a Taylor development is used :
-
-$$\frac{de(v)}{dv} = -2 \sum\limits_{x=px-wx}^{px+wx} \sum\limits_{y=py-wy}^{py+wy} (A(x,y) - B(x+v_x,y+v_y)) [\frac{dB}{dx} \frac{dB}{dy}]$$
 
 

@@ -8,8 +8,9 @@ In 3D reconstruction an important part of the problem depends of the intrinsical
 device characteristics (noise, resolution, framerate, etc), the scene or object beign captured, ilumination, the camera location and position, etc. All this factors configure different instances of the problem, difficulting the comparison and limiting the use of a common dataset, but some efforts in order to allow comparison between different algorithms has been made 
 in \cite{seitz2006}, \cite{ponce2006} and \cite{scharstein2001}.
 
-Usually the researchers estimate their systems performance comparing the generated 3D model with some 
-ground truth model obtained with a high precision laser scanner. Also its common to measure the performance
+The researchers can estimate their systems performance comparing the generated 3D model with some 
+ground truth model obtained with a high precision laser scanner, but not always is possible to have a ground truth model, because lasers scanners 
+are expensive equipments. Due to this its common to measure the performance
  comparing some result obtained at an intermediate step of the reconstruction process with a ground truth measure, 
 such as the camera estimated path with camera real path.   
 
@@ -37,10 +38,7 @@ then improved with ICP (Iterative Closest Point) algorithm. They use a 3D laser 
 between their reconstructed
  models and the 3D laser models. See figure \ref{fig:guangyu}.
 
-%put this on the correct place
-Its common to find works where the method is not quantitatively evaluated 
-in 3D reconstruction due to the high 
-cost of a laser scanner that is used as ground truth. 
+
 
 
 \begin{figure}[h!]
@@ -117,14 +115,20 @@ rigid transformation.
 
  
 %done
-A very interesting work is made in \cite{izadi}, they use a low cost RGB-D camera (Kinect) in order to perform
+A very interesting work is made in \cite{izadi}(figure \ref{fig:izadi}), they use a low cost RGB-D camera (Kinect) in order to perform
 the 3D reconstruction using the ICP algorithm  and a volumetric representation with a GPU in order to 
 archieve real time reconstruction. The camera can move freely around the scene and the reconstruction grows in detail 
 as new depth measurements are added. They apply color textures to the reconstructed scene obtaining very 
 realistic models, their system is able to perform rigid body collisions 
 simulations during the reconstruction, allowing thousands of virtual particles interact with the scene. Also a 
 user can interact with the scene during the reconstruction process. This is one of the most advanced 
-reconstruction systems, due to its uniques features.
+reconstruction systems, due to its uniques features. A precursor work of \cite{izadi} is \cite{Newcombe10livedense}, where 
+ 
+just an RGB camera was used, obtaining impresive results. In order to perform the reconstruction a set of frames around 
+a reference frame are used, generating a local model. Then a global model is generated merging all the local reconstructions.
+The global model is deformed and gets more detail with every new local model added. This work not just afronted 
+the geometrical problem of aligning several clouds of points, it also had to generate the point clouds from RGB images.
+
 
 In \cite{weise08} the user move the object using his hands in front of an RGB-D sensor (In-hand modeling), the hands are 
 eliminated using a color skin detector and the user can see the reconstruction in real time, in order to correctly 
@@ -133,7 +137,6 @@ point, projects a transformated source point on the 2D target depth image in ord
  to plane distance. This ICP variation is also used in \cite{jaeggli03}. \cite{weise08} uses geometrical and visual 
 information to perform a correct registration. Imposing geometrical contraints based on the cameras lines of sight and visual 
 contraints applying Gaussian derivative kernels to both images and measuring similarities.
- see figure \ref{fig:izadi}.
 
 
 \begin{figure}[h!]

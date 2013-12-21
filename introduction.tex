@@ -25,9 +25,7 @@ the scope of this thesis.
 
 The most accurate and expensive method to perform 3D scene reconstruction is the Laser Scanning, because it has 
 an hight accuracy (about xx mm). But nowadays there are emerging cheaper devices that potentially could perform 
-a similar reconstruction at a pair of orders of magnitude low cost, due to this there are every year new publications 
-related to this low cost reconstruction systems and its known that the main drawback is on the computational power and 
-the used algorithms, because using the same devices more accurate reconstructions are performed at each time. 
+a similar reconstruction at a pair of orders of magnitude low cost. 
 
 One of the most classical approaches is to use multiple 2D
  images taken from known camera viewpoints and estimate the distance of each
@@ -41,5 +39,11 @@ accurate data to perform 3D reconstruction. With the appearance
 of cheap depth sensors for gaming and entertainment (such as
 Kinect). There is a growing interest in the develop of low cost
 3D reconstruction systems. 
+
+
+One of the key steps of a 3D reconstruction algorithm is the registration, where the 3D points corresponding to
+ the scene are  registered in a common coordinate system, preserving the original scene disposition. Another important 
+step is to add colour and continuity to the reconstructed scene, usually using a lot of geometric primitives such as 
+triangles, in order to generate a textured 3D model. This thesis is  about the registration step. 
 
 

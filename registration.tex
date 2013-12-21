@@ -1,6 +1,17 @@
-One of the first fundamental steps to reconstruct a 3D scene is the 
+When an scene is beign scanned with a Laser, Time of Flight Camera, structured 
+light sensor or other device capable of obtain a depth map of the scene.
+ A set of 3D points is obtained per capture, its 3D coordinates 
+are relative to the scanning device. Its necessary to move the captured points, 
+according to the device movement or rotation, for this reason 
+one of the first fundamental steps to reconstruct a 3D scene is the 
 positioning of the 3D points on a common coordinate system, conserving 
 the original scene structure. This step is called registration. 
+
+This problem becomes trivial if we know the device position and orientation 
+for each capture or if we have a pair of matches between each two sucesive 
+captures. But this not occur in practice and additional problems arise due 
+to the noise and imperfections of the device.
+
 
 In general, when the sensor is collecting the 3D points from the scene, 
  its necessary to move or rotate it in order to capture new objects and surfaces from 
@@ -20,8 +31,16 @@ ICP (Iterative Closest Point) Algorithm. Given two point clouds,
 this algorithm find the best rigid transformation to align both clouds 
 (minimize distance between puntos emparejados). In order to make this, 
 the algorithm starts with an initial guess of the transformation. 
-At each iteration the algorithm matchs points of each cloud and then 
+At each iteration the algorithm matchs closest points of each cloud and then 
 find the best transformation. 
+
+This algorithm has some drawbacks, such as beign susceptible to local minima, 
+have small convergence basin, and in general needing a high number of iteration
+ steps (citar rusu). For this reason variants of the algorithm are proposed by 
+the researchers or is combined with other technique to ... this problems.
+
+
+
 
 
 
