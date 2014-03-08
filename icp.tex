@@ -1,0 +1,114 @@
+
+\section{Iterative Closest Point}
+
+%\tiny
+R : Rotation matrix
+
+t : Translation vector
+
+A,A',B : Point sets $\in R^3$
+
+p : Pair set
+
+%\small
+\begin{algorithmic}[1]
+\State init(R,t)
+\State A' $\leftarrow$ transform(A,R,t) 
+\State p $\leftarrow$ closestPoints(A',B)
+\State $\{R,t\} \gets$ updateTransformation(p)
+\State $e_i = meanSquareError(p)$
+\If {$e_i < umbral$ OR  $i > maxIteracions$} 
+	\State return R,t
+\Else
+	\State go to step 2
+\EndIf
+\end{algorithmic}
+
+The Iterative Closest Point algorithm is used to find the optimal rigid transformation 
+to align two clouds of points.
+
+We want to find R and t that minimizes the following expression:
+
+$$ \sum\limits_{i=1}^n ||R a_i -  b_i - t ||^2 $$
+
+Where each $a_i,b_i$ is a vector $\in \mathbb{R}^3$, R is a 3x3 rotation matrix and t is a vector $\in \mathbb{R}^3$
+
+
+We make a change of coordinates, placing the centroid of each cloud as origin:
+
+
+
+\begin{align*}
+ \bar{a} = \frac{1}{n} \sum\limits_{i=1}^n {a_i} \\ 
+  \bar{b} = \frac{1}{n} \sum\limits_{i=1}^n {b_i} \\  
+   {a'}_i = a_i - \bar{a}\\
+   {b'}_i = b_i - \bar{b} 
+\end{align*}
+
+Replacing
+
+\[ \sum\limits_{i=1}^n ||R a_i -  b_i - t ||^2 = \sum\limits_{i=1}^n ||R ( {a'}_i + \bar{a} ) -  ( {b'}_i  + \bar{b} ) - t ||^2  \]
+
+The desired translation is $t = R \bar{a} - \bar{b} $. We must consider the rotation in this expression, since 
+the rotation of a cloud will change the position of all points and as consecuence the translation.
+
+Replacing t in our previous expression we get:
+\begin{flalign*}
+&\sum\limits_{i=1}^n ||R a'_i - b'_i ||^2  \\ 
+&=\sum\limits_{i=1}^n (R a'_i - b'_i)^t (R a'_i - b'_i) \\
+&=\sum\limits_{i=1}^n ( (R a'_i)^t R a'_i - (R a'_i)^t b'_i  - b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \\
+&=\sum\limits_{i=1}^n ( a_i^{\prime t} R^t R a'_i - 2 b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \\ 
+&=\sum\limits_{i=1}^n (a_i^{\prime t} a'_i -  2 b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) 
+\end{flalign*}
+
+
+Minimize the previous expression is equivalent to maximize:
+
+\begin{align*}
+& \sum\limits_{i=1}^n b_i^{\prime t} R a'_i =  Trace ( \sum\limits_{i=1}^n R a'_i  b_i^{\prime t} ) = Trace (RH) \\
+& H=\sum\limits_{i=1}^n a'_i  b_i^{\prime t} 
+\end{align*}
+
+Lemma: For any positive definite matrix $A A^t$ and any orthogonal matrix B 
+
+\[ Trace( A A^t ) \geq Trace (B A A^t) \]
+
+Proof of lemma:
+
+Let $a_i$ be the ith column of A, then:
+
+\begin{align*}
+Trace( B A A^t ) = Trace (A^t B A) = \sum\limits_i a_i^t B a_i 
+\end{align*}
+
+But by the Schwarz inequality
+
+\[ a_i^t B a_i \leq \sqrt{ a_i^t a_i (a^t B^t B a_i)} = a^t a_i \]
+
+
+Now using this lema we will maximize our expression:
+
+
+Lets apply the SVD factorization to H, then:
+
+\[ H = U \Sigma V^t \]
+
+Where U and V are 3x3 orthonormal matrices and $\Sigma$ is a diagonal matrix with no negative elements.
+
+Let $ R = V U^t $ then :
+
+\begin{align*}
+RH = VU^t U \Sigma V^t = V \Sigma V^t = V \Sigma^{\frac{1}{2}} (V \Sigma^{\frac{1}{2}})^t
+\end{align*}
+
+Which is symetrical and positive definite.
+Therefore from Lemma, for any 3x3 orthonormal matrix B
+
+\[ Trace( R H ) \geq Trace( B R H ) \]
+
+Thus the solution for our problem is 
+
+\begin{align*}
+R = V U^t \\
+t = R \bar{a} - \bar{b}
+\end{align*}

@@ -1,0 +1,15 @@
+\section{Proposed Algorithm}
+\begin{algorithmic}[1]
+\State inicializar(R,t) mediante Optical Flow
+\State A = filtroBordes(A)
+\State B = filtroBordes(B)
+\State A' $\leftarrow$ transformar(A,R,t) 
+\State p $\leftarrow$ puntosCercanos(A',B)
+\State $\{R,t\} \gets$ actualizarTransformacion(p)
+\State $e_i = errorCuadraticoMedio(p)$
+\If {$e_i < umbral$ OR  $i > maxIteraciones$} 
+	\State entregar R,t
+\Else
+	\State volver a paso 4
+\EndIf
+\end{algorithmic}

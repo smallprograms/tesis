@@ -1,0 +1,790 @@
+A grid infrastructure is composed by several resources, which are
+heterogeneous, distributed geographically, and may belong to diverses
+institutions. These resources must interact between them and with
+other grid components. In this scenario, the {\itshape opennes} of the
+grid is a difficult issue to achieve.
+
+In distributed systems, opennes is the property such that each
+component is continually open to interaction with other systems. In a
+grid environment, grid resources should provide, at any point of time,
+new services, functions, or in general, new resources that are unknown
+a priori to the grid users or other grid components. Having an
+standarized manner to describe resources, this task could be more
+simple. 
+
+Existing resource description is highly constrained, it does not
+provides proper mechanisms that allows to extend the schemas of
+description when new elements are incorporated. Hence, {\itshape
+metadata} --data about data-- plays a fundamental rol, together the use of {\itshape
+ontology} for resource description in the field of {\itshape web
+semantic}.%  helping to grid resources to know
+%about other grid resources, thus, the use of an ontology language is
+%fundamental to provide a semantic description of these resources
+
+Web Semantic has as key idea to explicate the meaning of web content
+by adding semantic notations, allowing the vast range of available
+information and services to be more effectively exploited.
+
+This chapter describes some important concepts related with the
+Semantic Web and a new proposed framework, which provides the
+capability of use semantic web in the ATLAS Grid Information System in
+order to provide semantic resource descritpion, thus, providing a more
+rich description of the resources, services and topology of the ATLAS
+grid.
+
+\section{Semantic Web}
+%El termino semantica se refiere a los aspectos del significado o interpretacion
+%del significado de un determinado simbolo, palabra, lenguage o representacion
+%formal
+% RAE, Semantica
+% 1.  adj. Perteneciente o relativo a la significación de las palabras.
+% 2.  f. Estudio del significado de los signos lingüísticos y de sus combinaciones, desde un punto de vista sincrónico o diacrónico.
+% Significacion: Sentido de una palabra o frase
+
+The Semantic Web aims at adding semantics to the data published on the
+Web, so that machines are able to process these data in a similar way
+a human can do, allowing {\itshape knowledge representation}. 
+
+The semantic representation of the data allows the machines have
+access to structured collections of informations and sets of inference
+rules that they can use to conduct automated reasoning, and the
+{\itshape ontologies}, are the backbone technology
+\cite{bib:Berners-Lee}.
+
+%An important concept is {\itshape metadata}, which is data about data
+%and in the grid environments, metadata helps to grid resources to know
+%about other grid resources, thus, the use of an ontology language is
+%fundamental to provide a semantic description of these resources.
+
+There is not a universal definition of ontology, 
+%The term \textbf{ontology} has two different views, the first one, for
+%philosophers, where {\itshape Ontology} referes to the ``essence of
+%things through the changes''\cite{webSemCardoso}, and the second one,
+%on the computer science side, the most frequently quoted definition of
+but in the computer science field, the most frequently quoted
+definition of {\itshape ontology} is Gruber's\footnote{Tom Gruber is a
+researcher with a focus on systems for knowledge sharing and
+collective intelligence
+\url{http://tomgruber.org/bio/short-bio.htm}}:\\
+
+\
+{\itshape `` An ontology is a formal, explicit specification of a shared
+conceptualization.''}
+\\
+
+From this definition:
+
+\begin{itemize}
+\item {\itshape formal} indicates that the specification should be machine processable
+\item {\itshape explicit} means that the elements must be clearly defined 
+\item {\itshape conceptualization} stands for an abstract model
+\end{itemize}
+
+
+Thus, in Gruber's view, an ontology is the representation of the
+knowledge of a domain, where a set of objects and their relationships
+is described by a vocabulary \cite{webSemCasanova}. 
+
+Another defintion, according to Sowa\footnote{John F. Sowa is a
+researcher cofounder of VivoMind
+Intelligence. \url{http://www.jfsowa.com/pubs/}} is that an ontology
+is:\\
+
+{\itshape ``The study of categories of things that exist or may exist
+in some domain. The product of such study, called an ontology, is a
+catalogye of types of things that are assumed to exist in a domain of
+interest \textbf{D} from the perspective of a person who usses a
+language \textbf{L} for the purpose of talking about \textbf{D}.}\\
+
+
+There are {\itshape ontology description languages} to define
+ontologies, such as the Resource Description Framework (RDF), RDF
+Schema (RDF-S), and the Web Ontology Language (OWL).
+
+
+In the following sections we give an overview of the aforementioned
+ontology description languages.
+
+%The ATLAS Grid Information System provides information about the
+%resources, services and topology of the ATLAS grid.
+
+
+\section{RDF}
+\label{sec:rdf}
+
+The {\itshape Resource Description Framework (RDF)} is a
+general-purpose language for representing information about resources
+in the Web. It is particularly intended for representing metadata
+about Web resources, but it can also be used to represent information
+about ojbects that can be identified on the Web.
+
+To understand RDF structure, firstly it is necessary to have clear
+some concepts of the Extensible Markup Language (XML), which are
+describe as follows.
+
+\subsection{XML Concepts}
+XML is a markup language that allows to exchange of a wide variety of
+data on the Web and elsewhere. The XML concepts described as follows,
+play an important role in the ontology languages.
+
+\begin{description}
+\item[Resource:] 
+is anything that has an identity, be it a retrievable digital entity
+(such an electronic document, an image or a service), a physical
+entity (such as a book) or a collection of other resources.
+
+\item[URI:] 
+the Uniform Resource Identifier is a character string that identifies
+an abastract or physical resource on the Web, for instance,
+\url{http://atlas.cern.ch/0/Site1.html}
+
+\item[URIref:] 
+the URI reference denotes the common usage of a URI, with an optional
+fragment identifier attached to it and preceded by the character
+``\#''. However, the URI that results from such a reference includes
+only the URI after removing the fragment identifier, for instance:
+\url{http://atlas.cern.ch/0/topology#cloud}.
+
+An {\itshape absolute URIref} identifies a resource independently of
+the context in which the URIref appears. A {\itshape relative URIref}
+is a URIref with some prefix ommited, hence, information from the
+context in which the URIref appears is required to fill in the omitted
+prefix
+%In particular, a relative URIref consisting of just a fragment identifier 
+%is equivalent to the UURIref of the document in which it apperars, 
+%with the fragment identifier appended to it. For example, 
+%the relative UIRIref #cloud, appearing in a document identified 
+%by the URIref \url{http://atlas.cern.ch/0/topology} is considered 
+%equivalent to the URIref: \url{http://atlas.cern.ch/0/topology#cloud}
+
+\item[Namespace:] 
+is a collection of names, which is identified by a URIref. For
+instance the RDF namespace has the URIref
+\url{http://www.w3.org/1999/02/22-rdf/syntax/ns#} and the prefix
+\url{rdf}.
+
+\begin{table}[h!tpb]
+\begin{tabular}{|l|l|l|}\hline
+\textbf{Namespace} &\textbf{URIref} &\textbf{Prefix} \\\hline
+RDF & \url{http://www.w3.org/1999/02/22-rdf/syntax/ns#} & rdf \\\hline
+Dublin Core &\url{http://purl.org/dc/elements/1.1/} & dc \\\hline
+\end{tabular}
+\caption{Examples of namespaces}
+\label{tab:namespaces}
+\end{table}
+\item[Qualified Name:]
+Names from namespaces can appear as qualified names (QNames) of the
+form $P:L$, containing a single colon ``:'', that separates the name
+into namespace prefix $P$ and a local part $L$. The namespace prefix
+must be associated with a namespace URIref $N$ in a namespace
+declaration. The qualified name represents the absolute URIref
+constructed by concatenating $N$ and $L$. For instance, the Qname
+\url{rdf:description} ($P:L$):
+
+\begin{itemize}
+\item 
+it has namespace prefix \url{rdf} ($P$)
+\item  
+it has local part \url{description} ($L$)
+\item
+its namespace prefix is associated to the namespace URIref
+\url{http://www.w3.org/1999/02/22-rdf-syntax-ns\#} ($N$)
+\item  
+it expands the URIref
+\url{http://www.w3.org/1999/02/22-rdf-syntax-ns\#description} 
+(concatenation of $N$ and $L$)
+\end{itemize}
+
+\end{description}
+
+A namespace is declared using a family of reserved attributes, whose
+name must either be \url{xmlns} or have \url{xmlns:} as a prefix, and
+whose value is a URIref identifying the namespace, for instance:
+
+\begin{figure}[h!tpb]
+\begin{verbatim}
+<rdf:RDF
+    xmlns:atlas="http://atlas.cern.ch/0/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+\end{verbatim}
+\caption{Namespace declaration.}
+\end{figure}
+
+
+
+%The XML is a general-purpose markup language, designed to describe
+%structured documents.
+
+%An XML document consist of plain text and markup, in the form of tags,
+%which is interpretated by applications programs:
+
+%\begin{verbatim}
+%XML
+%\end{verbatim}
+
+\subsection{RDF Statements and Vocabulary}
+RDF has a very simple and flexible data model, based on the central
+concept of the RDF statement. RDF also consider the concept of
+vocabulary, due to its relevance to ontology modeling.
+
+
+An \textbf {RDF statement} is a triple $(S,P,O)$, where:
+
+\begin{itemize}
+\item 
+$S$ is the {\itshape subject} and correspond to  a URIref
+
+\item 
+$P$ is the {\itshape property} and corresponds to a URIref that
+denotes a binary relationship
+
+\item 
+$O$ is the object and corresponds either a URIref or a literal. If $O$
+is a literal, then $O$ is also called the value of the property $P$
+
+\end{itemize}
+
+
+An example of an RDF statement is shown if
+Tab. \ref{tab:RDFStatements}\\
+
+\begin{table}[h!tpb]
+\begin{tabular}{|l|l|l|}\hline
+\textbf{Element} &\textbf{Value (Absolute URIref of Literal)} &\textbf{Value (QName)} \\\hline
+Subject & \url{http://atlas.cern.ch/0/#Site1} & \\\hline
+Property & \url{http://atlas.cern.ch/0/ispartof} & \url{atlas:ispartof} \\\hline
+Value &\url{http://http://atlas.cern.ch/0/#Cloud0} & \\\hline
+\end{tabular}
+\caption{RDF statement.}
+\label{tab:RDFStatements}
+\end{table}
+
+A \textbf{{\itshape vocabulary}} is a set of URIrefs and is therefore
+synonymous with an XML namespace. A vocabulary $V$ is frequently
+specified in two alternatives way: the first one uses qualified names
+to define $V$ and the second one uses fragment identifiers to define
+$V$.
+
+
+\begin{description}
+\item[Using Qualified Names:]
+Defines $V$ selecting a fixed URIref $U$ and a prefix $p$ for it, then
+defines a set of qualified names with prefix $p$ and finally defines
+$V$ as a set of URIrefs represented by such qualified names.
+
+\item[Using Fragment Identifiers:]
+Defines $V$ selecting a fixed URIref $U$ and a prefix $p$ for it, then
+define a set of fragment identifiers and finally, define $V$ as the
+set of URIrefs obtained by concatenating $U$, the charactyer
+``$\#$''and each fragment identifier.
+\end{description}
+
+
+\subsection{RDF Notations}
+RDF offers thee equivalent notations: RDF triples, RDF graphs and
+RDF/XML, which are described as follows:
+
+
+The \textbf{RDF triple} for an RDF statement $(S,P,O)$ is a string of
+one of the two forms:
+
+$<S> <P> <O> . $, if O is an absolute or relative URIref
+
+$<S>  <P> ``O''$, if O is a literal
+
+\textcolor{red}{ARREGLAR!}
+
+%\newpage
+For instance, RDF triples for statements in
+Tab. \ref{tab:RDFStatements} are shown in Fig \ref{fig:RDFTriples}.
+
+\begin{figure}[h!tpb]
+\begin{verbatim}
+<http://atlas.cern.ch/0/#Site>
+    <http://atlas.cern.ch/0/ispartof>
+        <http://http://atlas.cern.ch/0/#Cloud> .
+
+<http://atlas.cern.ch/0/#Site>
+    <http://atlas.cern.ch/0/contact>
+        ``Richard Brooks'' .
+\end{verbatim}
+\caption{RDF Triples.}
+\label{fig:RDFTriples}
+\end{figure}
+
+or, using qualified names for the URIrefs in the dc vocabulary:
+
+\begin{figure}[h!tpb]
+\begin{verbatim}
+<http://atlas.cern.ch/0/#Site>
+    atlas:ispartof <http://http://atlas.cern.ch/0/#Cloud> .
+
+<http://atlas.cern.ch/0/#Site>
+    atlas:contact ``Richard Brooks'' .
+\end{verbatim}
+\caption{RDF Triples using Qnames.}
+\end{figure}
+
+The \textbf{RDF graph} notation translates a set of RDF statements
+into a graph (Fig. \ref{fig:RDFgraph}), where the subjects and the
+objects are the nodes, and the properties are represented by the arcs.
+
+
+\begin{figure}[!htbp]
+\centering
+\pgfuseimage{RDFgraph}
+%\epsfig{file=images/RDFgraph.eps,scale=1.0}
+%\includegraphics[width=\textwidth]{RDFgraph.eps}
+\caption{RDF graph for a RDF triple.}
+\label{fig:RDFgraph}
+\end{figure}
+
+
+\newpage
+The \textbf{RDF/XML} is the notation for RDF statements preferred in
+the context of software agents exchanging data in open distributed
+environments. This notations encode the RDF graph in XML. The nodes
+and predicates are represented in XML terms, using element names,
+attribute names, element contents and attribute values.
+
+\begin{figure}[h!tpb]
+\begin{verbatim}
+<?xml version="1.0">
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:atlas="http://atlas.cern.ch/0">
+    <rdf:Description 
+        rdf:about="http://atlas.cern.ch/0/Site1">
+	        <atlas:ispartof
+	            rdf:resource="http://atlas.cern.ch/0/CloudA"/>
+    </rdf:Description>
+</rdf:RDF> 
+\end{verbatim}
+\caption{RDF/XML Example.}
+\label{fig:RDFXML}
+\end{figure}
+
+A property may itself be a resource, for instance the Site1 has a
+contact Richard Brooks, but the contact can be represented by a
+contact resource, which has properties name and email. An XML
+representation of this would be which is shown if
+Fig. \ref{fig:RDFXML2}.
+
+\begin{figure}[h!tpb]
+\begin{verbatim}
+<?xml version="1.0">
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:atlas="http://atlas.cern.ch/0">
+    <rdf:Description 
+        rdf:about="http://atlas.cern.ch/0/Site1">
+		<atlas:contact
+		 rdf:resource="http://atlas.cern.ch/0/contact"/>
+    </rdf:Description>
+    <rdf:Description
+        rdf:about="http://atlas.cern.ch/0/contact">
+	<atlas:email>richard@cern.ch"<atlas:email/>
+	<atlas:name>Richard Brooks"<atlas:name/>	
+    </rdf:Description>	   
+</rdf:RDF> 
+
+or
+
+<?xml version="1.0">
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:atlas="http://atlas.cern.ch/0">
+    <rdf:Description 
+        rdf:about="http://atlas.cern.ch/0/Site1">
+    		<atlas:contact>
+			    <rdf:Description rdf:about="http://atlas.cern.ch/0/contact">
+				     <atlas:email>richard@cern.ch"</atlas:email>
+				     <atlas:name>Richard Brooks"</atlas:name>
+			    </rdf:Description>  
+		</atlas:contact>
+    </rdf:Description>     
+</rdf:RDF>
+
+
+\end{verbatim}
+\caption{RDF/XML Example 2.}
+\label{fig:RDFXML2}
+\end{figure}
+
+
+\newpage
+The qualified name {\itshape rdf:type} of the RDF vocabulary is a
+built-in property with a predefined semantics. %An RDF statement of the
+%form ($S$, {\itshape rdf:type}, $O$) indicates that resource $O$
+%represents a category or a class of resources, of which resource $S$
+%is an instance. Those resources are called {\itshape typed node
+%elements} in RDF/XML documents.
+This property indicates that a resource belong to a set of resources,
+or a class. Both, the subject and object of the statement using
+rdf:type property must be a resource (not a literal), and they are
+called {\itshape typed node elements} in RDF/XML documents. For
+instance, we can add and {\itshape rdf:type} property to the example
+of Fig. \ref{fig:RDFXML} to indicate that a site belongs to a cloud in
+the ATLAS grid.
+
+\begin{figure}[h!tpb]
+\begin{verbatim}
+<?xml version=''1.0''>
+<rdf:RDF xml:base="http://atlas.cern.ch/0"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://http:purl.org/dc/elements/1.1/"
+    <rdf:Description
+        rdf:about="http://atlas.cern.ch/0/Site1">
+	        <rdf:type rdf:resource="http://atlas.cern.ch/0/topology/Entity"/>
+	                <atlas:ispartof
+	                  rdf:resource="http://atlas.cern.ch/0/CloudA"/>
+    </rdf:Description>
+</rdf:RDF> 
+\end{verbatim}
+\caption{rdf:type example.}
+\label{fig:RDFtypeXML}
+\end{figure}
+
+
+\section{RDF Schema}
+RDF Schema (or RDF-S) can be described as a semantic extension of
+RDF. RDF provides enormous flexibility but, it provides no means for
+defining applications-specific classes and properties. For instance,
+while RDF can represent that contact is a property of the Site1, there
+is no standard vocabulary for stating that contact is an attribute
+which applises to all sites. To overcome this lack, the RDF Schema
+provides the classes and properties.
+
+RDF Schema is defined as a vocabulary, whose URIref is
+\url{http://www.w3.org/2000/01/ref-schema#} and whose name is
+{\itshape rdfs}.
+
+
+\subsection{Classes}
+Resources may be divided into groups called classes. The members of a
+class are known as instances of the class. Classes are themselves
+resources. They are often identified by RDF URI References and may be
+described using RDF properties. 
+
+In RDF Schema a {\itshape class} is any resource having an {\itshape
+rdf:type} property whose value is the qualified name {\itshape
+rdfs:Class} of the RDF Schema vocabulary.
+
+A {\itshape subclass} is a transitive relationship between two
+classes, where is used the predifined {\itshape rdfs:subClassOf}
+property to relate the clases.
+
+Using RDF Schema, we can represent that "contact is an attribute that
+applies to all sites". The site class could be represented as a
+subclass of Resource:
+
+
+\begin{verbatim}
+<?xml version=''1.0''>
+<rdf:RDF xml:base="http://atlas.cern.ch/0"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:dc="http://http:purl.org/dc/elements/1.1/"
+    <rdf:Description
+        rdf:about="http://atlas.cern.ch/0/Site">
+	        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+	                <rdfs:subClassOf
+			    rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    </rdf:Description>
+</rdf:RDF> 
+\end{verbatim}
+
+And the contact property can be represented as a property which has Site as its domain and
+
+
+\begin{verbatim}
+<?xml version=''1.0''>
+<rdf:RDF xml:base="http://atlas.cern.ch/0"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdf="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:dc="http://http:purl.org/dc/elements/1.1/"
+    
+            <rdfs:Class rdf:about="http://atlas.cern.ch/0/Site"/>
+</rdf:RDF> 
+\end{verbatim}
+
+
+
+
+\subsection{Properties}
+A property is any instance of the class {\itshape rdfs:Property}. The
+{\itshape rdf:domain} property is used to indicate that a particular
+property applies to a designated class, and the {\itshape rdf:range}
+property is used to indicate that the values of a particular property
+are instances of a designated class or are instances (literals) of an
+XML Schema datatype.
+
+The relation between two properties is described using the predefined
+{\itshape rdfs:subPropertyOf} subproperty.
+
+\begin{verbatim}
+<?xml version=''1.0''>
+<rdf:RDF xml:base="http://atlas.cern.ch/0"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdf="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:dc="http://http:purl.org/dc/elements/1.1/"
+    
+            <rdfs:Class rdf:about="Site"/>
+	     <rdf:Property rdf:about="noServices"/>
+	             <rdfs:domain rdf:resource="Site"/>
+		     <rdfs:range rdf:resource="&xsd;positiveInteger"/>
+	     </rdf:Property>
+</rdf:RDF> 
+\end{verbatim}
+
+\section{OWL}
+
+%In the Semantic Web literature there is not an universal definition of
+%ontology\footnote{Ontology comes from the Greek {\itshape ontos}
+%(being) + {\itshape logos} (word). This term was introduced in
+%philosophy, in the nineteenth centtury by German philosophers, to
+%distinguish the studie of the being from the study of various kinds of
+%beings in the natural sciences.}, but a proper one is that ontology is
+%the representation of the knowledge of a domain, where a set of
+%objects and their relationships are described by a vocabulary.
+
+%Ontologies are used to capture knowledge about some domain of
+%interest. An ontology describes the concepts the domain and also the
+%relationships that hold between those concepts.
+
+OWL is an standard ontology language that describes classes,
+properties and relations among these conceptual objects in a way that
+facilitates machine interpretability of Web content. OWL is defined as
+a vocabulary, just as are RDF and RDF Schema, but it has a richer
+semantics \cite{webSemCasanova}. OWL provides a set of operators, such
+as $and$, $or$ or $negation$. Complex concepts can therefore be built up in
+definitions out of simple concepts.
+
+This ontology language can be categorised into three sub-languages:
+OWL-Lite, OWL-DL and OWL-Full. A defining feature of each sub-language
+is its expressiveness. The expresiveness of OWL-DL is between OWL-Lite
+and OWL-Full, thus, OWL-DL can be considered as an extension of
+OWL-Lite and OWL-Full as an extension of of OWL-DL. 
+%from protege tutorial
+
+\begin{description}
+\item[OWL-Lite]
+is intended to be used when only a simple class hierarchy and simple
+constraints are needed, with enough power to model {\itshape
+thesauri}\footnote{} and simple ontologies.
+
+\item[OWL-DL] 
+is more expressive than OWL-Lite and offers all OWL constructs, under
+certain limitations.
+
+\item[OWL-Full] 
+is intended to be used in situations where very high expresiveness is
+more important than being able to guarantee the decidability or
+computational completness of the language. It is therefore not
+possible to perform automated reasoning on OWL-Full ontologies.
+%protege tutorial
+
+\end{description}
+
+
+
+%\section{RDF in ATLAS Grid Information System}
+
+
+
+%``the stored ATLAS topology should be available in that format for
+%consumption by external tools (especially the rdf store)''
+
+%\begin{itemize} 
+
+%\item 
+%Create metadata (data about data) for the ATLAS topology, in order to
+%provide RDF ATLAS topology to external components.
+
+%\item 
+%RDF and OWL allows to create the metadata, representing the resources
+%an the relations between them.
+
+
+%\item 
+%Defining classes, to group together related resources in order to
+%create ontology: computational resources, storages resources, network
+%resources
+
+
+%\item 
+%Currently lack in the ontological description of the grid services
+
+%\item  
+%TODO: A look to current model definitions (specifications and schema):
+%CIM
+
+%\item 
+%Doubts: propose the RDF schema for ATLAS topology, use existing tools
+%to modelate,
+
+
+%\item 
+%RDF will provide OPENNES and STANDARIZATION to the grid system providing information to be processed by machines, inforamtion in a RDF format, using ontology to create vocabularies and rules ... to discuss the innovation
+
+
+%\end{itemize}
+
+
+
+%\section{Proposed RDF Component to the ATLAS Grid Information System}
+
+\section{Semantic Resource Description for the \-ATLAS\ Grid}
+The openness in a distributed system is fundamental to achieve an
+efficient interaction of the components. In a grid environment, any
+component should be able to provide, at any point of time, new
+services, functions, or, in general, new resources that are unknown a
+priori to its clients or other grid components. To incorporate and
+interact with these new components, opennes and standarization are
+important points. Hence, metadata plays a fundamental rol. An
+usual representation of metada is the use of vocabularies that are
+defined and agreed by communities, to ensure some degree of
+interoperability across the applications and/or middleware that use
+this metadata.
+
+Metadata can be represented using the Web Semantic paradigm, through
+the use of ontologies, which represents the data in structured
+collection and set of inference rules.
+
+
+The ATLAS Grid Information System provides a sub-set of information
+--only static and semi-static-- related with resources, services and
+topology of the ATLAS grid. If we extend this sub-set considering
+static and dynamic information, we are in a more complex scenario,
+where the volume of data increase considerable (jobs thar are running
+in all the sites of the grids, storage capacity used in each tier,
+cloud, or site, etc.)
+
+
+\section{AGIS Semantic Architecture}
+As was mentioned before, the {\itshape openness} in a distributed
+system is fundamental to achieve an efficient interaction of the
+components in a distributed system.  The AGIS architecture defined in
+Sec. \ref{sec:agisArch} provides static and semi-static information
+related with the resources, services and topology of the ATLAS grid.
+The whole set of data, should include the dynamic information, which
+currently is managed by the Monitoring area of the ATLAS grid.
+%in diverse
+%formats (XML, JSON, CSV) and uses a relational database to store the
+%information collected by the agents.
+
+
+Now, we propose a new architecture, wich uses the previous AGIS
+architecture, but adds new components, to form the the {\itshape AGIS
+Semantic Framework}, which allows to provide the information in a RDF
+format, using the web semantic paradigm to the generation of the data.
+
+The main idea of use Web Semantic in the ATLAS Grid Information 
+
+
+This framework adds three new components that communicate, process and
+exchange information. The first component process the information and
+comunicates with the agents to processing the data and generate the
+RDF format, the second one is the RDF storage, and the third one is
+the RDF connector wich allows the communication between the clients
+and the system itself.
+
+Figure \ref{fig:RDFAGISArchitecture} depicts the new framework
+proposed.
+
+\begin{figure}[!htbp]
+\centering
+\pgfuseimage{RDFAGISArchitecture}
+%\epsfig{file=images/RDFAGISArchitecture.eps,scale=0.55}
+\caption{ATLAS Grid Information System Architecture.}
+\label{fig:RDFAGISArchitecture}
+\end{figure}
+
+The new components are described as follows.
+
+\subsection{RDF Data Processor}
+The AGIS agents collect information from the different sources, and
+then communicate with the DAO layer to store the information in a
+relational database. To store information in a RDF format it is
+necessary to process the collected data, hence, the {\itshape RDF Data
+Processor} (RDP) component is in charge of this task.
+
+Once the AGIS agents have retrieved the information, they establish
+comunnication with The RDP component in order to process that
+information to obtain the RDF schema.
+
+The data processing done by the RDP component corresponds to the
+generation of ontologies, which implies the conversion of the data
+retreived by the AGIS agents into a RDF Model.
+
+\begin{figure}
+\pgfuseimage{RDPComponent}
+%\epsfig{file=images/RDPComponent.eps,scale=0.55}
+\caption{ATLAS Grid Information System Architecture.}
+\label{fig:RDComponent}
+\end{figure}
+
+The RDF schema generation means that has to be a method that convert
+the collected data into the classes and properties with all kinds of
+Semantic Web vocabularies.
+
+
+Firstly, it is necessary to have defined the RDF data model, that is,
+the classes and properties that represent the ATLAS grid (sites,
+services and topology). The RDF schema proposed will be based in the
+{\itshape Core Grid Ontology} \cite{bib:coregrid}, which defines
+fundamental grid domain concepts, but it is necessary to add new
+concepts, vocabularies and relationships in order to reflect properly
+the ATLAS grid.
+
+
+The proposed grid model of Core Grid Ontology group the grid concepts
+in three categories: VO-related, grid resource and grid middleware
+service. The Fig. \ref{fig:coregrid} depicts the ontology classes
+proposed by the Core Grid Ontology and the
+Fig. \ref{fig:coregridATLAS} is the modification of the model, to
+reflect and represent the ATLAS grid concepts.
+
+\begin{figure}
+\centering
+\pgfuseimage{coregrid}
+\caption{Core Grid Ontology Classes}
+\label{fig:coregrid}
+\end{figure}
+
+
+\begin{figure}
+\centering
+%\pgfuseimage{coregridATLAS}
+\caption{ATLAS Grid Ontology Classes}
+\label{fig:coregridATLAS}
+\end{figure}
+
+
+
+%Fig. \ref{fig:RDFGeneration} shows the
+%algorithm that performs that conversion.
+
+
+%\begin{figure}[!htbp]
+%\centering
+%\begin{verbatim}
+%WHILE not finished collected data
+%    identify classes
+%    bind classes to properties
+%    write in RDF style
+%END    
+%\end{verbatim}
+%\caption{RDF schema generation}
+%\label{fig:RDFGeneration}
+%\end{figure}
+
+\subsection{RDF Storage}
+
+
+\subsection{RDF Connector}
+
+
+
+
+
+\section{Summary}

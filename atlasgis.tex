@@ -1,0 +1,2127 @@
+The ATLAS experiment operates in a multigrid environment, which
+consists of three different grid infrastructures: EGEE, OSG and NDGF.
+All these sub-grids have different middlewares, therefore different
+Grid Information System (GIS) implementations. 
+
+Due to the multigrid nature of ATLAS, a new layer was created -- called 
+{\itshape supra-middleware} layer in this thesis-- to provide the coordination and
+integration of the three sub-grids that compose the ATLAS grid.
+For instance, {\itshape Distributed Data Management} is the component
+of this layer that enables the data movement and
+{\itshape Monitoring and Accounting} are the components that allows to
+know quantitatively how are being used the resources of the whole
+ATLAS grid.
+
+Regarding GIS, still there is not a global system capable of
+delivering current and reliable information regarding grid topology,
+resources, and services of the whole ATLAS grid.
+It is required a GIS component in the supra-middleware that 
+merges the information coming from different sources and 
+ensures
+the {\itshape consistency} and {\itshape integrity} of the data, and
+all these
+dealing in the the highly dynamic, large-scale and multigrid
+environment of the ATLAS experiment.
+
+
+The {\itshape ATLAS Grid Information System} described in this chapter
+attempts to overcome this lack, proposing an architecture 
+ and implementing a system that collects the
+information from diverse sources and provides different tools to be
+used by the ATLAS grid components and users.
+
+%The proposed architecture is based on the {\itshape Restful} style,
+%which provides simplicity of publishing and consuming a service.
+
+%The GIS of the ATLAS grid provide information on resources and
+%services, but they do not provide information related with the topology of
+%the ATLAS grid.
+
+
+
+
+%, which implies the need to
+%provide a new component in the supra-middleware layer, in order to
+
+%\section{ATLAS Grid Architecture}
+%As mentioned above, the ATLAS grid is composed of three different
+%sub-grids: EGEE, OSG and NDGF, each providing their own middleware,
+%which implies different set of tools to manage distributed data,
+%different jobs submission methods, diverse GIS, monitoring and
+%accounting systems.
+
+%This scenario implies the need of provide a new layer --called
+%supra-middleware-- that coordinates and integrates the three
+%middlewares belong to each sub-grid, in order to have a ``a grid of
+%grids'', that is, different grid infrastructures working together to
+%provide a seamless grid infrastructure. %Therefore, it is necessary to
+%have
+%%services that manage the data and job submission, as a whole grid.
+
+%The following sections describe the main components that belong to the
+%supra-middleware layer:
+%\begin{itemize}
+%\item Distributed Data Management
+%\item Production System
+%\item Distributed Analysis
+%\item Monitoring and Accounting
+%\end{itemize}
+
+
+%\subsection{Distributed Data Management}
+%\label{sec:ddm}
+
+%The \textbf{D}istributed \textbf{D}ata \textbf{M}anagement (DDM) is
+%the component in charge to manage the access to ATLAS experiment data
+%that is distributed at sites all around the world.
+%DDM is the central link between all the components of the ATLAS grid,
+%because of data access is needed for any processing and analysis step.
+
+%The DDM system is composed of different components which interact with
+%each other to perform the different {\itshape bookkeeping} and
+%{\itshape data movement} tasks. 
+%The catalogs take care of the first part - bookkeeping - while the
+%site services try to answer the different user requests to spread
+%existing data among the different sites --called {\itshape
+%subscriptions} \cite{monitoringDDM, Lassnig:2007}.
+
+%\begin{description}
+%\item[Central Catalogs:] The central catalogs define the {\itshape
+%datasets} and their locations. 
+%The dataset is an aggregation of data (one or more physical file),
+%which are processed together and serve collective as input or output
+%of a computation or data acquisition process.  
+%A dataset is uniquely identified by a dataset name (dsn) and a
+%version, and it expects $O(1000)$ new dataset per day.
+%%Last line from DATA CATALOGS, buenos aires workshop
+
+%There are four different catalogs: {\itshape Content, Location,
+%Repository} and {\itshape Subscription}. 
+%The first one, tracks relationships between files and the coarser
+%grained unit of dataset, the Location catalog stores the sites where
+%replicas of data can be found and additional information about its
+%completeness, the Repository catalog keeps track of existing dataset
+%and their different versions, and finally, the Subscription catalog,
+%which stores data movement requests from users.
+
+%\item[Site Services:]The site services are collections of agents, and
+%their principal goal is to satisfy the subscription. 
+%There are agents fetching new subscriptions from the central catalogs,
+%evaluating appropriate replicas for each file in a dataset
+%subscription, submitting transfers to the File Transfer Service (FTS),
+%registering files in the local storage catalogs once they are
+%successfully transferred into the site or registering new dataset
+%locations in the central catalogs once subscriptions are complete.
+
+%The subscription is the process used to move massive amounts of data
+%between sites, on scheduled data movements. 
+%Subscriptions are typically used to ship data from data taking from
+%the Tier-0 to the Tier-1s and Tier-2s.  
+%For instance, if there is a dataset A presented in a site Y but not in
+%the site X, and X needs dataset A, it must to subscribe to dataset
+%A. 
+%Later A is transferred to site X and registered properly in catalogs.
+%\end{description}
+
+
+%The DDM main components are shown in the Fig. \ref{fig:DDMarchitecture}
+
+%\begin{figure}[!htbp]
+%\centering
+%\pgfuseimage{DDMarchitecture}
+%\epsfig{file=images/DDMarchitectur.eps,scale=0.55}
+%\caption{DDM Architecture}
+%\label{fig:DDMarchitecture}
+%\end{figure}
+
+
+%The datasets have different states in the data flow process: 
+
+%\begin{description}
+%\item[Open:] A dataset is in Open state when new files can be added or
+%old ones removed.
+%\item[Closed:] This state corresponds the latest version of the
+%dataset is finished and changes can only be done by reopening it.
+%\item[Frozen:] This states occurs when no more changes can
+%be done in a dataset.
+%\end{description}
+
+%Furthermore, the life-cycle of a dataset subscription can be in
+%different states.  
+%From the time a new subscription is added in the central catalogs to
+%the time the dataset is fully available on the destination site there
+%are several states. %, which are shown in the full state machine of
+%%the
+%%Fig. \ref{fig:machineStateDataset}.
+
+%%\begin{figure}[!htbp]
+%%\centering
+%% \epsfig{file=images/machineStateDataset.eps,scale=0.55}
+%%\caption{Dataset Subscription State Diagram}
+%%\label{fig:machineStateDataset}
+%%\end{figure}
+
+%\begin{description}
+%\item[Queued:] The dataset has been taken for processing by
+%the site services, but its contents have not yet been retrieved from
+%the content catalog
+
+%\item[Incomplete:] Dataset contents are known, and files have been
+%queued locally for transfer where appropriate
+
+%\item[Canceled:] The user canceled the subscription. 
+%Files already transferred are not removed, but the ones still in the
+%queue will not be replicated
+
+%\item[Broken:] The subscription is invalid and the site services have
+%given up on serving it. 
+%This is usually due to the wrong definition of the dataset itself
+
+%\item[Complete:] The subscription has been fully served, and all
+%dataset files are stored and registered in the destination site
+%\end{description}
+
+%DDM  must keep data integrity and provide routine data transfer, data
+%monitoring and data access to the ATLAS physics community. 
+
+
+
+
+
+%\subsection{Production System}
+%The ATLAS \textbf{Prod}uction \textbf{Sys}tem (ProdSys) has been
+%developed to perform the simulation data production of the experiment
+%using grid resources.
+%It provides a robust framework to execute a large number of jobs in
+%the grid infrastructures.
+
+%The ATLAS experiment requires a large amount of simulated data.  The
+%ProdSys component allows to manage the production of large amount of
+%Monte Carlo data using grid resources.
+
+%ProdSys is implemented in a modular way in order to used the ATLAS
+%grid resources that belong to the three different sub-grids, providing
+%an interface layer on top of the various grid middleware used in
+%ATLAS.
+%It allows to manage the production of a large scale amount of Monte
+%Carlo data using grid resources in an automatic way, within minimal
+%human intervention \cite{DAFirst}.
+
+
+%The \textbf{P}roduction \textbf{AN}d \textbf{D}istributed
+%\textbf{A}nalysis system (PANDA) is a job management system, and it
+%was designed for ProdSys and Distributed Analysis components.  
+%It is highly automated, has an integrated monitoring system, and
+%requires low operation manpower.
+%A description of PANDA is given as follows.
+
+
+%\subsubsection{PANDA}
+%\label{sec:PANDA}
+%PANDA has been developed to meet ATLAS requirements for petabyte scale
+%production and distributed analysis processing for the ATLAS
+%Experiment \cite{pandaPaper}.
+
+%PANDA was designed to support both managed production and user
+%analysis via flexible job specifications and injection. 
+%The dataset based organization of PANDA matches the DDM system and the
+%analysis work model.
+
+%In the PANDA system the jobs are submitted to the PANDA server via a
+%simple Python/HTTP client interface. 
+%The PANDA server is the main component which provides a task queue
+%managing all job information centrally. 
+%The PANDA server receives jobs through the client interface into the
+%task queue , upon which a brokerage module operates to prioritize and
+%assign work on the basis of job type, priority, input data and its
+%locality, and available CPU resources. 
+%Allocation of job blocks to sites is followed by the dispatch of input
+%data to those sites, handled by a data service module interacting with
+%DDM. %The
+%%implementation of the PANDA server is a LAMP stack with a
+%%multi-processing/multi-threading architecture running 50 child-process
+%%concurrently. The apache 
+
+
+%\begin{figure}[!htbp]
+%\centering
+%\pgfuseimage{pandaOverview}
+%\caption{Overview of the PANDA System}
+%\label{fig:pandaOverview}
+%\end{figure}
+
+%The scheduler sends pilots to batch systems and grid sites. There are
+%three kind of scheduler: CondorG scheduler, Local scheduler, and
+%Generic scheduler.  
+%%The CondorG scheduler sends pilots to most
+%%US-ATLAS OSG sites with the CondorG infrastructure. The Local
+%%scheduler uses local-batch commands like {\itshape qsub} for PBS and
+%%{\itshape condor\_submit} for Condor, which results in very high
+%%efficiency and robustness. The Generic scheduler has been developed to
+%%support also non-ATLAS OSG VOs and EGEE, and is being extended through
+%%OSG extensions project to support Condor-based pilot factory.
+%The idea is to move pilot submission from a global submission point to
+%a site-local pilot factory.%, whic itself is globally managed as a
+%%Condor glide-in.
+
+%Pilots are pre-scheduled to batch system and grid sites.  
+%They retrieve jobs from the PANDA server to run the jobs as soon as
+%CPU's becomes available. 
+%Pilots use resources efficiently; they exit immediately if no job is
+%available and the submission rate is regulated according to
+%workload. 
+%Each pilot executes a job, detects zombie process, reports job status
+%to the PANDA server, and recovers failed jobs.
+
+%The PANDA system has a pipeline structure running data-transfer and
+%job-execution in parallel.  
+%DDM takes care of actual data-transfers: the PANDA server sends
+%requests to DDM to dispatch input files to Tier2's or to aggregate
+%output files to Tier1's. 
+%DDM transfers files and then sends notifications to the PANDA
+%server. 
+%Jobs wait in the task queue after they are submitted to PANDA, and get
+%activated when all input files are transferred. 
+%Pilots pick activated jobs and can run immediately since DDM has
+%already pre-staged the input files. 
+%Similarly, pilots copy output files to local storages and exit
+%immediately to release CPU's. 
+%Then the PANDA server sends requests to DDM to move files over the
+%grid. 
+%That is, pilots occupy CPU's only during execution of the ATLAS jobs
+%and access to the local storage.
+
+ 
+
+
+%\subsection{Distributed Analysis}
+%The \textbf{D}istributed \textbf{A}nalysis (DA) component has as main
+%goal to bring the computation power on global scale to individual
+%ATLAS physicists by enabling them to easily enter into the vast
+%computing resource provided by the different sub-grids for their
+%analysis activities, hiding the complexity of the multigrid
+%environment.
+
+%The data generated by the ATLAS experiment is distributed in various
+%computing facilities (tier structure). 
+%The user jobs are in tourn routed depending on the availability of
+%relevant data. 
+%A typical analysis job consists of a Python script that configures and
+%executes a user defined algorithm in Athena\footnote{Athena is an
+%ATLAS framework that allows to perform physics analysis. It is an
+%oriented based software, primarily using C++ programming language, but
+%also with some FORTRAN and Java components.}
+%The script specifies input data and produces one or more files
+%containing plots and histograms \cite{DAFirst}.
+
+%The DA component has two main frontend clients for the job submission:
+%{\itshape Ganga} and {\itshape pAthena}, which are described as
+%follows.
+
+%\subsubsection{Ganga}
+
+%Ganga is a frontend tool for job definition and management and mainly
+%it enables to the users to submitt jobs to a variety of
+%resources. These resources can be the local machine, batch systems
+%(PBS, LSF, SGE, or Condor), grid systems (LCG, gLite, NorduGrid) or
+%workload management systems (Dirac, Panda).
+
+
+%Ganga \cite{ganga} is being developed as a grid user interface. It
+%allows trivial switching between running test jobs on a local batch
+%system and running large-scale analyses on the Grid, hiding Grid
+%technicialities; it provides job splitting and merging, and includes
+%automated job monitoring and output retrieval. In addition, Ganga has
+%a number of specific features:
+
+%\begin{itemize}
+%\item It simplifies configuration of applications based on the Athena
+%framework
+%\item It locates input data using the DQ2 (a DDM tool) data management system
+%\item It makes it easy to define and run user-level productions
+%\end{itemize}
+
+%Ganga currently provides two user interface clients: a Command Line
+%Interface (CLI) and a Graphical User Interface (GUI). In addition, it
+%can also be embedded in scripts for non-interactive/repetitive use.
+
+%A job in Ganga is constructed from a set of building blocks. %(see
+%%Fig. \ref{fig:gangaJob}). 
+%All jobs must specify the software to be run (application) and the
+%processing system (backend) to be used.  
+%Ganga provides a framework for handling different types of
+%application, backend, dataset, splitter and merger, implemented as
+%plugin classes. 
+%Each of these has its own schema, which places in evidence the
+%configurable properties.
+
+%%\begin{figure}[!htbp]
+%%\centering
+%% \epsfig{file=images/gangaJob.eps,scale=0.55}
+%\caption{A job in Ganga}
+%%\label{fig:gangaJob}
+%%\end{figure}
+
+%\subsubsection{pAthena}
+%pAthena is a python script designed to enable access to OSG resources
+%via PANDA job management system \cite{DAFirst}.
+
+%pAthena is an interface to the ATLAS offline software framework,
+%Athena, and it makes the submission of analysis jobs to the PANDA
+%system in two steps:
+%\begin{itemize} 
+%\item {\itshape Build step:} It gathers up user code, stores it and
+%ships it to processing site for (http) retrieval by the pilot and site
+%installation/build in user area.
+%\item {\itshape Execution step:} It runs N Athena jobs with
+%user-designated input and output datasets.
+%\end{itemize}
+
+
+
+%\subsection{Monitoring and Accounting}
+
+%\textbf{Monitoring} is the component that provides a uniform and
+%complete view of various activities like job processing, data movement
+%and publishing, access to distributed databases regardless of the
+%underlying multigrid environment (EGEE, OSG and NDGF)
+%\cite{monitoringDash}.
+
+%%allows to know
+%%quantitatively how are being used the grid resources, which helps to
+%%understand the performance limitations and helps to evaluate future
+%%development work.
+
+%ATLAS Monitoring provides monitoring information in a transparent way
+%and combines data related to the performance of the Grid
+%infrastructure and data that is activity or application specific.
+%Such a monitoring system is able to satisfy users in various roles
+%including production manager, coordinator of data transfer, site
+%administrator supporting a given experiment at the local site or
+%simply an analysis user submitting analysis jobs to the grid.
+
+%ATLAS Monitoring covers a wide range of activities:
+
+%\begin{description}
+
+%\item[Job Monitoring:] 
+%Its goal is to keep track of all jobs submitted by the experiment
+%users and stores the main monitoring indicators, such as resource
+%usage and sharing, grid behavior application robustness and data
+%access quality.
+
+%\item[Site Reability:] 
+%This activity facilitates the task of the site administrators, to
+%estimate the site performance regarding job processing and data
+%transfer and to detect and understand eventual problems at the site.
+
+%\item[Task Monitoring:] 
+%It is as a supplement of the job monitoring application but focused on
+%the needs of the LHC analysis users submitting their jobs to the grid.
+%It provides a consistent way of following a user's analysis tasks
+%regardless of the job submission tool, which was used for the job
+%generation and submission.
+
+%\item[DDM Monitoring:] 
+%DDM has different components interacting to perform the data
+%bookkeeping and placement task. DDM Monitoring is a central service
+%which collects all the callbacks sent by the different agents in the
+%DDM site services. It provides monitoring information, summaries and
+%statistical data, which are exposed to the users.
+
+%\item[ATLAS Production Monitoring:] 
+%It holds information regarding job status, such as waiting submission,
+%scheduled in a resource, running, being aborted, among others.
+%\end{description}
+
+
+%Thus, ATLAS Monitoring allows to follow activities like job processing,
+%data transfer, data access and access to distributed data bases. 
+%It keeps track of all jobs submitted by the users and stores the main
+%monitoring indicators such as resource usage and sharing, grid
+%behavior, application robutness and data distribution.  
+%The information related to the job processing can be aggregated and
+%presented per user, per site or computing element, per resource
+%broker, per application or per input collection.
+
+%%The monitoring component shows relevant quantities of the current
+%%state of the experiment activities on the grid, for example, how many
+%%jobs are running, pending and accomplished, and which fraction of the
+%%accomplished jobs were successful. Main quantities in resource
+%%utilization are CPU, memory consumption and input-output rates.
+
+
+
+%%In the ATLAS grid environment, jobs submitted by the users may be sent
+%%to computing resources close to the data or may go to remote resources
+%%with available job slots, thus reducing queue times.  
+%%As a consequence, jobs that run on a grid environment must be properly
+%%accounted for. 
+%%Here, the \textbf{Accounting} componentis fundamental to be aware
+%%about the usage of resources (CPU time, wall-clock time and memory).
+
+%The ATLAS \textbf{Accounting} component also attempts to provide a
+%global view, working one level above the accounting systems of each
+%sub-grid and providing a view considering the ATLAS grid as a whole
+%(not per separated sub-grid) and also providing the information in
+%different formats and specific views (considering the ATLAS topology).
+%The Accounting component is one of the contribution of this thesis and
+%it is discussed in detail in Chapter \ref{accsys}.
+
+
+%The Monitoring and the Accounting components seem to be the same, but
+%they are different.  
+%The monitoring components plays a role in {\itshape realtime}, in
+%other words, there are some services retrieving the data and exposing
+%this data as soon the jobs are being sent to the grid, and by the
+%other hand, the accounting component retrieves the data time after the
+%job was sent (for instance using the logs files), because the idea of
+%the accounting component is to perform subsequently analysis of the
+%usage of the grid resources, in order to elaborates more sophisticated
+%and complete reports to know in deep the grid behavior.\\
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%SEVERAL SUBSECTIONS TO BE COMPLETED!!!
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%12.05.2008 REVISADO HASTA AQUI. YA ES TARDE,
+%ESTOY CANSADO Y TENGO SUE. NECESITO UNAS MINI-VACACIONES,
+%PERO NO DIVISO NINGUNA VENTANA DE DESCANSO EN EL HORIZONTE.
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%DDM, ProdSys, DA, Monitoring and Accounting are components that belong
+%to the supra-middlare layer, whose purpose is to provide the
+%coordination and integration of the three sub-grids that compose the
+%ATLAS grid.  
+%The ATLAS experiment has called \textbf{{\itshape ATLAS Distributed
+%Computing}} the area in charge of manage all the components previously
+%described.
+
+%However, it is still a need of a global component that provides services
+%related with the delivery of infomration regarding resources, services
+%and topology of the ATLAS grid.
+%The following section describes the current services that attempts to
+%provide that information.
+
+\section{Grid Information Services in ATLAS}
+\label{sec:sources}
+Currently, the ATLAS Distributed Computing does not have a global
+component that provides the services related with the collecting and
+delivery of data related with resources, services and topology of the
+ATLAS Grid. 
+However, the ATLAS grid requieres these services to perform a correct
+and efficient work, therefore, ATLAS relies on several services in
+order to gather information about grid resources:
+
+\begin{itemize}
+\item Berkeley Database Information Index (BDII)
+\item Grid Operation Center Database (GOCDB)
+\item NorduGrid Information System
+\item OSG Information Management (OIM), 
+\item PANDA Database
+\item TiersofATLAS (ToA)
+\end{itemize}
+
+Some of these services provide information about grid resources,
+others provide information about grid services, and some of them
+provide information about topology, but the latter is not provided in
+a automatic and efficient way.
+
+The items mentioned above are described as follows.
+
+%In the following sections we describe each of them.
+
+\begin{description}
+\item[TiersOfATLAS:]
+As its name says, {\itshape TiersOfATLAS} (ToA) provides information
+regarding the tiers of the ATLAS grid, including a mapping between
+{\itshape DDM sites} and the tier and cloud which they belong (topology
+information, only for Tier-1 and Tiers-2).
+Furthermore, it provides information regarding Storage Element services
+of the ATLAS sites.
+
+A site that provides the Storage Element service implies that 
+provides storage capacity and the services that allows uniform access
+to the data storage resources. 
+These storage resources are split into virtual areas, which are called
+{\itshape space tokens} (also called {\itshape DDM sites}).
+
+For instance, the CERN-PROD site corresponds to the biggest resource
+center of the ATLAS grid and is part of the Tier-0, and provides the
+Storage Element service, which has six space tokens: {\itshape
+DATADISK, DATATAPE, MCDISK, MCTAPE, SPECIALDISK, USERDISK} and
+{\itshape USERTAPE}.  
+This information is provided by ToA.
+
+%It has been described the functionalities of ToA, but 
+It is necessary to mention the disadvantages that presents ToA due to
+it explains the need of a global and efficient component that
+provides information regarding resources, services and ATLAS
+topology.
+
+The topology information provided by ToA is not totally complete,
+because the mapping is done between the space token (DDM site)
+$\rightarrow$ tier $\rightarrow$ cloud, but the mapping should be
+space token $\rightarrow$ service endpoint $\rightarrow$ ATLAS site
+$\rightarrow$ tier $\rightarrow$ cloud. 
+Currently this information is missing and there is not any system that
+provides it.
+
+Another disadvantage is that TiersOfATLAS is a simple configuration
+Python file, which is manually edited and is copied locally in the
+different grid components. 
+Thus, each grid component has a local copy of ToA (called
+TiersOfATLASCache), which is obtained using the \textbf{C}oncurrent
+\textbf{V}ersioning \textbf{S}ystem (CVS)\footnote{The Concurrent
+Versioning System is a version control system that keeps
+track of all work and all changes in a set of files, and it allows to
+several developers work in a same software project. \url{http://ximbiot.com/cvs/wiki/}}. %(see Figure
+%\ref{fig:ToACVS}).
+
+CVS is not the best tool to be used in a dynamic grid enviroment as
+part of a Grid Information Service, because this tool does not provide
+services or {\itshape agents} that allow to have always the most
+updated data.
+Furthermore, the clients (in this case the ATLAS components) are
+responsible to update the data and download the TiersOfATLASCache file
+using the command lines tools that CVS provides, therefore, this
+information is managed in a {\itshape manually} way --not very proper
+for this multigrid environment.
+
+%\begin{figure}[!htbp]
+%\centering
+%\pgfuseimage{ToACVS}
+%\caption{ToA and CVS Overview. ESTA IMAGEN SERA MODIFICADA}
+%\label{fig:ToACVS}
+%\end{figure}
+
+
+Thus, ToA does not reflect the changes of the grid resources in an
+automatic and periodic manner, producing {\itshape data inconsitency}.
+ToA can be seen as a component that belongs to the supramiddleware
+layer but does not provide all the necesary GIS services.
+
+%TiersOfATLAS contains information regarding ATLAS topology and the
+%Storage Element service, which is mainly use by DDM component.
+
+
+
+%The ATLAS grid has around 200 sites, which provides different
+%services, among them the {Storage Element} service, which provides
+%uniform access to data storage resources (see \ref{gLite}).
+
+
+%It provides information regarding  the Storage Element services of the ATLAS
+%sites that belong to Tier-1 and Tier-2. {\itshape TiersOfATLAS}
+
+%It is a python file describing the topology and the site data in
+%python dictionaries.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%SEEMS TO BE TOO SHORT AS A SUBSECTION!!!  
+%IT SHOULD BE COMPLETED!!!
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\item[BDII]
+
+The \textbf{B}erkeley \textbf{D}atabase \textbf{I}nformation
+\textbf{I}ndex (BDII) is a Grid Information System, which was 
+developed within the LHC Computing Grid (LHC) project as replacement
+of MDS2. 
+The detailed description of BDII is in Section \ref{secBDII}.
+
+BDII provides information regarding resources and services of the EGEE
+and OSG sites. The NDGF sub-grid is particular situation, because in
+the ATLAS grid, NDGF is seen as one federated site, {\itshape NDGF-T1},
+therefore, the NDGF sites that compose the NDGF-T1 are missing in BDII. 
+Furthermore, BDII does not provide information about ATLAS topology.
+
+BDII can be see as a component of the supramiddleware layer, but does
+not provide information regarding topology or NDGF sites, thus, it
+does not provide all the necesary GIS services.
+
+
+
+%\begin{com}
+%COMO DESCRIPCIONES GENERALES ESTA BIEN.
+%PERO ME PARECE QUE HABRI QUE PROFUNDIZAR MAS INGENIERILMENTE EN
+%ALGUNOS ASPECTOS PERTIENENTES Y NECESARIOS PARA TU TESIS.
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\item[PANDA Database]
+The (\textbf{P}roduction \textbf{AN}d \textbf{D}istributed
+\textbf{A}nalysis) (PANDA) is a software system that has been developed
+by US ATLAS to meet ATLAS requirements for full scale production and
+distributed analysis processing. 
+The detailed explanation of PANDA is in Section \ref{sec:PANDA}.
+%provides an integrated
+%service architecture with 
+%{\bf\itshape late (what do you mean here by ``late''?)\/}
+%binding of jobs, maximal automation
+%through layered services, tight binding with ATLAS distributed data
+%management (DDM) system, advanced error discovery and recovery
+%procedures, and other features.
+
+%PANDA has been developed by US ATLAS to meet ATLAS requirements for
+%full scale production and distributed analysis processing
+%\cite{pandaURL}. 
+
+%The clients submit jobs to PANDA server, where the communication
+%protocol is independent from grid-middleware, i.e., jobs can be
+%sumbmitted from any grid flavor (OSG, EGEE, NorduGrid)
+%\cite{pandaTadashi}. 
+
+PANDA has a database, wich contains a table called {\itshape
+schedconfig}. This table gets its data from different sources:
+
+\begin{itemize}
+\item BDII: 
+site information, releases, GOC name (name defined by the Grid
+Operation Center).
+\item TiersOfATLAS: 
+DDM site, SRM endpoint for Storage Element host and path.
+\item pilotController.py: 
+It corresponds to a component of PANDA that provides some information
+about the structure of a cloud.
+\end{itemize}
+
+%The mapping between space tokens and sites is done manually in the pilotControler
+
+{\itshape Schedconfig} table is the main source of information
+regarding {\itshape Computing Element} (CE) services and {\itshape
+PANDA Queues} of the ATLAS sites.
+However, this table also contains information regarding Storage
+Elements services due to the CE service is responsible for accepting
+jobs and dispatching them for execution in the nodes, thus it is
+necessary for the CE services to be aware about data location when the
+jobs are running.
+
+The space token to GOC site name mapping is currently done manually in
+pilotController.py, which certainly is not very efficient, specially
+when the ATLAS experiment reaches a state of maturity high enough for
+real data taking.
+
+
+
+
+\item[OIM] 
+The \textbf{O}SG \textbf{I}nformation \textbf{M}anager (OIM) is a
+system that provides information of OSG sites, mainly regarding sites
+and their services.
+
+This sytem was developed by OSG, thus does not belong to the
+supra-middleware layer, which implies that only supply information of
+OSG sites.
+To provide some interoperability, OIM provides two files in a CSV
+style, which provides some information regarding WLCG sites and their
+GOC name and services.
+
+\item[GOCDB:]
+The \textbf{G}rid \textbf{O}peration \textbf{C}enter
+\textbf{D}ata\textbf{B}ase is the entity responsible for coordinating
+the overall operation of the grid. It acts as a central point of
+operational information such as configuration information and contact
+details. GOCDB has been defined --by the ATLAS management board-- as
+the official source of information of the ALTAS site names, but
+currently, only EGEE sites are registered in this system.
+
+%GOCDB provides information such as 
+
+
+\item[ARC Information System]:
+It corresponds to the information system of the NDGF sub-grid,
+therefore only provides information regarding services and properties
+of NDGF sites.
+
+
+%\subsection{WLCG SAM Framework}
+
+%\textbf{S}ervice \textbf{A}valilability \textbf{M}onitoring (SAM) is a
+%monitoring tool conceived as a STF\footnote{See \ref{secSFT}.} (Site
+%Functionality Test) extension.
+%It has been written in Python (submission framework, logging, error,
+%reporting, configuration files), re-using most of the SFT code, with
+%the only exception of the web service API framework.
+%The heart of the testing and publishing system is an Oracle
+%database, which is connected to the SAM sensors (both those
+%integrated into the framework and the standalone ones) through the
+%Tomcat\footnote{See \ref{secTomcat}.} web services. 
+%These services include (GOC DB) query and publishing web services
+%implemented in Java or using servlets.  
+%In addition to that, the Oracle DB interacts with the top level BDII
+%using a Python script \cite{SAMMAnual}.
+
+%\begin{figure}[!htbp]
+%\centering
+% \epsfig{file=images/SAM.eps,scale=0.55}
+%\caption{SAM architecture.}
+%\label{figSAM}
+%\end{figure}
+
+%The monitoring procedures are carried out using sensors which
+%regularly publishe the results for all monitored service nodes and
+%that are integrated within the SAM framework mainly following two
+%different approaches: 
+%\begin{itemize}
+%\item Creating a standalone sensor (daemon or cron job) which tests
+%  all essential service nodes and publishes the results to SAM using
+%  publishing scripts or webservice APIs.
+%\item Integrating test script (sensor) with the SAM framework.
+%\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%DESCRPTION TOO SHORT?
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{description}
+
+
+\section{Description of the Problem}
+
+%The previous chapter described the ATLAS Grid Architecture and untill
+%this point this chapter described the current services that provides
+%some functionalities of a Grid Information System.
+
+% in order to have an
+%overview of the {\itshape complexity} of the ATLAS grid.  
+%The complexity of ATLAS grid is due to the {\itshape multigrid} environment.  
+%The ATLAS grid not only have one grid infrastructure, but three, which
+%implies a highly dynamic and heterogeneous grid system and diverse
+%implementations of the basic services of the grid.
+%A grid infrastructure is a model of distributed computing that allow
+%the {\itshape large-scale} sharing of storage and computation
+%capacity.  
+%A grid system is already a complex system due to its heterogeneous and
+%dynamic nature. 
+
+The  ATLAS multigrid environment implies different middlewares, therefore,
+different information systems and diverse sources of information
+providing {\itshape ``GIS data''}. 
+A vital aspect of a grid is the information system, %thus, in this
+%scenario the {\itshape interoperability} of the systems presents
+%problems.
+which
+%A Grid Information System 
+is mainly used to find available resources and services, furthermore,
+in the ATLAS grid it is fundamental to retrieve information about its
+topology. Currently there is not a proper system that can satisfy
+those functionalities, therefore in this thesis it is proposed a new component
+called \textbf{A}TLAS \textbf{G}rid \textbf{I}nformation
+\textbf{S}ystem (AGIS) aiming to solve those needs.
+%The ATLAS grid infrastructure has three different grid infrastructure,
+%wich adds extra complexity, in the coordination and integration of
+%three different middlewares each
+%one with its own implementation of basic services, in particular the
+%Grid Information System.
+
+%\item 
+%The differences between the grid information systems of the three whole ATLAS grid is based mainly in the 
+%\item 
+%ATLAS define a hierarchical model A new layer that provides a global
+%interface has been added in the ATLAS architecture, which is called
+%{\itshape supra-middleware}.  This layer adds new components to the
+%system, increasing the
+
+
+
+To have an efficient work in the ATLAS grid, % --specially when ATLAS
+%reaches a state of maturity high enough for real data taking, various
+various ATLAS components need to be aware
+%\sout{about} 
+of the resources, services and topology of the ATLAS Grid.  
+Currently there are some sources of information, but the problem is
+that sometimes the information is not complete,
+%\sout{the information}
+or it is not coherent
+%\sout{between them}, 
+%\sout{or}
+%\sout{and}
+the topology information is not present in a complete and efficient
+manner.  
+Hence it is neccesary to have a single system that allows to retrieve
+this information.
+
+AGIS is the proposed model, which attempts to solve the lack of a
+single system with information of the topology, services associated,
+site availavility, and so on.  
+The idea is to maintain the static (and semi-static) information in
+order to be used by the various components of the ATLAS Grid
+enviroment.  
+With regards to the dynamic information (number of jobs, CPU time,
+storage capacity used, among others ), Dashboard
+Monitoring\cite{monitoringDash} is the system in charge
+of this.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%AQUI ESTAS APUNTANDO AL CORAZON DE TU TESIS.
+%¿QUIEN PROPUSO ``AGIS''? TU?
+%QUE SIGNIFICA AGIS?
+%EN LA VERSION FIANAL NO DEBE HABER PUNTOS SUSPENSIVOS
+%SON APROPIADOS EN POEMAS O PROSA (llaman al lector a echar a volar
+%la imaginacion, las emociones, la sensibilidad, ... (!), en pos del
+%vuelo espiritual del poeta), PERO EN POCOS O NINGUN CASO SON
+%APROPIADOS DESDE EL PUNTO DE VISTA TECNICO.
+%HE AHI UNA DIFERENCIA (MAS) ENTRE EL/LA POETA Y EL/LA TECNICO/A!
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Motivational Scenarios}
+This section describes some scenarios that shows the need and
+usefulness of an information system for the ATLAS grid.
+
+The first scenario shows how is represented currently the ATLAS
+topology and how is retrieved this data for the others ATLAS grid
+components.
+
+The second scenario shows that the ATLAS Grid Information System can
+be used by the Accounting System to retrieve data related with the
+topology of the ATLAS grid, wich allows to visualize the accounting
+data in the proper way.
+
+The third scenario describes how the Data Distributed Management (DDM)
+needs to retrieve information related with the services of the ATLAS
+grid.
+
+And finally the last scenario shows why the Panda component needs to
+obtain information related with the resources belonging to the ATLAS
+grid.
+
+
+
+\subsection{ATLAS Grid Topology Representation}
+The ATLAS grid structure is complex, it is composed of around two
+hundreds of sites that belongs to different grid infrastructures (the
+sub-grids), there is a {\itshape multi-tier} hierarchical model that
+allows to optimize the use of the resources and furthermore, the ATLAS
+sites are divided in clouds.
+
+As was defined in Section \ref{sec:tierStructure}, the ATLAS grid
+{\itshape topology}\footnote{{\itshape Grid network topology} concept
+referes to the computer network of the grid, the virtual and physical
+interconnection of the computers through a particular network . 
+This concept is not in the scope of this thesis.}  concept refers to
+the sub-grids (EGEE, OSG and NDGF), the tiers, the clouds, and the
+sites that belong to the grid, along with the associations between all
+these entities.
+
+Currently, some ATLAS grid topology information is present in the
+TiersOfATLAS (ToA) file. From this source it is possible to obtain the
+mapping between tiers, clouds and {\itshape space tokens}.
+Space token is a concept mainly associated to DDM, which
+corresponds storage areas provided by the different ATLAS sites.
+
+
+\begin{figure}
+\begin{Verbatim}[commandchars=\\\¿\?,frame=single,fontsize=\relsize{-1}]
+topology = {
+    'ALL': [ 'CERN', 'ITALYSITES', 'SPAINSITES', 'UKSITES', 'FZKSITES', 
+        'NLSITES', 'TAIWANSITES','FRANCESITES', 'CANADASITES', 
+	'USASITES', 'NDGF' ], (1)
+    'TIER1S': [ 'RAL', 'PIC', 'FZK', 'SARA', 'CNAF', 'ASGC', 'LYON', 
+        'TRIUMF', 'BNL', 'NDGFT1' ], (2)
+
+    'CERN': [ 'CERN-PROD_DATADISK', 'CERN-PROD_DATATAPE', 'CERN-PROD_DAQ', 
+        'CERN-PROD_TZERO','CERN-PROD_MCDISK', 'CERN-PROD_MCTAPE', 
+	'CERN-PROD_USERTAPE', 'CERN-PROD_SPECIALDISK' ], (3)
+    
+    'ITALYSITES': [ 'CNAF' , 'ITTIER2S' ], (4)
+    'CNAF': ['CNAFDISK', 'CNAFTAPE', 'INFN-T1_MCDISK', 'INFN-T1_DATADISK', 
+        'INFN-T1_MCTAPE', 'INFN-T1_DATATAPE'], (5)
+    'ITTIER2S': [ 'MILANO', 'INFN-MILANO_DATADISK', 'INFN-MILANO_MCDISK', 
+        'INFN-MILANO_PRODDISK','ROMA1', 'INFN-ROMA1_DATADISK', 
+	'INFN-ROMA1_MCDISK', 'INFN-ROMA1_CALIBDISK', 'INFN-ROMA1_PRODDISK',
+        'NAPOLI', 'INFN-NAPOLI-ATLAS_DATADISK', 'INFN-NAPOLI-ATLAS_MCDISK',
+	'INFN-NAPOLI-ATLAS_CALIBDISK', 'INFN-NAPOLI-ATLAS_PRODDISK',
+        'LNF', 'INFN-FRASCATI_DATADISK', 'INFN-FRASCATI_MCDISK', 
+	'INFN-FRASCATI_PRODDISK' ], (6)
+    ...
+\end{Verbatim}
+\caption{TiersOfATLAS topology.}
+\label{fig:ToACode}
+\end{figure}
+
+
+
+Figure \ref{fig:ToACode} shows an extract of the ToA code. The
+ATLAS grid topology is represented using Python
+dictionaries. The {\itshape ALL} (1) key, represents the clouds of the
+ATLAS grid --eleven clouds in total. Later the {\itshape TIER1S} (2)
+key represents the names of the Tier-1s defined by DDM. 
+In (3), the CERN key defines the space tokens that
+belong to the CERN cloud. The {\itshape ITALYSITES} (4) key represents
+the names of the Tier-1 and Tier-2 of Italy, and in (5) {\itshape
+CNAF} represents all the space tokens that belong to the Tier-1 of
+Italy. Finally, {\itshape ITTIER2S} (6) represents all the space
+tokens that belong to the Tier-2 of Italy. Thus, we can see a
+representation of the topology of the ATLAS grid, where it is
+considered the clouds, tiers and space tokens, but  {\itshape site} entity representation is missing.\\
+
+
+In this thesis, it has been proposed a new data model that allows to
+represent the relation $cloud \rightarrow tier \rightarrow
+site$ (data model is shown in Figure \ref{fig:dataModel}). %Fig. \ref{fig:agisSiteDataModel} shows a part of the ATLAS
+%where it is represented the the site entity.
+%The ATLAS Grid Information System attempts to solve the aforementioned
+%problem. Fig. \ref{fig:agisSiteDataModel} shows a part of the ATLAS
+%Grid Information data model, where it is represented the the site
+%entity.
+%\begin{figure}[!htbp]
+%\centering
+% \epsfig{file=images/siteDataModel.eps,scale=0.55}
+%\caption{Site entity of the ATLAS topology.}
+%\label{fig:agisSiteDataModel}
+%\end{figure}
+For the components of the ATLAS grid it is necessary to know the
+relation {\itshape cloud$\rightarrow$tier$\rightarrow$site}. For
+instance, the Monitoring System needs to obtain that relation to
+publish monitoring data. Using the new {\itshape AGISQuery} API
+provided by the ATLAS Grid Information System, the Monitoring System
+component can retrieve the complete and correct topology data, and in
+the proper format.
+
+
+\subsection{ATLAS Grid Information System and Accounting System}
+%The ATLAS Accounting System allows to retrieve accounting data from
+%different sources ­from the different sub-grids­ providing a global
+%view of the accounting data of the ATLAS grid in different formats and
+%specific views --considering the ATLAS topology.
+
+The ATLAS Accounting System (Chapter \ref{accsys}) allows to retrieve
+accounting data from different sources coming from the different sub-grids,
+and exposes the information to the users in different formats,
+providing a "topological view", and also allows to add new sources of
+information in an easy way due to the modular implementation of the
+system.
+
+%The ATLAS Accounting System provides a global view of the accounting
+%data of the ATLAS grid and also provides the information in different
+%formats and specific views --considering the ATLAS topology. 
+
+The lack of a single information system implies that it is not
+possible to display the accounting information in the formats
+required, mainly in the topological visualization. 
+Currently the ATLAS Accounting System have to retrieve topological
+data from different sources (BDII and TiersofATLAS) to give the
+topological view to the users, but the goal of this system is to
+retrieve accounting data --not topological data-- for wich an ATLAS
+Grid Information System is fundamental for the proper work of this
+system.
+
+
+% find out how the resources provided for all the sites
+%belonging to the ATLAS grid are being used. This situation should not
+%occur in a grid system, in particular, int the ATLAS grid, which is a
+%big collaboration composed by diverses countries, each one providing
+%different resources. It is necessary to have quantitative mesaurements
+%which help to understand the performance limitations and help to
+%evaluate future development work.
+
+%To display the accounting data in a topological view, it is necessary
+%to count with a system that provides that information. As was mention
+%before, TiersOfATLAS is the current source of information that provide
+%data of the ATLAS grid topology, but there is a lack in the site
+%concept. 
+
+
+%Thus, we can see again the need of a single system that
+%provide this kind of information.
+
+
+
+
+
+\subsection{Data Distributed Management and Grid Services}
+The Data Distributed Management (DDM, Section \ref{sec:ddm}) is a
+component of the ATLAS grid which is in charge of the different
+bookkeeping and data movement tasks. 
+DDM is composed by different components. One of these components is
+{\itshape Site Services}, which is a collection of
+agents performing different tasks such as fetch new subscriptions from
+the central catalogs, evaluate appropriate replicas for each file in a
+dataset subscription or submit transfers to the File Transfer Service
+(FTS). In particular, in the latest task, DDM needs to know about the
+FTS provided by the different sites of the ATLAS grid. Currently, DDM
+retrieves service information from TiersOfATLAS, but this source is an
+static file, which does not change automatically, which definitely is
+not efficient in a distributed environment, which is changing
+constantly.
+
+The ATLAS Grid Information System will allow to DDM to query about
+FTS and also to retrieve information about all the services of the
+ATLAS grid. DDM can obtain this information using the python APIs
+provided by the system.
+
+\subsection{Panda and ATLAS Grid Resources}
+The Productions and Distributed Analysis System (PANDA, Section
+\ref{sec:PANDA}) is a distributed software , which provides an
+integrated service architecture with late binding of jobs, maximal
+automation through layered services, tight binding with ATLAS
+Distributed Data Management (DDM) system, advanced error discovery and
+recovery procedures, and other features.
+
+When the users of the ATLAS grid submit a job using PANDA, the PANDA
+server receives the jobs and manages all the jobs information
+centrally.
+The PANDA server must prioritize and allocate work on the basis of the
+job type, priority, input data and its locality, and available CPU
+resources. The allocation of job blocks to sites is followed by the
+dispatch of input data to those sites.
+
+As was described before, PANDA needs to be aware about information
+related with the grid resources in order to allocate the jobs in the
+proper sites. 
+PANDA not only needs resource information, but also need service and
+topology information of the ATLAS grid. 
+To obtain this information, PANDA must collect the data from different
+sources, such as {\itshape schedconfig} table and TiersOfATLAS to
+obtain topology and resource data. 
+The problem here, is that this sources are not automatized systems, if
+there is a change in some resource of the ATLAS grid, this change is
+not propagate automatically, which causes that the ATLAS grid does not
+work efficiently.\\
+
+
+%We have described four scenarios where it is possible to see the
+%importance of to have an ATLAS Information System that provides
+%information related with the resources, services and topology of the
+%ATLAS grid. 
+
+We have described four scenarios where it is possible to see the
+problems generated when there is not a single information
+system. Without a properly working information system it is not
+possible to construct a production quality grid system.
+
+The following sections describe the architecture and all
+the development stages of AGIS.
+
+
+\section{AGIS Architecture}
+\label{sec:agisArch}
+The main goal of the ATLAS Grid Information System (AGIS) is to
+provide the missing information regarding resources, services and
+topology of the whole ATLAS grid, in order to provide interoperability
+in a multigrid environment. AGIS
+%interoperability regarding GIS, for which AGIS
+retrieves static and semi-static information %regarding resources,
+%services and topology of the ATLAS grid,
+from the diverse sources coming from the different sub-grids.
+%, in order to overcome the
+%the diferences between the unde, 
+%interoperability in the multigrid environment, exposing AGIS data
+%to the different components and users of the ATLAS grid.
+
+AGIS  was designed
+considering the benefits of the  Dashboard Framework
+\cite{monitoringDash} which provides directives to model a system
+with a layered client-server achitecture, following a {\itshape Model
+View Controller} \cite{bib:MVC} pattern. 
+Furthermore, AGIS follows the \textbf{RE}presentational \textbf{S}tate
+\textbf{T}ransfer (REST) principles \cite{fielding}, which are a set
+of architectural constraints on top of the basic client-server
+architecture style.
+
+%it was added the {\itshape RESTful} style in the design
+%of AGIS architecture.
+
+AGIS --the server--  %is a layered client-server architecture because there is server (AGIS itself)
+%component that has diverse software components which are provided through a network-accessible endpoint, 
+provides diverse {\itshape services} to the clients for data
+retrieval. These services are % which corresponds
+%On the conceptual level a service is a 
+software components provided
+through a network-accessible endpoint.
+
+The AGIS architecture (Figure \ref{fig:AGISArchitecture}) groups the
+components in three main layers: {\itshape Data Access Layer},
+{\itshape Collectors}, and {\itshape Client Connection}, which are in
+charge
+%, for which presents three main
+%layers in charge 
+of data management, data retrieval and data
+exposure, respectively. 
+%The client component corresponds the diverses ATLAS components
+%requesting data regarding on site, services and topology of ATLAS
+%grid, for wich send a request to the server.
+%The server either rejects or performs the request and sends a response
+%back to the client.
+
+\begin{figure}[!htbp]
+\centering
+\pgfuseimage{AGISArchitecture}
+%\epsfig{file=images/AGISArchitecture.eps,scale=0.55}
+%\pgfuseimage{agisArch}
+\caption{AGIS Architecture Overview}
+\label{fig:AGISArchitecture}
+\end{figure}
+
+The MVC pattern isolates business logic from user interface, resulting in an
+application easy to modify either the visualization of the application
+or the underlying layers.
+
+REST is considered to be the guiding principles behind the {\itshape
+Ultra Large Scale} (ULS) systems due to its principles enable the
+achievement of important attributes such as loose-coupling,
+reliability, data visibility and interoperability \cite{xu}. 
+Thus, REST principles were considered in the design of AGIS
+architecture, and they are described as follows.
+
+
+
+%The REST principles include 
+
+
+\subsection{Representational State Transfer}
+%An architectural style is a coordinated set of architectural
+%constraints that restricts the roles and features of architectural
+%elements, and the allowed relationships among those elements,
+%within any architecture that conforms to the style. Thus, a style provides a
+%name by which we can refer to a packaged set of architectural design decisions
+%and the set of architectural properties that are induced by applying the style.
+
+\textbf{RE}presentational \textbf{S}tate \textbf{T}ransfer (REST) was
+originally introduced in 2000 in the doctoral dissertation of Roy
+Fielding \cite{fielding} and it refers to an architectural style for
+building large-scale hypermedia systems.
+REST principles works on top of the basic client-server architecutre, they include {\itshape stateless} and {\itshape context-free}
+requests, standardized and unified interfaces, and URL identifiable
+and inter-linked resources.
+In REST every piece of interesting information is exposed as an
+{\itshape abstract resource} which is identifiable through a URL and
+may have multiple {\itshape representations}.  These resources can be
+accessed via a uniform interface (standarized HTTP verbs) and exchange
+the representations \cite{xu}.
+
+The main REST principles may be summarized as follows \cite{pautasso}:
+
+\begin{enumerate}
+\item \textbf{Resource identification through URL:}
+A RESTful Web service exposes a set of resources which identify the
+targets of the interactions with its clients. 
+Resources are identified by URLs (\textbf{U}niform \textbf{R}esource
+\textbf{L}ocators), which provide a global addressing space for
+resource and service discovery.
+\item \textbf{Uniform Interface:}
+Resources are manipulated using a fixed set of four create, read,
+update and delete operations: {\itshape PUT, GET, POST} and {\itshape
+DELETE}. 
+{\itshape PUT} creates a new resource, which can be deleted using
+{\itshape DELETE}.
+{\itshape GET} retrieves the current state of the resource in some
+representation, and {\itshape POST} transfers a new state onto a
+resource.
+\item \textbf{Self-descriptive messages:}
+Resources are decoupled from their representation so that their
+content can be accessed in a variety of formats (XML, CSV, JPEG,
+etc.).
+\item \textbf{Stateful interactions through hyperlinks:}
+Every interaction with a resource is stateless, i.e., request messages
+are self-contained.
+\end{enumerate}
+
+The systems that follow Fielding REST principles are referred to as
+\textbf{RESTful}.
+
+
+
+% style provides a set of principles that define how Web
+%standards, such as HTTP and URIs should be used to exploit Web
+%architecture in benefit of the designed system.
+
+
+%implemented using the {\itshape Dashboard framework} (see appendix
+%\ref{ap:dashboardF}), therefore, it takes the benefit of its {\itshape
+%client-server} architecture, which follows a {\itshape Model View
+%Controller}\cite{bib:MVC} pattern. This pattern isolates business
+%logic from user interface, resulting in a application easy to modify
+%either the visualization of the application or the underlying layers.
+
+
+
+\subsection{AGIS Components}
+The three layers group logically the main functionalities of AGIS:
+data collection, management of persistent data collected from the
+diverse sources, and the data exposing available in AGIS.
+
+\begin{description}
+\item[Data Access layer] 
+The Data Access layer corresponds to the data
+access interface and allows the management of the persistent data,
+which is stored in a RDBMS system.
+The components of this layer provide functionalities to query and
+update the stored data. Access to the database is accomplished by
+using a connection pool in order to increase the performance of the
+system.
+%The storage and web layer are in the server side and they provide
+%services for the data collection, storage management and data
+%retrieval.
+
+\item[Collectors layer] provides capabilities for the data collection.  The
+ATLAS Information System has six different collectors (see
+Sec. \ref{sec:dataCollectors}), each one retrieving data from
+different sources.  
+These collectors perform the service of data retrieving and processing,
+giving the proper format to the data, in order to be passed to the
+persistent storage (DAO layer).
+%The agents collect periodically the data and then
+
+%The storage layer is in charge of the data management. The agents
+%collect periodically the data and then using a {\itshape data access
+%interface} insert the collected data.
+
+
+\item[Client connection layer] 
+allows heterogeneous ``application-to-application'' and
+``user-application'' communication.
+The clients may contact the system to retrieve AGIS data using direct
+HTTP access, APIs, command lines tools (CLI tools), or the web
+interface (for users).
+
+
+
+\end{description}
+
+
+
+The client connection layer is responsible for providing the
+functionality to establish the interaction between
+clients and AGIS.
+The main components of this layer are:
+
+\begin{description}
+\item[Controller:] 
+It receives all client requests and keeps the association between the
+requested URLs and the corresponding {\itshape actions} executing them
+and returning the data in a format requested by the client.
+%decides what shoud be done with them.
+
+\item[Action:] 
+For each client request there is a corresponding {\itshape action},
+which executes a set of operations, which may involve accessing the
+database via the DAO layer, allowing to query or update the available
+AGIS data.
+
+\item[View:] In general a client request involves output
+data. An action puts any collected data in a shared area, so that
+this data can be taken by the view to produce the output in a
+specific format. This format is identified by its {\itshape
+mime/type}, which can be obtained from the header of the HTTP
+request.
+
+The Fig. \ref{fig:requestHeader} shows an extract of the header of a
+HTTP request to AGIS. 
+It is a typical request made by a browser. 
+The first line shows the HTTP method used --in this case GET-- and the
+resource being accessed --site. 
+The next line shows the different output formats of the requested
+data.
+\end{description}
+
+\begin{figure}[h!tpb]
+\begin{Verbatim}[commandchars=\\\¿\?,frame=single,fontsize=\relsize{-1}]
+GET /dashboard/request.py/site HTTP/1.1
+Host: agis.cern.ch
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+\end{Verbatim}
+\label{fig:requestHeader}
+\end{figure}
+
+
+
+
+
+
+
+The interaction between the users and applications with AGIS is done
+using HTTP requests, so HTTP native features were used as much as
+possible in all parts of the implementation of the system.  
+
+AGIS follows the RESTful style, therefore, %it must identify all its
+{\itshape resources} --in the RESTful scope-- are identified with an
+ID.
+These mentioned {\itshape resources} may refer to a 
+request for cloud information, a request for site that belongs to a
+determined tier, for the space tokens of a determined Storage Element
+service, etc. 
+AGIS exposes all interesting information as URL identifiable
+resources.
+The methods for manipulating these resources are standardized HTTP
+verbs, which increase process visibility and interoperability.
+
+
+%Having a single, globally unified naming scheme apply benefits
+%specially the machine-to-machine communication.
+
+
+%As RESTful style proposed, it must be used URIs to identify everything
+%that merits being identifiable, specifically, all of the
+%``high-level'' resources that the application provides, whether they
+%represent individual items, collections of items, virtual and physical
+%objects, or computation results.
+
+
+
+Therefore, when a client needs to access AGIS data, it must contact
+the AGIS services, which are accessed as AGIS resources identified with an
+URL   % On the conceptual level a service is a software component
+%provided through a network-accessible endpoint.  
+%Thus, the clients send HTTP requests to contact the services, which are identified wiht an URL, 
+(as the first principle of RESTful proposes).
+
+The AGIS resources are accessed using the standard methods (second
+principle of RESTful): PUT, GET, POST and DELETE and they are
+decoupled from their representation (third principle of RESTful).
+Furthermore, every interaction with a resource is stateless and
+context-free, which promotes the scalability through the feasibilitly
+of cashing and reduced workload on the server.  
+
+For instance, the AGIS {\itshape cloud resource} is referenced with an
+URL. 
+A POST request to this resource results in the creation of a new cloud
+in the AGIS system. 
+A GET request to the cloud resource will return a list of existing
+clouds, furthermore
+the client can add some parameters in the GET request in order to retrieve
+specific resource data. 
+The DELETE request eliminates a cloud from the system. \\
+
+%\begin{table}[h!tpb]
+%\begin{center}
+%\begin{tabularx}{\textwidth}{|>{\hsize=0.2\hsize}X|>{\hsize=0.2\hsize}X|>{\hsize=0.3\hsize}X|>{\hsize=0.3\hsize}X|}
+%\hline
+%\textbf{Method}  & \textbf{Resource} & \textbf{Description} &\textbf{Output Format}\\ \hline
+%GET    &cloud    &display a list of clouds an their properties    &*/*, $application/json$, text/csv, text/html, text/xml\\\hline
+%POST   &cloud	 &add a cloud to the system &*/*, application/json, text/html,text/xml \\\hline
+%DELETE &cloud	 &delete a  cloud from the system  & \\\hline
+%\end{tabularx}
+%\end{center}
+%\caption{Entities of the ATLAS Grid Information System.}
+%\label{tab:cloudResource}
+%\end{table}
+
+
+\section{AGIS Development}
+
+The development of the ATLAS Grid Information System (AGIS) had four main
+stages:
+\begin{description}
+\item[Requirements Collection:] 
+In this stage it was identified the clients of the ATLAS Information
+System and their requirements.
+
+\item[Identification of Sources of Information:] 
+AGIS must provide the static and semi-static information of the
+resources, services and topology of the grid, thus, in this stage we
+identified all the sources (coming from the three different
+sub-grids) that provide that information.
+
+\item[Data Model Design:] 
+Once the requirements were collected  
+a data model of the ATLAS Information System was defined.
+
+\item[Implementation:] 
+This is the programming stage, where the system was implemented,
+using the functionalities of Dashboard framework
+\cite{monitoringDash}, the Python programming language, the HTTP
+server and its {\itshape mod\_python} extension.
+\end{description}
+
+
+
+The following sections describe in more detail each one of the stages
+mentioned before.
+\subsection{Requirements Collection}
+\label{sec:reqColl}
+The ATLAS grid has several components, which need to be aware about
+the resources, services and topology of the grid. Various of these
+componentes are the clients of AGIS\footnote{ATLAS Grid Information
+System
+Clients. \url{https://twiki.cern.ch/twiki/bin/view/Atlas/AtlasGIS}},
+and they are described as follows.
+%(which are described in Sec. \ref{sec:clients}).
+
+
+%\subsubsection{Clients of the System}
+
+\begin{description}
+\item[Data Distributed Management:]
+The Distributed Data Management (DDM) is the component in charge to
+manage the access to ATLAS experiment data that is distributed at
+sites all around the world. DDM is the central link between all the
+components of the ATLAS grid, because of data access is needed for any
+processing and analysis step (see Section \ref{sec:ddm}).
+
+
+%Data Distributed Management (DDM) is the area in charge to manage the
+%access to ATLAS data as a whole grid, which is distributed at sites
+%all around the world.
+
+%DDM is composed by different components which interact together to
+%perform different bookeeping and data movement tasks. The catalogues
+%are in charge of the bookeeping, while the site services try to answer
+%the different requests to spread the ATLAS data among the sites of the
+%grid.
+
+%\subsubsection{Central Catalogs}
+%The central catalogs define the datasets and their locations. The dataset
+%is an aggregation of data (one or more physical file), which are
+%processed together and serve collective as input or output of a
+%computation or data aquisition process.
+%There are four different catalogs:
+%\begin{itemize}
+%\item Content
+%\item Location
+%\item Repository
+%\item Subscription
+%\end{itemize}
+%\subsubsection{Site Services}
+
+%The site services are collections of agents, and their principal goal
+% is to satisfy the \emph{subscription}. The subscription is the process
+%used to move massive amounts of data between sites, on scheduled data
+%movements. Subscriptions are typically used to ship data from data
+%taking from the Tier-0 to the Tier-1s and Tier-2s. For instance, if
+%there is a dataset $A$ presented in a site $Y$ but not in the site $X$,
+%and $X$ needs dataset $A$, it must to \emph{subscribe} to dataset
+%$A$. Later $A$ is transferred to site $X$ and registered properly in
+%catalogs.
+
+
+\item[Production System:]
+The ATLAS Production System (ProdSys) performs the simulation data
+production of the experiment using grid resources and provides a
+robust framework to execute a large number of jobs in the grid
+infrastuctures (see Section \ref{sec:ProdSys}).
+
+
+\item[PANDA:]
+PANDA gives support both for managed production and for user analysis via
+flexible job specifications and injection. 
+It allows to submit jobs to ATLAS grid independently of the used
+middleware (see Section \ref{sec:PANDA}).
+
+
+\item[Panda Pilot:]
+The Panda pilot \cite{pandapilot} is a lightweight execution environment used to prepare
+the computing element, request the actual payload (a production or
+user analysis job), execute it, and clean up when the payload has
+finished. The pilot jobs are broadcasted from the Job Scheduler to the
+batch systems and the grid sites. The actual payload is scheduled when
+a CPU becomes available, leading to a low latency for analysis
+tasks. 
+For robustness, the pilot jobs can be submitted either through
+Condor-G or locally.
+
+
+\item[Ganga:] 
+Ganga is a frontend tool for job definition and management and mainly
+it enables to the users to submit jobs to a variety of
+resources (see Section \ref{sec:GANGA}).
+
+\item[Pathena:] Pathena \cite{pathena} is a glue script to submit user-defined jobs to
+distributed analysis systems.
+It provides a consistent user-interface to Athena users. It allows to
+archive user's working directory, send the archive to PANDA, extract
+job configuration from jobs, define job specifications automatically
+and submit jobs.
+
+
+\item[Monitoring System:]
+It provides a uniform and complete view of various activities like job
+processing, data movement and publishing, access to distributed
+databases regardless of the underlying multigrid environment (see
+Section \ref{sec:mon}).
+
+
+\item[Accounting System:]
+The Accounting System is a component of a grid middleware, which
+purpose is to provide an accurate view of the resource and service
+usage in the system (see Chapter \ref{accsys}) .
+
+
+\item[Software Installation:] 
+The grid nodes are installed with standard distributions kits and
+after installation step, each site is validated using a {\itshape
+KitValidation}. 
+When a site is validated for a given release number, the relevant tag
+is published to the Information System.  
+
+The ATLAS Software Installation System is able of managing user requests
+for installation testing and removals of releases.
+
+
+%\item[Production Shifters]
+
+\item[Santa Claus:]
+Santa Claus \cite{santaclaus} is an application that runs one instance for each "kind"
+of data (i.e. project) it has to distribute.
+Possibly, different instances can be hosted on different hosts. 
+
+
+\item[NorduGrid:]
+The NorduGrid middleware or Advanced Resource Connector (Section
+\ref{sec:arc}) is a software solution, enabling production quality
+computational and data grids.
+
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%THIS IS JUST AN ENUMERATION OF SUBSECTIONS (AT PRESENT)!!!
+%IT SHOULD BE COMPLETED!!!
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\subsubsection{Requirements}
+
+In this stage were collected several requirements, which were
+collected from the clients previously described and they were
+classified in AGIS {\itshape entities} and {\itshape
+functionalities}.
+
+The Table \ref{tab:entities} describes the main entities that were identified
+and the Table
+\ref{tab:functionality} summarizes the AGIS functionalities.
+
+\begin{table}[h!tpb]
+\begin{center}
+\begin{tabularx}{\textwidth}{|>{\hsize=0.3\hsize}X||>{\hsize=0.7\hsize}X|}
+\hline
+
+\textbf{Entities} & \textbf{Description} \\ \hline\hline
+
+Site & Entity that aggregates a set of services and resources\\\hline
+
+Cloud & Entity that aggregates set of sites that belong to different
+tiers, this takes importance in the data distribution \\\hline
+
+Region & Sites belong to geographical regions \\\hline
+
+Country & Sites belong to a country\\\hline
+
+Grid & The grid infrastructure (EGEE, OSG or NDGF) \\\hline
+
+Tier& Entity that groups sites, which satisfy some minimal
+characteristic, such as storage capacity, CPUs and network
+bandwith.\\\hline
+
+GOCDB name& The official name of a site, provided by GOCDB\\\hline
+
+Domain& Attribute associated to a site, and it is the base name that
+groups a set of resources \\\hline
+
+Contact& Attribute associated to a site, it corresponds to the
+email of the administrator of the site\\\hline
+
+Alias& Attribute associated to a site, because a site can have a
+different name for a particular service. \\\hline
+
+%Alias for group of sites& \\
+
+Federated Sites& Attribute associated to a site. The site can belong
+be part of a federated site (NDGF sites).\\\hline
+
+Local Catalog &  Service entity that is involved in the data management\\\hline
+
+Storages Element & Service entity that is involved with the data
+management providing storage space \\\hline
+
+Space Tokens & Entity that corresponds to a storage space, and can
+have its own set of policies \\\hline
+
+Computing Elements& Service entity that provide functionalities to
+send the jobs to the grid queues \\\hline
+
+Queue&  Entity that run the jobs \\\hline
+
+FTS& Service entity that allows the data movement into the grid resources \\\hline
+
+%Software Version & \\\hline
+\end{tabularx}
+\end{center}
+\caption{AGIS Entities}
+\label{tab:entities}
+\end{table}
+
+\begin{table}[h!tpb]
+\begin{center}
+\begin{tabularx}{\textwidth}{|>{\hsize=0.3\hsize}X||>{\hsize=0.7\hsize}X|}
+\hline
+
+\textbf{Functionality} & \textbf{Description} \\ \hline\hline
+
+Get entity & It retrieves ATLAS entities (cloud, sites, services,
+etc.)\\\hline
+
+Get entity properties & It retrieves attributes associated to the
+entities \\\hline
+
+Get associated service & It retrieves services associated to some
+entity \\\hline
+
+Provide specific functions for each entity &For instance, ``Get close
+sites'', which is a DDM specific functionality that retrieves  the
+sites belonging to a cloud, for a given site, or ``renaming of sites'', which
+provides the functionality of renaming a site in a easy way.\\\hline
+
+Get topology & It retrieves all the ATLAS entities with their
+associations and attributes.\\\hline
+
+Provide APIs & The system will be used by ATLAS components and users,
+therefore, it must provides the necessary APIs or tools to access the
+system. \\\hline
+
+Secure Access & The data modification in the system must be controlled
+with some security mechanism. \\\hline
+
+Provide command lines tools & These tools should be used by different
+users through the CERN lxplus terminals. \\\hline
+
+Provide Web Application & To visualize in an easy way the complete
+ATLAS topology, services and resources. \\\hline
+
+Direct HTTP access & To provide an easy access to the AGIS services. \\\hline
+%SURL's site or cloud & It retrieves the SURL associated to a site or
+%cloud\\\hline
+
+%Get all sources  & \\\hline
+
+
+%Get space tokens &  \\\hline
+%Get all destinations  & \\\hline
+%Get I/O protocols & \\\hline
+\end{tabularx}
+\end{center}
+\caption{AGIS Functionalities Summary}
+\label{tab:functionality}
+\end{table}
+
+In addition to the functional requirements are nonfunctional
+requirements, but they are described and analysed in Chapter
+\ref{performance}.
+
+\subsection{Identification of Sources of Information}
+\label{sec:sourcesInfo}
+%In the Collection Requirement stage where identified the entities and
+%the functionality that should provide the ATLAS Grid Information
+%System. 
+
+The ATLAS grid is composed for three different sub-grids, which
+implies there are several sources of information that provides data
+related with the resources, services and topology of the ATLAS grid.
+
+Once the {\itshape Requirements Collection} was done, it was possible
+to identify the following sources of information (see
+Sec. \ref{sec:sources} for more details):
+\begin{itemize}
+\item TiersOfATLAS: It provides information related with topology and
+{\itshape Storage Element} service data.
+
+\item GOCDB: It provides the official list of the sites --with their
+associated attributes-- belonging to the EGEE and NDGF sub-grids.
+
+\item OIM: It provides the official list of the sites --with their
+associated attributes-- belonging to the OSG sub-grid.
+
+\item Panda DB: It provides information related with the {\itshape
+queues} and {\itshape panda queues} associated to the {\itshape
+Computing Element} service
+
+\item BDII: It provides information related with the services of the
+ATLAS grid (Storage Element, Computing Element, File Transfer Service,
+Local Catalog Service, Proxy Service)
+
+\item NDGF: It provides information related with the sites --with their
+associated attributes-- belonging to the NDGF sub-grid.
+
+\end{itemize}
+
+
+%The Fig. \ref{fig:sourcesOfInf} depicts the different sources of
+%information and the data retrieved from each one.
+
+%\begin{figure}[!htbp]
+%\centering
+%%\epsfig{file=image/sourcesOfInf.eps,scale=0.55}
+%\caption{Sources of Information}
+%\label{fig:sourcesOfInf}
+%\end{figure}
+
+\subsection{Data Model Design}
+One of the most important aspect in the data model of the ATLAS Grid
+Information System, is that it must represent the ATLAS grid topology,
+because currently there is not any system that can provide it. The
+main topology entities identified were: {\itshape site, cloud, tier}
+and {\itshape services}. Fig. \ref{fig:dataModel} shows the {\itshape
+entity-relationship} diagram.
+
+\begin{figure}[!htbp]
+\centering
+\pgfuseimage{databaseSchemaAGIS}
+%\epsfig{file=images/dataModel.eps,scale=0.55}
+\caption{AGIS Data Model Overview}
+\label{fig:dataModel}
+\end{figure}
+
+\newpage
+\subsection{Implementation}
+
+The ATLAS Grid Information System was implemented using the
+functionalities provided by the {\itshape Dashboard Framework}. Python is the programming language used
+to implement the system.
+
+The implementation had different stages, the development of Data
+Access Object (DAO), the APIs, the data collectors, the command
+lines (CLI) tools and the web interface, which are described as
+follows.
+
+\subsubsection{Data Access Object}
+The implementation of  a Data Access Object (DAO) allows to have a
+clear design and maintainability of the system, because	 the
+application queries are decoupled from the internal implementation of
+the data storage.
+
+The DAO represents the {\itshape data access interface}, which are a
+public set of methods for the update and retrieval of information. 
+
+
+%\begin{figure}[h!tpb]
+%\centering
+%\epsfig{file=images/agisDAO.eps,scale=0.55}
+%\caption{Database access}
+%\label{fig:agisDAO}
+%\end{figure}
+
+The {\itshape connection pool} is the method used to access  the
+database, in order to reduce the overhead in creating new connections,
+reducing the load on the server and increasing the performance.
+
+
+
+
+\subsubsection{APIs}%\footnote{\textbf{A}pplication \textbf{P}rogramming
+%\textbf{I}nterfaces} 
+
+{\itshape AGISQuery} and {\itshape AGISUpdate} are the two APIs
+developed to query and update, respectively, the ATLAS Grid
+Information System. 
+
+
+The {\itshape AGISQuery} API provides different methods to query the
+ATLAS Grid Information System. The table \ref{tab:agisQueryMethods}
+describe these methods.
+
+
+
+\begin{table}[h!tpb]
+\begin{center}
+\begin{tabularx}{410pt}{>{\hsize=0.3\hsize}X>{\hsize=0.8\hsize}X}
+\hline
+
+
+\textbf{Method} & \textbf{Description} 
+
+\\ \hline
+
+getTopology & It retrieves all the ATLAS grid entities with their
+properties and associations\\\hline
+
+listClouds & It retrieves all the clouds of the ATLAS grid with all
+their attributes\\\hline
+
+listSites & It retrieves all the sites of the ATLAS grid with all
+their attributes\\\hline
+
+listServices &It retrieves all the services belonging to the sites of
+the ATLAS grid, with all their attributes \\\hline
+
+listSpaceTokens & It retrieves all the space tokens belonging to the {\itshape Storage Elements} services of the ATLAS grid, with all their attributes\\\hline
+
+listQueues & It retrieves all the queues belonging to the  {\itshape Computing Elements} services of the ATLAS grid, with all their attributes\\\hline
+
+getTiersOfAtlas & It retrieves all the ATLAS grid entities with their properties and associations in the {TiersOfATLAS} style\\\hline
+\end{tabularx}
+\end{center}
+\caption{{\itshape AGISQuery} API methods}
+\label{tab:agisQueryMethods}
+\end{table}
+
+
+The {\itshape AGISUpdate} API allows to update the data of the ATLAS
+Grid Information System. The table \ref{tab:agisUpdateMethods} shows
+the methods of this API.
+
+\begin{table}[h!tpb]
+\begin{center}
+\begin{tabularx}{410pt}{>{\hsize=0.3\hsize}X>{\hsize=0.8\hsize}X}
+\hline
+
+\textbf{Method} & \textbf{Description} 
+
+\\ \hline
+addCloud & It inserts an ATLAS  cloud to the system\\\hline
+removeCloud & It removes an ATLAS cloud from the system\\\hline
+addSite &It inserts an ATLAS site to the system \\\hline
+removeSite & It deletes an ATLAS site from the system\\\hline
+addService & It inserts an ATLAS service to the sytem\\\hline
+removeService & It deletes an ATLAS service from the system\\\hline
+
+\end{tabularx}
+\end{center}
+\caption{{\itshape AGISUpdate API methods}}
+\label{tab:agisUpdateMethods}
+\end{table}
+
+To update the system it is necessary to have some permissions. The
+authentication is done via X509 proxy certificates.
+
+The APIs provided by the ATLAS Grid Information System works using
+{\itshape HTTP requests}. The following code is an extract
+of the {\itshape AGISUpdate} API code. In (1) {\itshape client} is an
+instance of the {\itshape URLClient}\footnote{URLClient is based on
+pycurl, \url{http://pycurl.sourceforge.net/doc/pycurl.html}}, which is
+a specialized object that allows to transfer data from or to a server,
+using HTTP protocol. Next line (2) returns the full endpoint of the
+service --in this case, the service that allows to remove the cloud
+entity from the system--. Finally in (3) it performs the HTTP DELETE
+request on the specific URL (the endpoint) and the specific resource
+(the cloud).
+
+\newpage
+\begin{Verbatim}[commandchars=\\\¿\?,frame=single,fontsize=\relsize{-1}]
+client = URLClient(secure=True) (1)
+endpoint = self._getEndpoint(self.hostname, self.port, "cloud", secure=True)
+client.httpDelete(endpoint, params = cloud_name, self.outputFormat = None)
+\end{Verbatim}
+
+
+
+
+The APIs are available for CERN users through the
+AFS\footnote{\textbf{A}ndrew \textbf{F}ile \textbf{S}ystem,
+distributed networked file system which uses a set of trusted servers
+to present a homogeneous, location-transparent file name space to all
+the client workstations.}. The users can call to a running instance of
+the ATLAS Grid Information System server. The python code below  shows one of the ways to use the APIs, in
+this case importing the modules in a {\itshape python shell}.
+
+
+\begin{Verbatim}[commandchars=\\\¿\?,frame=single,fontsize=\relsize{-1}]
+user@host:\~\$ python
+Python 2.5.2 (r252:60911, Apr 17 2008, 13:15:05)
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from dashboard.api.agis.AGISQuery import AGISQuery
+>>> agisQuery = AGISQuery(hostname="agis.cern.ch", port=80)
+>>> agisQuery.listClouds()
+\end{Verbatim}
+
+
+\subsubsection{Data Collectors}
+\label{sec:dataCollectors}
+
+The data collection is done using services that retrieves periodically
+data from the different sources of information.  These collector
+services are daemons that can contact diverse hosts and collect
+information of interest. The implementation is based on the
+{\itshape arda.dashboard.service-config} module provided by the Dashboard
+Framework \cite{monitoringDash}.
+
+There are six different sources of information, thus six different
+services that retrieve the data and store it into a local database.
+\begin{description}
+\item {\itshape TiersOfATLASCollector:} This collector retrieves data from
+the TiersOfATLAS source. Firstly, this collector have to fetch the
+{\itshape TiersOfATLASCache.py} file from an URL and then have to
+process this file to obtain information related principally with the
+ATLAS grid topology. TiersOfATLAS is the only source that gives
+information of the main entities of the ATLAS topology --tiers and
+clouds--. This collector also retrieves data related with the {\itshape
+space tokens} associated to the {\itshape Storage Elements} services.
+\item {\itshape GOCDBCollector:} The Grid Operation Center Data Base
+(GOCDB) is the official source that provides the full list of sites
+belonging to the ATLAS grid (except the OSG sites), thus, this
+collector retrieves periodically all the site information.
+\item {\itshape OIMCollector}: This collector retrieves the official list
+of sites belonging to the OSG sub-grid.
+\item {\itshape BDIICollector:} This collector retrieves data related with
+all the services of the ATLAS grid.
+\item {\itshape PandaCollector}: This collector retrieves data related
+with the {\itshape panda queues} associated to the {\itshape Computing
+Element} services.
+\item {\itshape NDGFCollector}: This collector retrieves all the data related with the NDGF sites and services.
+\end{description}
+
+The data collection implies regular access to the information
+sources. To provide a reliable ATLAS Grid Information System, the
+collector services should run constantly and need to recover any
+missing data in case of eventual failure and following restart.  The
+functionalities of the Dashboard Framework allows to monitor the
+collectors and to be aware about the status of them, using some
+reporting methods: a web application showing the status of the
+collectors, an email or a SMS.
+
+
+
+%\newpage
+\subsubsection{CLI Tools}
+The CLI tools allows to the users to update and retrieve information
+to or from the ATLAS Grid Information System, using command lines.
+
+The set of available tools and their functionality is presented in
+Table \ref{tab:cliTools}
+
+\begin{table}[h!tpb]
+\begin{center}
+\begin{tabularx}{350pt}{>{\hsize=0.3\hsize}X||>{\hsize=0.8\hsize}X}
+\hline
+
+
+\textbf{CLI Tool Name} & \textbf{Functionality} \\ \hline\hline
+agis-clouds	 & Lists ATLAS clouds stored in the AGIS system.\\\hline
+
+agis-sites	& Lists ATLAS sites stored in the AGIS system.\\\hline
+
+agis-services	& Lists ATLAS services stored in the AGIS system.\\\hline
+
+agis-spaceTokens &Lists ATLAS spacetokens stored in the AGIS system.\\\hline
+
+agis-queues	& Lists ATLAS queues stored in the AGIS system.\\\hline
+\end{tabularx}
+\end{center}
+\caption{CLI Tools}
+\label{tab:cliTools}
+\end{table}
+
+The class that implements a CLI tool calls the proper API ({\itshape
+AGISQuery} or {\itshape AGISUpdate}) to perform the requested
+action (see Fig. \ref{fig:CLIcode}). As it was mentioned before, the API performs HTTP requests to
+retrieve the data.
+
+\begin{figure}[h!tpb]
+%\begin{Verbatim}[commandchars=\\\¿\?,frame=single,fontsize=\relsize{-1}]
+\begin{lstlisting}[language=Python,basicstyle=\footnotesize]
+def execute(self):
+        # Perform the remote call
+        try:
+            agisQuery = AGISQuery(hostname=self.options.service, 
+	    port=self.options.port, outputFormat=self.options.format)
+            clouds = agisQuery.listClouds(pair=self.options.pair)
+        except DashboardException, exc:
+            self._logger.error(exc)
+            sys.exit(-1)
+\end{lstlisting}
+%\end{Verbatim}
+\caption{CLI Tool data request.}
+\label{fig:CLIcode}
+\end{figure}
+
+\newpage
+\subsubsection{Web Interface}
+
+The web interface allows to visualize and update the AGIS data in an
+easy way.
+
+%The web interface navigation is usually done as presented in
+%Fig. \ref{fig:webNavigation}.
+
+%\begin{figure}[h!tpb]
+%\centering
+%\epsfig{file=images/webNavigation.eps,scale=0.55}
+%\caption{Database access}
+%\label{fig:webNavigation}
+%\end{figure}
+
+The web interface provides web pages, which are structured in the main
+ components described below:
+
+\begin{description}
+\item {\itshape Topology:} This component allows to visualize all the
+entities belonging to the ATLAS topology, in a {\itshape top-down}
+approach, that is, firstly it is possible to see an overview of the
+ATLAS topology --{\itshape the clouds}-- --{\itshape the clouds}--,
+and then it is possible to go deep, to go finally to the base elements
+of the topology --{\itshape queues} and {\itshape space tokens}.
+
+\item {\itshape Clouds:} This component allows to
+visualize and to manage all the \-ATLAS\- clouds. It is possible to add,
+remove and update clouds, for wich, the authentication is done using
+X509 proxy certificates.
+
+\item {\itshape Sites:} This component allows to visualize all the
+sites, together their main attributes (cloud, tier, country, alias,
+region, federated site, contact and source of information) belonging
+to the ATLAS grid, and to add, remove or update the site
+information. The authentication is done using X509 proxy certificates.
+
+\item {\itshape Services:} This component allows to visualize all the
+services belonging to the ATLAS grid, which are described by their
+{\itshape endpoint, type of service} and the site where they
+belong. Also, it is possible to to add, remove or update the site
+information. The authentication is done using X509 proxy certificates.
+
+\item {\itshape Blacklisting:} This component lists all the
+blacklistings scheduled in the ATLAS grid, and to add or remove
+blacklistings. The authentication is done using X509 proxy
+certificates.
+\end{description}
+
+As it was mentioned before, all the processes of adding, removing or
+updating information are done with authentication, using X509 proxy
+certificates. These certificates are commonly used in security systems
+\cite{bib:X509Proxy}  are a standard for dynamic
+delegation and identity creation in public key infrastructures.
+
+%\begin{figure}[h!tpb]
+%\centering
+%\epsfig{file=images/webOverview.eps,scale=0.55}
+%\caption{Web Interface Overview.}
+%\label{fig:webOverview}
+%\end{figure}
+
+%\subsubsection{Sources of Information}
+%\begin{itemize}
+%\item Sources: TiersOfAtlas, BDII \ldots
+%\item Data Model: explain why to choose a relational database and not
+%  a LDAP model,or vice versa \ldots
+%\item Database: Oracle, use database index \ldots
+%\end{itemize}
+%\subsection{Results}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{com}
+%ESTO ES UN ESQUELETO QUE, SUPONGO, PRONTO REVESTIRAS DE MUSCULOS,
+%ARTERIAS, ETC.
+%Â¿PERO CUAL ES LA IDEA GENERAL AQUI?
+%\end{com}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\chapter{Discovery Mechanisms}
+
+%One important issue in GIS is the discovery of the resources at the
+%grid system. The discovery in distributed system is an area that have
+%been studied \ldots
