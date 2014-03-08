@@ -1,15 +1,33 @@
 \section{Proposed Algorithm}
 \begin{algorithmic}[1]
-\State inicializar(R,t) mediante Optical Flow
-\State A = filtroBordes(A)
-\State B = filtroBordes(B)
-\State A' $\leftarrow$ transformar(A,R,t) 
-\State p $\leftarrow$ puntosCercanos(A',B)
-\State $\{R,t\} \gets$ actualizarTransformacion(p)
-\State $e_i = errorCuadraticoMedio(p)$
-\If {$e_i < umbral$ OR  $i > maxIteraciones$} 
-	\State entregar R,t
+\State init R,t using Optical Flow
+\State A = sobelFilter(A)
+\State B = sobelFilter(B)
+\State A' $\leftarrow$ transform(A,R,t) 
+\State p $\leftarrow$ closestPoints(A',B)
+\State $\{R,t\} \gets$ updateTransformation(p)
+\State $e_i = meanSquareError(p)$
+\If {$e_i < umbral$ OR  $i > maxIterations$} 
+	\State return R,t
 \Else
-	\State volver a paso 4
+	\State goto step 4
 \EndIf
 \end{algorithmic}
+
+The proposed algorithm uses optical flow to give a first estimation of 
+R,t to the ICP algorithm. The used camera captures both depth and color 
+information, for each pair of consecutive color captures optical flow 
+is applied, obtaining pairs of correspondences between both captures. 
+
+The domain of optical flow is on the 2D image space, but using 
+the 3D information from the depthmap its possible to get the 3D position 
+of the each pair of correspondences respect to the camera. 
+
+Having pairs of 3D points, one point of the capture at time t and other point 
+of the capture at time t + 1 its possible to obtain the rotation R and translation t
+ that minimizes the distances between the correspondences. Obtaining the initial guess 
+ for ICP.
+
+
+
+
