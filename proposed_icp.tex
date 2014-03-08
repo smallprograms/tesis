@@ -14,8 +14,9 @@
 \EndIf
 \end{algorithmic}
 
-The proposed algorithm uses optical flow to give a first estimation of 
-R,t to the ICP algorithm. The used camera captures both depth and color 
+
+In the first step the proposed algorithm uses optical flow to obtain a first estimation of 
+R,t for the ICP algorithm. The used camera captures both depth and color 
 information, for each pair of consecutive color captures optical flow 
 is applied, obtaining pairs of correspondences between both captures. 
 
@@ -27,6 +28,17 @@ Having pairs of 3D points, one point of the capture at time t and other point
 of the capture at time t + 1 its possible to obtain the rotation R and translation t
  that minimizes the distances between the correspondences. Obtaining the initial guess 
  for ICP.
+
+
+Then both point clouds are filtered, removing plain surfaces, thus obtaining point clouds 
+with a lesser amount of points. With this ICP will work on point clouds that contains around 
+only 3\% of the original points. But this points are highly representative for registration purposes.
+
+Finally the classical ICP algorithm is applied to the point clouds.
+
+ 
+
+
 
 
 
