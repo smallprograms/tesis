@@ -129,6 +129,13 @@ a reference frame are used, generating a local model. Then a global model is gen
 The global model is deformed and gets more detail with every new local model added. This work not just afronted 
 the geometrical problem of aligning several clouds of points, it also had to generate the point clouds from RGB images.
 
+A more recent work was made in \cite{Steinbrucker_2013_ICCV} where large indoor reconstructions were performed 
+with RGB-D data with a multi-scale octree representation of a signed distance function and GPU to work in real time. They use 
+the same scene representation than  \cite{izadi}, but a different alignment process. Instead of aligning the captures to the reconstructed 
+model, they use dense alignment between consecutive captures, 
+using both depth and intensity images with an error  minimization approach. They claim that their alignment procedure is less prone to drift than
+ the used by \cite{izadi}. A database was used, exposing quantitave results and comparisons, using Absolute Trajetory Error RMSE. Another interesting 
+ work is \cite{KerlSC13}, they also used RGB-D data with dense alignement, they integrated keyframes to the process in order to reduce drift.
 
 In \cite{weise08} the user move the object using his hands in front of an RGB-D sensor (In-hand modeling), the hands are 
 eliminated using a color skin detector and the user can see the reconstruction in real time, in order to correctly 
