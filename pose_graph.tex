@@ -24,6 +24,53 @@ In our case $x_i$ is the 4x4 transformation matrix, corresponding to a sensor po
 relative transformation between the pose $x_i$ and the pose $x_j$ and $\Omega_{ij}$ is the weight or 
 the confidence we give to the restriction.
 
+the $e_{ij}$ is defined as follows:
+
+$$
+e(x_i,x_j,z_{ij}) = z_{ij} - \hat{z_{ij}}
+$$
+
+Where $\hat{z_{ij}}$ is the relative transformation obtained directly from the pose graph and $\hat{z_{ij}}$ 
+is the relative transformation calculated applying the proposed ICP to the i-esim capture and j-esim capture.
+
+
+To simplify notation let 
+
+$$
+e(x_i,x_j,z_{ij}) = e(x_i,x_j) = e_{ij}(x)
+$$
+
+\begin{equation}
+\label{eq:errorAprox}
+e_{ij}(x + \Delta x) \simeq e_{ij}(x) + J_{ij} \Delta x
+\end{equation}
+
+
+\begin{equation}
+\label{eq:globalFunc}
+F_{ij}(x + \Delta x) = e_{ij}(x + \Delta x)^T \Omega_{ij}  e_{ij}(x + \Delta x)
+\end{equation}
+
+\begin{equation}
+\label{eq:globalFuncAprox}
+F_{ij}(x + \Delta x) \simeq (e_{ij}(x) + J_{ij} \Delta x)^T \Omega_{ij}  (e_{ij}(x) + J_{ij} \Delta x)
+\end{equation}
+
+\begin{equation}
+\label{eq:globalFuncAprox2}
+ =  \underbrace{e_{ij}(x)^T \Omega_{ij} e_{ij}(x)}_{c_{ij}} + 2  \underbrace{e_{ij}(x)^T \Omega_{ij} J_{ij}}_{b_{ij}} \Delta x + \Delta x^T \underbrace{ J_{ij}^T  \Omega_{ij} J_{ij}}_{H_{ij}} \Delta x
+\end{equation}
+
+\begin{equation}
+\label{eq:globalFuncAprox2}
+ = c_{ij} + 2 b_{ij} \Delta x + \Delta x^T H_{ij} \Delta x
+\end{equation}
+
+This is a non linear least squares problem and can be solved using 
+methods such as for example Gauss-Newton or Levenber-Marquardt.
+
+
+
 
 
 G2o is a library that contains non linear error functions optimization 
