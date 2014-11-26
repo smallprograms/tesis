@@ -21,18 +21,25 @@ Where $x=\{x_1,x_2,...,x_n\}$ and each $x_i$ represents a parameter block , $z_{
 relating parameters $x_i$ and $x_j$.
 
 In our case $x_i$ is the 4x4 transformation matrix, corresponding to a sensor pose. $z_{i,j}$ is the 
-relative transformation between the pose $x_i$ and the pose $x_j$ and $\Omega_{ij}$ is the weight or 
+relative transformation between the pose i-esim and j-esim sensor capture, it is not affected by the accumulated error 
+because it is a direct measure between the two captures and $\Omega_{ij}$ is the weight or 
 the confidence we give to the restriction.
 
-the $e_{ij}$ is defined as follows:
+This is a non linear least squares problem and can be solved using 
+methods such as for example Gauss-Newton or Levenber-Marquardt.
+
+
+then $e_{ij}$ is defined as follows:
 
 $$
 e(x_i,x_j,z_{ij}) = z_{ij} - \hat{z_{ij}}
 $$
 
-Where $\hat{z_{ij}}$ is the relative transformation obtained directly from the pose graph and $\hat{z_{ij}}$ 
-is the relative transformation calculated applying the proposed ICP to the i-esim capture and j-esim capture.
+Where $\hat{z_{ij}}$ is the relative transformation obtained directly from the pose graph, for this reason 
+it is affected by the accumulated error.
 
+We want to find a graph configuration (updating the poses $x=\{x_1,x_2,...,x_n\}$), in order to reduce 
+the global error, correcting some poses in order to satisfy the restrictions.
 
 To simplify notation let 
 
@@ -40,16 +47,22 @@ $$
 e(x_i,x_j,z_{ij}) = e(x_i,x_j) = e_{ij}(x)
 $$
 
+We can approximate the previous function around one point:
+
 \begin{equation}
 \label{eq:errorAprox}
 e_{ij}(x + \Delta x) \simeq e_{ij}(x) + J_{ij} \Delta x
 \end{equation}
+
+$J_{ij}$ is the Jacobian of the function evaluated in x. 
 
 
 \begin{equation}
 \label{eq:globalFunc}
 F_{ij}(x + \Delta x) = e_{ij}(x + \Delta x)^T \Omega_{ij}  e_{ij}(x + \Delta x)
 \end{equation}
+
+Reeplacing \ref{eq:errorAprox} in the global function:
 
 \begin{equation}
 \label{eq:globalFuncAprox}
@@ -66,11 +79,42 @@ F_{ij}(x + \Delta x) \simeq (e_{ij}(x) + J_{ij} \Delta x)^T \Omega_{ij}  (e_{ij}
  = c_{ij} + 2 b_{ij} \Delta x + \Delta x^T H_{ij} \Delta x
 \end{equation}
 
-This is a non linear least squares problem and can be solved using 
-methods such as for example Gauss-Newton or Levenber-Marquardt.
+
+\begin{equation}
+F(x + \Delta x) =  \sum\limits_{<i,j> \in C } F_{ij}(x + \Delta x) 
+\end{equation}
 
 
 
+\begin{equation}
+\simeq  c_{ij} + 2 b_{ij} \Delta x + \Delta x^T H_{ij} \Delta x
+=   c + 2 b \Delta x + \Delta x^T H \Delta x
+\end{equation}
+
+Then we want to know $\Delta x^T$, this is the correction to the $x_i$ and $x_j$ nodes, in order 
+to have a minimum error:
+
+\begin{equation}
+H \Delta x^* = -b
+\end{equation}
+
+Having $\Delta x^T$ we can update the graph nodes:
+
+\begin{equation}
+x^* = x + \Delta x^* 
+\end{equation}
+
+This is the Gauss-Newton algorithm. 
+
+The Levenber-Marquardt (LM) is a nonlinear variant of the Gauss-Newton algorithm that introduces a
+damping factor and backup actions to control the convergence:
+
+\begin{equation}
+(H + \lambda I) \Delta x^* = -b
+\end{equation}
+
+The $\lambda$ factor controls the size of $ \Delta x$. Allowing to change it according to the error between the iterations.
+ 
 
 
 G2o is a library that contains non linear error functions optimization 
@@ -96,7 +140,7 @@ is called Loop Closure.
 \subsection{Loop Detection}
 
 In order to detect previously visited areas of the scene SURF \cite{Bay06surf} feature detector 
-is used. This algorithm finds image corners, looking for strong responses in two ortogonal directions. 
+is used. This algorithm finds image features looking for strong responses in two ortogonal directions. 
 
 
 $$
@@ -109,13 +153,14 @@ $$
 
 
 The second order partial derivatives are approximated using just a box filter, in other words 
-summing and substracting pixel values without using gaussian weighing. When extracting features 
-usually the image is scalled (scale-space) to different sizes in order to find image structures 
+summing and substracting pixel values instead of using the classical gaussian weighing. 
+When extracting features usually the image is scalled (scale-space) to different sizes in order 
+to find image structures 
 at different scales. SURF algorithm instead of scale the image, scales the filter applied to the 
 image, increasing the speed of the calculations in one order of magnitude.
 
 
-\begin{figure}
+\begin{figure}[!h]
 \begin{center}
 \includegraphics[scale=0.35]{images/surf_mask}
 \caption{Left to right: the (discretised and cropped) Gaussian second order partial derivatives 
