@@ -136,6 +136,12 @@ adjust the position of all poses in order to satisfy the restriction. This
 is called Loop Closure.
 
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.35]{images/drift}
+\caption{Example of drift from real trajectory. Blue color: real camera trajectory, red color: estimation of trajectory with accumulated error.}
+\end{center}
+\end{figure}
 
 \subsection{Loop Detection}
 
@@ -154,11 +160,6 @@ $$
 
 The second order partial derivatives are approximated using just a box filter, in other words 
 summing and substracting pixel values instead of using the classical gaussian weighing. 
-When extracting features usually the image is scalled (scale-space) to different sizes in order 
-to find image structures 
-at different scales. SURF algorithm instead of scale the image, scales the filter applied to the 
-image, increasing the speed of the calculations in one order of magnitude.
-
 
 \begin{figure}[!h]
 \begin{center}
@@ -168,4 +169,17 @@ in y-direction and xy-direction, and approximations using box filters.
 Grey regions are equal to zero. Image extracted from \cite{Bay06surf}}
 \end{center}
 \end{figure}
+
+When extracting features usually the image is scalled (scale-space) to different sizes in order 
+to find image structures 
+at different scales. SURF algorithm instead of scale the image, scales the filter applied to the 
+image, increasing the speed of the calculations in one order of magnitude.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.35]{images/surf_scale}
+\caption{Left to right: Traditional approach to produce scale-space scaling image and applying gaussian filter. SURF approach to produce scale-space scaling the filter and mainting the image size. Image extracted from \cite{miguel}}
+\end{center}
+\end{figure}
+
 
