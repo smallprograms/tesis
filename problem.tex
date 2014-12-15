@@ -1,4 +1,31 @@
+When an scene is beign scanned with a Laser, Time of Flight Camera, structured 
+light sensor or other device capable of obtain a depth map of the scene.
+ A set of 3D points is obtained per capture, its 3D coordinates 
+are relative to the scanning device. Its necessary to move the captured points, 
+according to the device movement or rotation, for this reason 
+one of the first fundamental steps to reconstruct a 3D scene is the 
+positioning of the 3D points on a common coordinate system, conserving 
+the original scene structure. 
 
+This problem becomes trivial if we know the device position and orientation 
+for each capture or if we have a pair of matches between each two sucesive 
+captures. But this not occur in practice and additional problems arise due 
+to the noise and imperfections of the device.
+
+
+In general, when the sensor is collecting the 3D points from the scene, 
+ its necessary to move or rotate it in order to capture new objects and surfaces from 
+the scene, adding more information to the reconstructed scene. But in order to be 
+able to infer the correct position of each capture, is necessary to have part 
+of the view in common between two captures (an overlaping area). Thus is posible to position a new capture with respect to an old one in the scene, using this overlaping 
+area to correctly align both captures.
+ 
+The overlaping areas of the different captures of a scene must be correctly 
+aligned when registering the points in a common coordinate system, 
+thus with each new capture more information is added to the scene, 
+getting closer to the desired result. 
+
+\subsection{Mathematical definition}
 
 A point cloud is a set of 3D euclidean space points and the problem of aligninig several point clouds 
 in order to form a complete 3D model, where intersecting areas overlap perfectly 

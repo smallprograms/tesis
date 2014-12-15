@@ -23,8 +23,9 @@ receptor, projecting patterns of light in order to simplify the matching process
 There are also some active methods that touch the object in order to reconstruct it, but they are beyond 
 the scope of this thesis. 
 
-The most accurate and expensive method to perform 3D scene reconstruction is the Laser Scanning, because it has 
-an hight accuracy (about xx mm). But nowadays there are emerging cheaper devices that potentially could perform 
+Most accurate and expensive equipments to perform 3D scene reconstruction are commercial laser scanners,
+ but nowadays there are emerging cheaper devices that 
+potentially could perform 
 a similar reconstruction at a pair of orders of magnitude low cost. 
 
 One of the most classical approaches is to use multiple 2D
@@ -45,5 +46,15 @@ One of the key steps of a 3D reconstruction algorithm is the registration, where
  the scene are  registered in a common coordinate system, preserving the original scene disposition. Another important 
 step is to add colour and continuity to the reconstructed scene, usually using a lot of geometric primitives such as 
 triangles, in order to generate a textured 3D model. This thesis is  about the registration step. 
+
+In this proposal a dataset containing RGB-D captures is used, applying a filtering step where only edges that appear 
+in the two point clouds to be aligned pass the filter. For this purpose a combination of visual and geometrical information is 
+used in combination with the ICP algorithm. The proposed technique reduces the amount of calculations involved, increasing 
+the quality of the alineation, working with the most representative subset of the data. At difference to other techniques 
+involving edge filtering along with ICP, this proposal increments the odds of a correct alineation filtering out non common 
+data from the point clouds.
+
+ 
+
 
 

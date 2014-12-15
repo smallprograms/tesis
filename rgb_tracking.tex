@@ -30,6 +30,13 @@ This methods have two main assumptions about the frames (citar image processing 
 1.- The observed brightness of any object point is constant over time.
 2.- Nearby points in the image plane move in a similar manner (velocity smoothness).
 
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.6]{images/oflow}
+\caption{Image at time $t$, image at time $t + \Delta t$ and optical flow}
+\label{fig:oflow}
+\end{center}
+\end{figure}
 
 There are two kinds of optical flow: dense and sparse. Dense optical flow means  calculate direction vector for each pixel of the image and sparse optical flow is calculate direction vector just those pixels of the image 
 who satisfy certain conditions.

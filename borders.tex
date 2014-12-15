@@ -17,6 +17,24 @@ Then both results are merged using the bellow expression and then a threshold is
 
 $$ G = \sqrt{G_x^2+ G_y^2} $$
 
+This filter is applied directly into a grayscale representation of the original RGB image. Obtaining a binary image 
+that contains edges, not necessarily corresponding to intensity changes, that can occur as consecuence of both, geometrical 
+and visual changes in the scene.
+
+%edges image
+
+This image can be used along with the depth map to reduce the point cloud size. Rejecting all 3D points not corresponding
+to this edges. We are interested in find correspondences between the two clouds, for this reason, we applied the edge filtering 
+to the image instead of the depthmap. Because using this approach it is possible to find corresponcendes between rich textured 
+surfaces, even if they don't exhibit geometrical richness.
+
+This filter is applied to both, source and target captures. Making this, it is possible to apply a very useful filtering: remove 
+from the edges binary image all the points that are not simultaneously in both captures. For this, the rotation and translation 
+of the source 2D image that minimizes the distance to the target 2D image is applied and then an AND operation is applied between 
+the two images. As result, we work with two point clouds that have a huge amount of overlaping points, improving the alineation 
+result.
+
+
 A Sobel filter was used to obtain a representative set of points, avoiding that walls and another 
 plain surfaces containing a huge amount of data, lead to an incorrect alineation.
 
@@ -35,3 +53,4 @@ plain surfaces containing a huge amount of data, lead to an incorrect alineation
 There are more advanced edge filtering techniques, such as the Canny edge filter, but it involve 
 a larger set of convolutions and operations. We dont need an high accuracy edge detection, the Sobel 
 filter is enough to reduce the set of points used in the alineation process.
+

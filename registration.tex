@@ -1,47 +1,19 @@
-When an scene is beign scanned with a Laser, Time of Flight Camera, structured 
-light sensor or other device capable of obtain a depth map of the scene.
- A set of 3D points is obtained per capture, its 3D coordinates 
-are relative to the scanning device. Its necessary to move the captured points, 
-according to the device movement or rotation, for this reason 
-one of the first fundamental steps to reconstruct a 3D scene is the 
-positioning of the 3D points on a common coordinate system, conserving 
-the original scene structure. This step is called registration. 
 
-This problem becomes trivial if we know the device position and orientation 
-for each capture or if we have a pair of matches between each two sucesive 
-captures. But this not occur in practice and additional problems arise due 
-to the noise and imperfections of the device.
-
-
-In general, when the sensor is collecting the 3D points from the scene, 
- its necessary to move or rotate it in order to capture new objects and surfaces from 
-the scene, adding more information to the reconstructed scene. But in order to be 
-able to infer the correct position of each capture, is necessary to have part 
-of the view in common between two captures (an overlaping area). Thus is posible 
-to position a new capture with respect to an old one in the scene, using this overlaping 
-area to correctly align both captures.
- 
-The overlaping areas of the different captures of a scene must be correctly 
-aligned when registering the points in a common coordinate system, 
-thus with each new capture more information is added to the scene, 
-getting closer to the desired result. 
-
-The most used algorithm for solve this problem is called 
+The most used algorithm to register point clouds into a common coordinate 
+system is called 
 ICP (Iterative Closest Point) Algorithm. Given two point clouds, 
 this algorithm find the best rigid transformation to align both clouds 
-(minimize distance between puntos emparejados). In order to make this, 
+(minimize distance between closest points). In order to make this, 
 the algorithm starts with an initial guess of the transformation. 
-At each iteration the algorithm matchs closest points of each cloud and then 
-find the best transformation. 
+At each iteration the algorithm matchs closest points between the two point clouds  and then 
+finds the rigid transformation that minimizes euclidian distance between closest points.
 
 This algorithm has some drawbacks, such as beign susceptible to local minima, 
-have small convergence basin, and in general needing a high number of iteration
- steps (citar rusu). For this reason variants of the algorithm are proposed by 
-the researchers or is combined with other technique to ... this problems.
+have small convergence basin, and in general needing a high number of iterations \cite{Rusu2009}. For this reason additional 
+algorithms are used to compute a good approximation of the desired transform, in order to start the ICP iterations closer to the solution, also
+ other techniques are used in combination with ICP, such as filtering, photoconsistency, graph optimization, etc. In order improve results and 
+reduce the amount of computations required to find the transformation.
 
 
-
-
-
-
-
+This proposal consists on modificated version of ICP in order to work with RGB-D data, combining the use of geometrical and visual clues in 
+order to reduce the computational cost and improve the obtained results.

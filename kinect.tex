@@ -5,7 +5,7 @@
 \begin{center}
 \includegraphics[scale=1]{images/pinhole}
 \caption{Pinhole Camera Model}
-\label{fig:jan}
+\label{fig:pinhole}
 \end{center}
 \end{figure}
 
@@ -51,7 +51,7 @@ corresponding disparity.
 \begin{center}
 \includegraphics[scale=1]{images/kinect_triangulation}
 \caption{Schematic representation of depth-disparity relation \cite{khoshelham2011accuracy}}
-\label{fig:jan}
+\label{fig:disparity}
 \end{center}
 \end{figure}
 
@@ -80,7 +80,6 @@ The depth map is gray scale image and the intensity of each pixel is proportiona
 Most distant objects have greater intensitys than closer objects. The depth map is an image with a resolution of 
 640x480 and one channel of 2 bytes.
 
-
 The depth image data implicity contains the objects world coordinates, the relation between depth map 
 and world coordinates is described as follows:
 
@@ -104,6 +103,13 @@ focal length, depthVal is the value of depth map at position $(x,y)$ of depth ma
 the depth value to real world distance in mm or m, depending on the software configuration. This factor is determined by 
 the digital format used to store the depth data on the 
 computer and it is dependant on the software used to access device data.
-.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=1]{images/coordinates}
+\caption{Kinect coordinates system}
+\label{fig:coordinates}
+\end{center}
+\end{figure}
 
 
