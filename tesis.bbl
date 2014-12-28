@@ -1,0 +1,199 @@
+\begin{thebibliography}{10}
+
+\bibitem{Horn}
+
+
+\bibitem{Bay06surf}
+Herbert Bay, Tinne Tuytelaars, and Luc~Van Gool.
+\newblock Surf: Speeded up robust features.
+\newblock In {\em In ECCV}, pages 404--417, 2006.
+
+\bibitem{mckay92}
+P.J. Besl and N.D. McKay.
+\newblock A method for registration of 3-d shapes.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  14:239--256, 1992.
+
+\bibitem{biber03}
+P.~Biber and W.~Straer.
+\newblock {The Normal Distributions Transform: A New Approach to Laser Scan
+  Matching}.
+\newblock In {\em Intelligent Robots and Systems, 2003. (IROS 2003).
+  Proceedings. 2003 IEEE/RSJ International Conference}, 2003.
+
+\bibitem{miguel}
+Miguel~Algaba Borrego.
+\newblock {\em Desarrollo e implementaci\'on de un m\'etodo de generaci\'on de
+  mapas 3D usando el sensor Kinect}.
+\newblock PhD thesis, 2012.
+
+\bibitem{bylow-sturm-etal}
+Erik Bylow, J{"u}rgen Sturm, Christian Kerl, Fredrik Kahl, and Daniel Cremers.
+\newblock Direct camera pose tracking and mapping with signed distance
+  functions.
+\newblock In {\em RGB-D Workshop on Advanced Reasoning with Depth Cameras at
+  the Robotics: Science and Systems Conference (RSS)}, 2013.
+
+\bibitem{choi13}
+Changhyun Choi, Alexander J.~B. Trevor, and Henrik~I. Christensen.
+\newblock Rgb-d edge detection and edge-based registration.
+\newblock In {\em IROS}, pages 1568--1575. IEEE, 2013.
+
+\bibitem{cui}
+Yan Cui, S.~Schuon, D.~Chan, S.~Thrun, and C.~Theobalt.
+\newblock 3d shape scanning with a time-of-flight camera.
+\newblock In {\em Computer Vision and Pattern Recognition (CVPR), 2010 IEEE
+  Conference on}, pages 1173 --1180, june 2010.
+
+\bibitem{dryan2012}
+I.~Dryanovski, C.~Jaramillo, and Jizhong Xiao.
+\newblock Incremental registration of rgb-d images.
+\newblock In {\em Robotics and Automation (ICRA), 2012 IEEE International
+  Conference on}, pages 1685--1690, May 2012.
+
+\bibitem{endres13}
+F.~Endres, J.~Hess, J.~Sturm, D.~Cremers, and W.~Burgard.
+\newblock 3d mapping with an {RGB-D} camera.
+\newblock {\em IEEE Transactions on Robotics (T-RO)}, 30(1):177--187, 2013.
+
+\bibitem{OpenSURF}
+Christopher Evans.
+\newblock Notes on the opensurf library.
+\newblock Technical Report CSTR-09-001, University of Bristol, January 2009.
+
+\bibitem{jan}
+Jan-Michael Frahm, Pierre Fite-Georgel, David Gallup, Tim Johnson, Rahul
+  Raguram, Changchang Wu, Yi-Hung Jen, Enrique Dunn, Brian Clipp, Svetlana
+  Lazebnik, and Marc Pollefeys.
+\newblock Building rome on a cloudless day.
+\newblock In {\em Proceedings of the 11th European conference on Computer
+  vision: Part IV}, ECCV'10, pages 368--381, Berlin, Heidelberg, 2010.
+  Springer-Verlag.
+
+\bibitem{henry}
+P.~Henry, M.~Krainin, E.~Herbst, X.~Ren, and D.~Fox.
+\newblock {RGB-D Mapping: Using depth cameras for dense 3D modeling of indoor
+  environments}.
+\newblock In {\em Proceedings of the 12th International Symposium on
+  Experimental Robotics}, 2010.
+
+\bibitem{huhle}
+Benjamin Huhle, Philipp Jenke, and Wolfgang Strasser.
+\newblock On the fly scene acquisition with a handy multisensor system.
+\newblock {\em Int. J. Intell. Syst. Technol. Appl.}, 5(3/4):255--263, November
+  2008.
+
+\bibitem{izadi}
+Shahram Izadi, David Kim, Otmar Hilliges, David Molyneaux, Richard Newcombe,
+  Pushmeet Kohli, Jamie Shotton, Steve Hodges, Dustin Freeman, Andrew Davison,
+  and Andrew Fitzgibbon.
+\newblock {KinectFusion: real-time 3D reconstruction and interaction using a
+  moving depth camera}.
+\newblock In {\em Proceedings of the 24th annual ACM symposium on User
+  interface software and technology}, UIST '11, pages 559--568, New York, NY,
+  USA, 2011. ACM.
+
+\bibitem{keqiang}
+Zheng Keqiang, Zhuang Yan, and Wang Wei.
+\newblock Automated 3d scenes reconstruction for mobile robots using laser
+  scanning.
+\newblock In {\em Proceedings of the 21st annual international conference on
+  Chinese control and decision conference}, CCDC'09, pages 3055--3060,
+  Piscataway, NJ, USA, 2009. IEEE Press.
+
+\bibitem{kerl13icra}
+C.~Kerl, J.~Sturm, and D.~Cremers.
+\newblock Robust odometry estimation for rgb-d cameras.
+\newblock In {\em Proc. of the IEEE Int. Conf. on Robotics and Automation
+  (ICRA)}, 2013.
+
+\bibitem{KerlSC13}
+Christian Kerl, Jürgen Sturm, and Daniel Cremers.
+\newblock Dense visual slam for rgb-d cameras.
+\newblock In {\em IROS}, pages 2100--2106. IEEE, 2013.
+
+\bibitem{khoshelham2011accuracy}
+Kourosh Khoshelham.
+\newblock Accuracy analysis of kinect depth data.
+\newblock {\em ISPRS workshop laser scanning}, 38(5):W12, 2011.
+
+\bibitem{LaiBRF11}
+Kevin Lai, Liefeng Bo, Xiaofeng Ren, and Dieter Fox.
+\newblock A large-scale hierarchical multi-view rgb-d object dataset.
+\newblock In {\em ICRA}, pages 1817--1824. IEEE, 2011.
+
+\bibitem{lanman}
+Douglas Lanman and Gabriel Taubin.
+\newblock {\em Build your own 3D scanner}, pages 1--94.
+\newblock ACM Press, 2009.
+
+\bibitem{may2009}
+Stefan May, Stefan Fuchs, David Droeschel, Dirk Holz, and Andreas N\"{u}chter.
+\newblock Robust 3d-mapping with time-of-flight cameras.
+\newblock In {\em Proceedings of the 2009 IEEE/RSJ international conference on
+  Intelligent robots and systems}, IROS'09, pages 1673--1678, Piscataway, NJ,
+  USA, 2009. IEEE Press.
+
+\bibitem{guangyu}
+Guangyu Mu, Miao Liao, Ruigang Yang, Dantong Ouyang, Zhiwen Xu, and Xiaoxin
+  Guo.
+\newblock Complete 3d model reconstruction using a depth sensor.
+\newblock In {\em Intelligent Computing and Integrated Systems (ICISS), 2010
+  International Conference on}, pages 175 --179, oct. 2010.
+
+\bibitem{Newcombe10livedense}
+Richard~A. Newcombe and Andrew~J. Davison.
+\newblock Live dense reconstruction with a single moving camera.
+\newblock In {\em IEEE Conference on Computer Vision and pattern Recognition},
+  2010.
+
+\bibitem{pfister}
+Hanspeter Pfister, Matthias Zwicker, Jeroen van Baar, and Markus Gross.
+\newblock Surfels: surface elements as rendering primitives.
+\newblock In {\em Proceedings of the 27th annual conference on Computer
+  graphics and interactive techniques}, SIGGRAPH '00, pages 335--342, New York,
+  NY, USA, 2000. ACM Press/Addison-Wesley Publishing Co.
+
+\bibitem{Rusu2009}
+Radu~Bogdan Rusu.
+\newblock {\em {Semantic 3D Object Maps for Everyday Manipulation in Human
+  Living Environments}}.
+\newblock PhD thesis, Technische Universit\"at M\"unchen, 2009.
+
+\bibitem{ShottonGZICF13}
+Jamie Shotton, Ben Glocker, Christopher Zach, Shahram Izadi, Antonio Criminisi,
+  and Andrew~W. Fitzgibbon.
+\newblock Scene coordinate regression forests for camera relocalization in
+  rgb-d images.
+\newblock In {\em CVPR}, pages 2930--2937. IEEE, 2013.
+
+\bibitem{sonka2007}
+Milan Sonka, Vaclav Hlavac, and Roger Boyle.
+\newblock {\em Image Processing, Analysis, and Machine Vision}.
+\newblock Thomson-Engineering, 2007.
+
+\bibitem{Steinbrucker_2013_ICCV}
+Frank Steinbrucker, Christian Kerl, and Daniel Cremers.
+\newblock Large-scale multi-resolution surface reconstruction from rgb-d
+  sequences.
+\newblock In {\em The IEEE International Conference on Computer Vision (ICCV)},
+  December 2013.
+
+\bibitem{sturm12iros}
+J.~Sturm, N.~Engelhard, F.~Endres, W.~Burgard, and D.~Cremers.
+\newblock A benchmark for the evaluation of rgb-d slam systems.
+\newblock In {\em Proc. of the International Conference on Intelligent Robot
+  Systems (IROS)}, Oct. 2012.
+
+\bibitem{quadrocopter}
+J{"u}rgen Sturm, Erik Bylow, Christian Kerl, Fredrik Kahl, and J{"u}rgen Sturm.
+\newblock Dense tracking and mapping with a quadrocopter.
+\newblock In {\em UAV-g}, 2013.
+
+\bibitem{Whelan13}
+T.~Whelan, H.~Johannsson, M.~Kaess, J.J. Leonard, and J.B. McDonald.
+\newblock Robust real-time visual odometry for dense {RGB-D} mapping.
+\newblock In {\em IEEE Intl. Conf. on Robotics and Automation, ICRA},
+  Karlsruhe, Germany, May 2013.
+
+\end{thebibliography}

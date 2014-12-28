@@ -27,18 +27,26 @@
 %Para activar el doble espacio
 %\renewcommand{\baselinestretch}{2} 
 
-\usepackage[ruled,Algoritmo]{algorithm}
+\usepackage[ruled]{algorithm}
 
 %\usepackage[noend]{algpseudocode}
 \usepackage{algpseudocode}
 
+\usepackage{tcolorbox} 
 
+% new tcolorbox environment
+% #1: tcolorbox options
+% #2: color
+% #3: box title
+\newtcolorbox{mybox}[3][]
+{
+  colframe = #2!25,
+  colback  = #2!10,
+  coltitle = #2!20!black,  
+  title    = #3,
+  #1,
+}
 
-
-
-
-
-\usepackage{algpseudocode}
 
 \renewcommand{\headrulewidth}{1pt}
 %\renewcommand{\footrulewidth}{0.5pt}
@@ -139,10 +147,13 @@
 \input{rgb_tracking.tex}
 \input{photoconsistency.tex}
 \input{icp.tex}
-\input{proposed_icp.tex}
 \input{pose_graph.tex}
+\input{proposed_icp.tex}
 
 \chapter{Results and Discussion}
+\input{dataset.tex}
+\input{software.tex}
+\input{eval_metrics.tex}
 \input{results.tex}
 %\chapter{Point Features}
 %\index{Point Features}

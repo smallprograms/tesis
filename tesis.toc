@@ -1,0 +1,39 @@
+\select@language {english}
+\contentsline {section}{Contents}{iii}{Doc-Start}
+\contentsline {subsection}{List of Figures}{iv}{chapter*.1}
+\contentsline {subsection}{List of Tables}{vi}{chapter*.2}
+\contentsline {chapter}{\numberline {1}Introducction}{1}{chapter.1}
+\contentsline {chapter}{\numberline {2}Problem}{3}{chapter.2}
+\contentsline {subsection}{\numberline {2.0.1}Mathematical definition}{3}{subsection.2.0.1}
+\contentsline {chapter}{\numberline {3}State of Art}{6}{chapter.3}
+\contentsline {chapter}{\numberline {4}Sensor}{12}{chapter.4}
+\contentsline {section}{\numberline {4.1}Pinhole Camera Model}{12}{section.4.1}
+\contentsline {section}{\numberline {4.2}Sensor Depth Calculation}{13}{section.4.2}
+\contentsline {section}{\numberline {4.3}Sensor Captured Data}{14}{section.4.3}
+\contentsline {chapter}{\numberline {5}Proposal}{17}{chapter.5}
+\contentsline {section}{\numberline {5.1}Bilateral Filter}{17}{section.5.1}
+\contentsline {section}{\numberline {5.2}Borders Filter}{19}{section.5.2}
+\contentsline {section}{\numberline {5.3}Image correspondences}{22}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Corners}{22}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}Optical Flow}{23}{subsection.5.3.2}
+\contentsline {subsection}{\numberline {5.3.3}Lukas-Kanade method}{24}{subsection.5.3.3}
+\contentsline {subsection}{\numberline {5.3.4}SURF}{26}{subsection.5.3.4}
+\contentsline {section}{\numberline {5.4}Photoconsistency}{28}{section.5.4}
+\contentsline {section}{\numberline {5.5}Iterative Closest Point}{29}{section.5.5}
+\contentsline {section}{\numberline {5.6}Pose Graph Optimization}{32}{section.5.6}
+\contentsline {subsection}{\numberline {5.6.1}Loop Closure}{34}{subsection.5.6.1}
+\contentsline {subsection}{\numberline {5.6.2}Loop Detection}{34}{subsection.5.6.2}
+\contentsline {section}{\numberline {5.7}Proposed Algorithm}{34}{section.5.7}
+\contentsline {subsection}{\numberline {5.7.1}Proposed ICP Algorithm}{34}{subsection.5.7.1}
+\contentsline {subsection}{\numberline {5.7.2}Complete process}{35}{subsection.5.7.2}
+\contentsline {chapter}{\numberline {6}Results and Discussion}{38}{chapter.6}
+\contentsline {section}{\numberline {6.1}Dataset}{38}{section.6.1}
+\contentsline {section}{\numberline {6.2}Software and hardware}{38}{section.6.2}
+\contentsline {section}{\numberline {6.3}Evaluation Metrics}{38}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Relative Pose Error}{39}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Absolute Trajectory Error}{39}{subsection.6.3.2}
+\contentsline {section}{\numberline {6.4}Results}{40}{section.6.4}
+\contentsline {chapter}{\numberline {7}Conclusions}{41}{chapter.7}
+\contentsline {chapter}{Appendix}{41}{chapter.7}
+\contentsline {chapter}{\numberline {A}Acronyms}{42}{appendix.A}
+\contentsline {chapter}{Bibliography}{43}{appendix.A}

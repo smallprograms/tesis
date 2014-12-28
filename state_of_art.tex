@@ -166,11 +166,11 @@ to verify if there is consistency
 between the transformed point cloud and the target point cloud depthmap.
 
 
-All the 3D reconstruction methods can have problems with non lambertian 
-surfaces and they need to make some assumptions about the surfaces reflectance. For example if we are using 
-an infrared structured light pattern depth camera and the object that we are registering absorbs the infrared light, 
-the reconstruction will fail. Similar problems can occur with laser scanners. 
-Some materials such as glass or water can ruin the reconstruction.
+Most methods combine visual and geometrical information when both types of data are available. There is not a method 
+that adapts to all possible scenaries. Most methods assume an static scene and lambertian 
+surfaces. For this reason some materials such as glass or water can ruin the reconstruction. 
+Depending on the requirements one method can be preferred 
+over another, sometimes computational efficiency is more important than reconstruction quality or vice versa.
 
 
 

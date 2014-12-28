@@ -1,16 +1,27 @@
 
 \section{Iterative Closest Point}
 
-%\tiny
-R : Rotation matrix
+The ICP (Iterative Closest Point) algorithm \cite{mckay92} is widely used for 3D Reconstruction. This algorithm tries to find 
+the optimal rotation and translation between two sets of points (point clouds) that minimizes the distance between corresponding 
+points. Corresponding points are determined assigning to each point of one cloud, the closest point in the other cloud.
 
-t : Translation vector
+As result at each iteration we have a set of pairs of closest points, where each pair contains one point of each cloud. This set 
+of pairs changes from iteration to iteration, since the rotation and translation updates the points of one of the point clouds. If enough correct 
+corresponding points are find in each iteration, the algorithm converges to the correct transformation that aligns both point clouds.
+
+
+%\tiny
+R : 3x3 Rotation matrix
+
+t : 3x1 Translation vector
 
 A,A',B : Point sets $\in R^3$
 
 p : Pair set
 
 %\small
+\begin{algorithm}
+\caption{ICP algorithm}
 \begin{algorithmic}[1]
 \State init(R,t)
 \State A' $\leftarrow$ transform(A,R,t) 
@@ -23,9 +34,8 @@ p : Pair set
 	\State go to step 2
 \EndIf
 \end{algorithmic}
+\end{algorithm}
 
-The Iterative Closest Point algorithm is used to find the optimal rigid transformation 
-to align two clouds of points.
 
 We want to find R and t that minimizes the following expression:
 
@@ -69,9 +79,14 @@ Minimize the previous expression is equivalent to maximize:
 & H=\sum\limits_{i=1}^n a'_i  b_i^{\prime t} 
 \end{align*}
 
-Lemma: For any positive definite matrix $A A^t$ and any orthogonal matrix B 
+
+\begin{mybox}{gray}{Lemma}
+For any positive definite matrix $A A^t$ and any orthogonal matrix B 
 
 \[ Trace( A A^t ) \geq Trace (B A A^t) \]
+
+\end{mybox}
+
 
 Proof of lemma:
 
@@ -112,3 +127,8 @@ Thus the solution for our problem is
 R = V U^t \\
 t = R \bar{a} - \bar{b}
 \end{align*}
+
+
+This means that if we apply the rotation R and the translation t, to each point of the point cloud A, the distance between closest points of 
+transformed point cloud A with point cloud B will be minimal. When registering a set of points from a real 3D scene it allows to obtain a correct 
+align between sucesive scene captures.

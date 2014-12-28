@@ -15,18 +15,37 @@ horizontal directions:
 
 Then both results are merged using the bellow expression and then a threshold is used to filter out non interest areas:
 
-$$ G = \sqrt{G_x^2+ G_y^2} $$
+\begin{equation}
+G = \sqrt{G_x^2+ G_y^2}
+\label{eq:sobelGrad}
+\end{equation}
 
 This filter is applied directly into a grayscale representation of the original RGB image. Obtaining a binary image 
-that contains edges, not necessarily corresponding to intensity changes, that can occur as consecuence of both, geometrical 
-and visual changes in the scene.
+that contains edges representing geometrical and visual changes in the scene.
 
 %edges image
 
 This image can be used along with the depth map to reduce the point cloud size. Rejecting all 3D points not corresponding
-to this edges. We are interested in find correspondences between the two clouds, for this reason, we applied the edge filtering 
+to this edges. We are interested in find correspondences between the two clouds, for this reason, edge filtering was applied
 to the image instead of the depthmap. Because using this approach it is possible to find corresponcendes between rich textured 
-surfaces, even if they don't exhibit geometrical richness.
+surfaces, even if they don't exhibit local geometrical changes.
+
+The applied threshold was low, in order to have thicker edges. Because if too few points pass the filter, important information 
+could be lost, difficulting a correct alieation. 
+
+
+In combination with a low threshold, more points where added, based on their 
+distance to the sensor:
+
+\begin{equation}
+\bar{z} = \frac{1}{8} \sum \limits_{p \in neighboor} p.z
+\end{equation}
+
+The neighborhood is defined as shown in figure ~\ref{fig:neighboor}. Then points satisfying the following condition where added:
+
+\begin{equation}
+p.z <= \bar{z}
+\end{equation}
 
 This filter is applied to both, source and target captures. Making this, it is possible to apply a very useful filtering: remove 
 from the edges binary image all the points that are not simultaneously in both captures. For this, the rotation and translation 

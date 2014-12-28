@@ -1,0 +1,54 @@
+\section{Evaluation Metrics}
+
+The utilized dataset contains groundtruth sensor position and orientation along with two 
+evaluation metrics: ATE (Absolute Trajectory Error) and RPE (Relative Pose Error). This metrics 
+allows to estimate local and global error of the estimations compared to the provided grountruth measure. The dataset
+ also provides the necessary tools to calculate the metrics. A detailed explanation can be found in \cite{sturm12iros}.
+
+We have a sequence of poses from estimated trajectory $P_1,...,P_n \in SE(3)$ and from ground truth trajectory 
+$Q_1,...,Q_n \in SE(3)$. Each pose represents global rotation and translation of the sensor.
+
+
+
+\subsection{Relative Pose Error}
+
+This error measure compares the groundtruth sensor trajectory in a fixed interval of time, frames, distance or degrees. 
+Allowing for example to estimate how much error is produced frame to frame.
+
+The relative pose error at time $i$ is defined as follows:
+
+\begin{equation}
+E_i = ( Q_i^{-1} Q_{i+\Delta})^{-1}(P_i^{-1}P_{i+\Delta})
+\end{equation}
+
+From these errors the root mean squared error (RMSE) is calculated over all time indices of the translational component as:
+
+\begin{equation}
+VRMSE(E_{1:n},\Delta) = (\frac{1}{m} \sum_{i=1}^m ||trans(E_i)||^2 )^{\frac{1}{2}}
+\end{equation}
+
+
+\subsection{Absolute Trajectory Error}
+
+This error measure compares the groundtruth sensor trajectory with the proposed trajectory using root mean 
+squared error and considering only translational errors. It is not necessary to consider the rotational components, 
+because they are implicitly affecting sucesive sensor translations.
+
+Since both trajectories can be in different coordinate frames, first they are aligned using the Horn method \cite{Horn}. If $S$ 
+is the rigid-body transformation (obtained by least squares) that maps $P_{1:n}$ to $Q_{1:n}$, the absolute trajectory error
+ at time step $i$ can be defined as follows:
+
+\begin{equation}
+F_i=Q_i^{-1}SP_i
+\end{equation}
+
+Then the root mean squared error over all time indices of the translational components can be defined as:
+
+\begin{equation}
+RMSE(F_{1:n}) = (\frac{1}{n} \sum_{i=1}^n ||trans(F_i)||^2 )^{\frac{1}{2}}
+\end{equation}
+
+
+
+
+

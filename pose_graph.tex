@@ -5,7 +5,7 @@ becomes more visible. There is a drift respect to the real sensor trajectory.
 In order to afront this problem the most common approach is to use a pose graph 
 optimization algorithm. 
 
-Each pose of the sensor (4x4 Transformation Matrix) represents a node of the 
+Each pose of the sensor (rotation and translation) represents a node of the 
 graph and each restriction between two poses represents an edge. The relative 
 transformation between the two poses is used as restriction and it is possible 
 to add different kinds of restrictions if more information is available.
@@ -20,10 +20,14 @@ Where $x=\{x_1,x_2,...,x_n\}$ and each $x_i$ represents a parameter block , $z_{
  and the information matrix  of a constraint 
 relating parameters $x_i$ and $x_j$.
 
-In our case $x_i$ is the 4x4 transformation matrix, corresponding to a sensor pose. $z_{i,j}$ is the 
+Poses and relative transformations are represented by a 7x1 vector containing a quaternion $(qx,qy,qz,qw)$ 
+for the rotation and a traslation vector $(tx,ty,tz)$.
+
+In our case $x_i$ corresponds to a sensor pose, $z_{i,j}$ is the 
 relative transformation between the pose i-esim and j-esim sensor capture, it is not affected by the accumulated error 
 because it is a direct measure between the two captures and $\Omega_{ij}$ is the weight or 
-the confidence we give to the restriction.
+the confidence we give to the restriction. $\Omega_{ij}$ is a 7x7 diagonal matrix, containg on its diagonal the confidence for each 
+parameter of the transformation.
 
 This is a non linear least squares problem and can be solved using 
 methods such as for example Gauss-Newton or Levenber-Marquardt.
@@ -123,7 +127,13 @@ algorithms for graphs and is widely used in registration algorithms.
 The poses where optimized using this library and specifically the 
 Levenber-Marquardt algorithm.
 
+In the thesis the following definition for $z_{ij}$ was used:
 
+\begin{equation}
+z_{ij} = [tx ty tz qx qy qz qw]
+\end{equation}
+
+Where (tx,ty,tz) is a translation vector and (qx,qy,qz,qw) is a quaternion.
 
 \subsection{Loop Closure}
 
@@ -146,40 +156,5 @@ is called Loop Closure.
 \subsection{Loop Detection}
 
 In order to detect previously visited areas of the scene SURF \cite{Bay06surf} feature detector 
-is used. This algorithm finds image features looking for strong responses in two ortogonal directions. 
-
-
-$$
-H = \begin{bmatrix} I_{xx} & I_x I_y \\ I_x I_y & I_{yy} \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix}
-$$
-
-$$
-det(H) = I_{xx} I_{yy} - I_{xy}^2;
-$$
-
-
-The second order partial derivatives are approximated using just a box filter, in other words 
-summing and substracting pixel values instead of using the classical gaussian weighing. 
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.35]{images/surf_mask}
-\caption{Left to right: the (discretised and cropped) Gaussian second order partial derivatives 
-in y-direction and xy-direction, and approximations using box filters. 
-Grey regions are equal to zero. Image extracted from \cite{Bay06surf}}
-\end{center}
-\end{figure}
-
-When extracting features usually the image is scalled (scale-space) to different sizes in order 
-to find image structures 
-at different scales. SURF algorithm instead of scale the image, scales the filter applied to the 
-image, increasing the speed of the calculations in one order of magnitude.
-
-\begin{figure}[!h]
-\begin{center}
-\includegraphics[scale=0.35]{images/surf_scale}
-\caption{Left to right: Traditional approach to produce scale-space scaling image and applying gaussian filter. SURF approach to produce scale-space scaling the filter and mainting the image size. Image extracted from \cite{miguel}}
-\end{center}
-\end{figure}
-
+is used. 
 

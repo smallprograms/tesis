@@ -1,7 +1,10 @@
  
 
-\index{Tracking with Optical FLow}
-\section{Tracking with Optical Flow}
+\index{Image correspondences }
+
+\section{Image correspondences}
+
+\subsection{Corners}
 
 There are several techniques to track an object. If there is information about the object of interest the problem 
 can be simplyfied using this information to restrict the search space, for example to certain color or shape.
@@ -9,26 +12,82 @@ can be simplyfied using this information to restrict the search space, for examp
 more likely to be found on the unknown interest objects. The corners are good features for this purpose. A corner 
 is a point on the image where there are gradient variations on two orthogonal directions.
 
-The most common definition of a corner is gived by Harris :
+The most common definition of a corner is gived by Harris corners method.
 
-$$
-E(u,v) = \begin{bmatrix} u & v \end{bmatrix} \sum\limits_{x,y} w(x,y) \begin{bmatrix} {I_x}^2 & I_x I_y \\ I_x I_y & {I_y}^2 \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix}
-$$
+Consider a function E(u,v), to measure a difference between the pixels of a window (a region of the image) and 
+a a window shifted (u,v) units:
+
+\begin{equation}
+E(u,v) = \sum\limits_{x,y} { w(x,y) [I(x + u, y +v) - I(x,y)]^2  }
+\label{eq:harris1}
+\end{equation}
 
 We loop over a neighboorhood defined by different values of (x,y) and calculate 
 the difference of each pixel located at (x,y) with some other pixel located at (x+u,y+v). 
-The function w(x,y) is used to give some weight to each pixel. 
+The function w(x,y) defines the window where we are working, in the case of a square windows, 
+it has values 1 for pixels inside the window and 0 for other pixels. In the case of a circular 
+window a gaussian function can be used. 
+
+E(u,v) will have bigger values for any (u,v) when the window is centered in a corner. For this reason we want 
+to detect when E(u,v) is maximum. With this purpose on mind, we can express $I(x + u, y +v)$ in a more convenient
+ way using a Taylor expansion:
+
+$$
+I(x+u,y +v) = I(x,y) + I_xu + I_yv + Higher Order Terms
+$$ 
+
+Where 
+
+$$
+I_x = \frac{\partial{I(x,y)}}{\partial{x}}
+$$
+
+$$
+I_y = \frac{\partial{I(x,y)}}{\partial{y}}
+$$
+
+Then we can use the following approximation:
+
+$$
+I(x+u,y +v) \approx I(x,y) + I_xu + I_yv
+$$
+
+$$
+I(x+u,y +v) \approx I(x,y) + \begin{bmatrix} I_x & I_y \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix}
+$$ 
+
+Replacing this in \ref{eq:harris1} we get:
+
+$$
+E(u,v) \approx \sum\limits_{x,y} { w(x,y) [I(x,y)  + \begin{bmatrix} I_x & I_y \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix} - I(x,y)]^2  }
+$$
+
+$$
+E(u,v) \approx \sum\limits_{x,y} { w(x,y) \begin{bmatrix} I_x & I_y \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix} ]^2  }
+$$
+
+$$
+E(u,v) \approx \begin{bmatrix} u & v \end{bmatrix} \sum\limits_{x,y} w(x,y) \underbrace{\begin{bmatrix} {I_x}^2 & I_x I_y \\ I_x I_y & {I_y}^2 \end{bmatrix}}_{H} \begin{bmatrix} u \\ v \end{bmatrix}
+$$
 
 
-Optical Flow
+Eigenvalues of H can be used to detect corners. When both eigenvalues have large magnitude, the window contains a corner. If just one 
+eigenvalue has large magnitude we have an edge and if both eigenvlaues have small magnitude we have a plain surface.
+
+Once we have corners, we can find the movement of each corner between two sucesive images using Optical Flow. The objetive 
+is to find correspondences (common points) between the two images.
+
+\subsection{Optical Flow}
 
 The optical flow methods are used to calculate motion between two sucesive image frames which are taken
  at two different times: $t$ and $t + \Delta t$.
 
-This methods have two main assumptions about the frames (citar image processing analisis and comp. vision 2008):
+This methods have two main assumptions about the frames \cite{sonka2007}:
 
-1.- The observed brightness of any object point is constant over time.
-2.- Nearby points in the image plane move in a similar manner (velocity smoothness).
+\begin{enumerate}
+\item The observed brightness of any object point is constant over time.
+\item Nearby points in the image plane move in a similar manner (velocity smoothness).
+\end{enumerate}
 
 \begin{figure}[h!]
 \begin{center}
@@ -47,7 +106,7 @@ there are a lot of pixels with the same properties and its necesary to perform s
  to each one of this pixels. 
 By the other hand, sparse optical flow just consider pixels with more odds of matching between the two frames.
 
-Lukas-Kanade method
+\subsection{Lukas-Kanade method}
 
 The Lukas-Kanade method is an sparse optical flow method, that 
 uses a search window for each pixel of interest and assums that all the pixels 
@@ -127,7 +186,7 @@ I_t(p25)
 \end{bmatrix}
 $$
 
-Where $p_1, p_2, ..., p_25$ are pixel 1, pixel 2, etc.
+Where $p_1, p_2, ..., p_{25}$ are pixel 1, pixel 2, etc.
 
 Let 
 
@@ -165,14 +224,13 @@ $$
 Ax = b
 $$
 
-A solution can be obtained by least squares, using partial derivatives of the unknowns and igualando a cero, the following expresion
+A solution can be obtained by least squares, using partial derivatives of the unknowns and equating to zero, the following expresion
  is obtained:
 
 $$
 x = (A^T A)^{-1} A^T b
 $$
 
-Invertibility 
 
 $A^T A$ will be invertible depending on the pixels of the image, in order to increment the odds of obtain a solution the Lukas Kanade method use corners.
 
@@ -181,5 +239,65 @@ Even if $A^T A $ is invertible, if its values are very small it can be ill condi
 For this reason its necesary to check the eigenvalues of $A^T A$, if they are zero or very small, then it not possible to find a solution.
 
 
+\subsection{SURF}
+
+This algorithm finds image features looking for strong responses in two ortogonal directions in order to detect points that are strong to rotation or translation transformations. For this purpose the determinant of the Hessian matrix calculated for each pixel is used:
+
+
+$$
+H = \begin{bmatrix} I_{xx} & I_x I_y \\ I_x I_y & I_{yy} \end{bmatrix} \begin{bmatrix} u \\ v \end{bmatrix}
+$$
+
+$$
+det(H) = I_{xx} I_{yy} - I_{xy}^2;
+$$
+
+
+The second order partial derivatives are approximated using just a box filter, in other words 
+summing and substracting pixel values instead of using the classical gaussian weighing. 
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.35]{images/surf_mask}
+\caption{Left to right: the (discretised and cropped) Gaussian second order partial derivatives 
+in y-direction and xy-direction, and approximations using box filters. 
+Grey regions are equal to zero. Image extracted from \cite{Bay06surf}}
+\end{center}
+\end{figure}
+
+This filter is applied to each pixel of the image, obtaining the value $det(H)$ for each one of the pixels. 
+
+When extracting features usually the image is scalled (scale-space) to different sizes in order 
+to find image structures 
+at different scales. SURF algorithm instead of scale the image, scales the filter applied to the 
+image, increasing the speed of the calculations in one order of magnitude.
+
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.35]{images/surf_scale}
+\caption{Left to right: Traditional approach to produce scale-space scaling image and applying gaussian filter. SURF approach to produce scale-space scaling the filter and mainting the image size. Image extracted from \cite{miguel}}
+\end{center}
+\end{figure}
+
+
+In order to find interest points a non-maximal supression is applied, in order to mantain only points above certain threshold. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.28]{images/surf_nb}
+\caption{Non-Maximal Suppression. The pixel marked X is selected as a maxima if it greater than the 
+surrounding pixels on its interval and intervals above and below. Image extracted from \cite{OpenSURF}}
+\end{center}
+\end{figure}
+
+After this step a set of interest points is obtained. Then a interpolation is applied, in order to find the location 
+at sub-pixel accuracy.
+
+Once the set of points is calculated, a descriptor to each point is generated. The descriptor is calculated relative to a dominant 
+orientation, in order to reach rotation invariance.
+ 
+The following features are used to describe a point $v=\{dx,dy,|dx|.|dy|\}$ this features are calculated in several regions 
+around the interest point. Obtaining a vector of 64 components that is normalized to reduce the effect of changes in the image 
+intensities. A complete explanation of how this algorithm works can be found in \cite{OpenSURF}
 
 

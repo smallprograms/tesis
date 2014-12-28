@@ -1,10 +1,24 @@
 
 \section{Pinhole Camera Model}
 
-\begin{figure}[h!]
+The pinhole camera model describes the mathematical relationship between the points of the image plane and the 3D points captured by an 
+ideal pinhole camera. In the context of this work, this model is useful to explain how the depth is calculated by Kinect and 
+how to reproject points in the photoconsistency method.
+
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=1]{images/pinhole}
-\caption{Pinhole Camera Model}
+\includegraphics[scale=0.15]{images/pinhole-camera}
+\caption{Pinhole camera}
+\label{fig:pinhole}
+\end{center}
+\end{figure}
+
+In the pinhole camera all rays pass from the scene to a photosensitive material through a pinhole, in order to form the image.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.25]{images/pinhole-coordinates}
+\caption{Pinhole camera coordinates system}
 \label{fig:pinhole}
 \end{center}
 \end{figure}
@@ -66,6 +80,7 @@ corresponding disparity.
  \frac{d}{f} = \frac{D}{Z_k} 
 \end{equation}
 
+Then $Z_k$ can be obtained from \ref{eq:disparity1} and \ref{eq:disparity2}. Where variables $Z_0$,$b$ and $f$ are known.
 
 \section{Sensor Captured Data}
 
@@ -75,41 +90,52 @@ The RGB color image has three channels: Red, Green and Blue. And each image colo
 combining this three colors. With a resolution of 640x480 pixels and 1 byte per channel. The sensor can 
 capture color images at higher resolutions, but in our case we need just one color per depth map pixel.
 
+The depth map is like a gray scale image where the value of each pixel is the object distance to the sensor in the viewing axis. 
+The depth map is an image with a resolution of 640x480 and one channel of 2 bytes. We use meters as distance unit.
 
-The depth map is gray scale image and the intensity of each pixel is proportional to object distance. 
-Most distant objects have greater intensitys than closer objects. The depth map is an image with a resolution of 
-640x480 and one channel of 2 bytes.
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.3]{images/color_depth.png}
+\caption{Left: RGB image, right: depth map converted to a grayscale image (0-255 values) for visualization purposes}
+\label{fig:colordepth}
+\end{center}
+\end{figure}
 
-The depth image data implicity contains the objects world coordinates, the relation between depth map 
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.25]{images/3d_point_cloud.png}
+\caption{Different perspectives of 3D color point cloud obtained combining the RGB image colors and the depth map 3D points}
+\label{fig:colorpcloud}
+\end{center}
+\end{figure}
+
+
+The depth map implicity contains the objects world coordinates, the relation between depth map 
 and world coordinates is described as follows:
 
 \begin{equation}
-\label{eq:disparity2}
+\label{eq:dasdf}
  X=\frac{(x-cx)*Z}{f}
 \end{equation}
 
 \begin{equation}
-\label{eq:disparity2}
+\label{eq:dispadsfy2}
  Y=\frac{(y-cy)*Z}{f}
 \end{equation}
 
-\begin{equation}
-\label{eq:disparity2}
- Z=\frac{depthVal}{factor}
-\end{equation}
 
-Where $(cx,cy)$ is the image principal point (projection of optical center on the image plane). f is the camera 
-focal length, depthVal is the value of depth map at position $(x,y)$ of depth map image and factor is used to convert 
-the depth value to real world distance in mm or m, depending on the software configuration. This factor is determined by 
-the digital format used to store the depth data on the 
-computer and it is dependant on the software used to access device data.
+Where $(cx,cy)$ is the image principal point (projection of optical center on the image plane), f is the camera 
+focal length, $(x,y)$ are the 2D coordinates in the depth map plane (640 pixels width, 480 pixels height) and $Z$ is the distance in the viewing axis from the camera to the object that is in position $(x,y)$ of depth map.
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=1]{images/coordinates}
+\includegraphics[scale=0.55]{images/coordinates}
 \caption{Kinect coordinates system}
 \label{fig:coordinates}
 \end{center}
 \end{figure}
+
+In this work we will use the RGB image, the depth map and the point cloud obtained combining both.
 
 

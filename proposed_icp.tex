@@ -1,6 +1,15 @@
 \section{Proposed Algorithm}
+
+\subsection{Proposed ICP Algorithm}
+
+\begin{algorithm}
+\caption{Proposed ICP algorithm}
 \begin{algorithmic}[1]
-\State init R,t using Optical Flow
+\State estimate $R_1,t_1$ using SURF
+\State estimate $R_2,t_2$ using Optical Flow
+\State calculate $P_1$ applying photoconsistency method with $R_1,t_1$
+\State calculate $P_2$ applying photoconsistency method with $R_2,t_2$
+\State set $R,t$ as $R_1,t_1$ if $P_1$ is minor than $P_2$, set as $R_2,t_2$ in other case.
 \State A = sobelFilter(A)
 \State B = sobelFilter(B)
 \State A' $\leftarrow$ transform(A,R,t) 
@@ -10,31 +19,100 @@
 \If {$e_i < umbral$ OR  $i > maxIterations$} 
 	\State return R,t
 \Else
-	\State goto step 4
+	\State goto step 8
 \EndIf
 \end{algorithmic}
+\end{algorithm}
 
 
-In the first step the proposed algorithm uses optical flow to obtain a first estimation of 
+A photoconsistency measure is used to compare the quality of different estimation of the sensor
+ position and orientation. A good estimation of the relative transform between two captures, implies 
+a small diference between the first RGB image projected using the relative transform and the second RGB 
+image. Using this calculation we can compare and choose the best estimations of R,t.
+
+In the first step the proposed algorithm uses SURF and optical flow to obtain two candidate estimations of 
 R,t for the ICP algorithm. The used camera captures both depth and color 
 information, for each pair of consecutive color captures optical flow 
 is applied, obtaining pairs of correspondences between both captures. 
 
-The domain of optical flow is on the 2D image space, but using 
+SURF and optical flow work on the 2D image space, but using 
 the 3D information from the depthmap its possible to get the 3D position 
 of the each pair of correspondences respect to the camera. 
 
 Having pairs of 3D points, one point of the capture at time t and other point 
 of the capture at time t + 1 its possible to obtain the rotation R and translation t
- that minimizes the distances between the correspondences. Obtaining the initial guess 
- for ICP.
+ that minimizes the distances between the correspondences. Obtaining a possible initial guess 
+ for ICP. Then both estimations are compared using the photoconsistency measure, choosing 
+the estimation with less photometric error.
 
 
-Then both point clouds are filtered, removing plain surfaces, thus obtaining point clouds 
+\subsection{Complete process}
+
+The complete registration process can be described by the following algorithm:
+
+\begin{algorithm}
+\caption{General algorithm}
+\begin{algorithmic}[1]
+\State read prevFrame
+\While {read frame} 
+\State edgeICP(frame,prevFrame)
+\State addGraphEdge(frame,prevFrame)
+\ForAll {oldFrame previous to prevFrame } 
+\State detectLoop(frame,oldFrame)
+\If {loopDetected}
+\State addGraphEdge(frame,oldFrame)
+\EndIf
+\EndFor
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+Consecutive frames are readed and then both point clouds are filtered, removing plain surfaces, thus obtaining point clouds 
 with a lesser amount of points. With this ICP will work on point clouds that contains around 
-only 3\% of the original points. But this points are highly representative for registration purposes.
+only 30\% of the original points. But this points are highly representative for registration purposes.
 
 Finally the classical ICP algorithm is applied to the point clouds.
+
+A graph is generated in the process. Adding spatial restrictions between sucesive frames and also between non-sucesive but similar 
+frames. In order to reduce drift with a graph optimization approach.
+
+
+The filtering method uses Sobel operator over a grayscale version of the RGB image and also geometrical information.
+
+\begin{algorithm}
+\caption{Edge filtering algorithm}
+\begin{algorithmic}[1]
+\State grayImageSrc = RGBtoGray(srcImage)
+\State grayImageTgt = RGBtoGray(tgtImage)
+\State sobelSrc = sobelFilter(grayImageSrc)
+\State sobelTgt = sobelFilter(grayImageTgt)
+\State T = RigidTransformationTo(sobelSrc,sobelTgt)
+\State intersectionTgt = applyTransform(SobelSrc,T);
+\State intersectionTgt = intersectionTgt AND sobelTgt;
+\State Tinv = invert(T)
+\State intersectionSrc = applyTransform(intersectionTgt,Tinv)
+\ForAll {x in [0-640] and y in [0-320] } 
+\If {$intersectionSrc(x,y) > 0$ AND $DepthMapSrc(x,y) > 0$}
+\State p = get3DPoint(x,y,DepthMapSrc(x,y)
+\State srcPointCloud.addPoint(p)
+\EndIf
+\If {$intersectionTgt(x,y) > 0$ AND  $DepthMapTgt(x,y) > 0$}
+\State p = get3DPoint(x,y,DepthMapTgt(x,y)
+\State tgtPointCloud.addPoint(p)
+\EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+Where sobelfilter is a threshold applied to image filtered with Sobel operators \ref{eq:sobelGrad}, T is a 3x3 rigid transformation matrix (2D rotation, 2D translation). 
+Finaly intersectionTgt and intersectionSrc are binary images that contains values greater than zero in pixels that passed the filter. The key idea
+ is that they are identical images, with different orientations because they where captured from different camera postion or rotation. Having 
+this two identical images allows to filter from the two point clouds those points that have no match in the other point cloud.
+
+
+
+An important problem of the registration process is the drift, which is the accumulated error, very important when the number of captures increases. 
+
 
  
 
