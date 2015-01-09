@@ -20,32 +20,43 @@ Where $x=\{x_1,x_2,...,x_n\}$ and each $x_i$ represents a parameter block , $z_{
  and the information matrix  of a constraint 
 relating parameters $x_i$ and $x_j$.
 
-Poses and relative transformations are represented by a 7x1 vector containing a quaternion $(qx,qy,qz,qw)$ 
-for the rotation and a traslation vector $(tx,ty,tz)$.
+Poses and relative transformations are represented by a 7x1 vector containing a traslation vector
+ and a normalized quaternion for the rotation:
 
-In our case $x_i$ corresponds to a sensor pose, $z_{i,j}$ is the 
+$$ \begin{bmatrix}
+tx \\
+ty \\
+tz \\
+qx \\
+qy \\
+qz \\
+qw \\
+\end{bmatrix}
+$$
+
+In our case $x_i$ corresponds to a sensor pose, $z_{ij}$ is the 
 relative transformation between the pose i-esim and j-esim sensor capture, it is not affected by the accumulated error 
 because it is a direct measure between the two captures and $\Omega_{ij}$ is the weight or 
-the confidence we give to the restriction. $\Omega_{ij}$ is a 7x7 diagonal matrix, containg on its diagonal the confidence for each 
-parameter of the transformation.
+the confidence we give to the restriction. $\Omega_{ij}$ is a 7x7 diagonal matrix, containg on its diagonal the confidence ($\in [0,1]$) for each 
+parameter of the transformation. 
 
 This is a non linear least squares problem and can be solved using 
-methods such as for example Gauss-Newton or Levenber-Marquardt.
+methods such as for example Gauss-Newton or Levenberg-Marquardt.
 
 
-then $e_{ij}$ is defined as follows:
+Then $e_{ij}$ is a error vector (7x1) defined as follows:
 
 $$
 e(x_i,x_j,z_{ij}) = z_{ij} - \hat{z_{ij}}
 $$
 
-Where $\hat{z_{ij}}$ is the relative transformation obtained directly from the pose graph, for this reason 
+Where $\hat{z_{ij}}$ is the relative transformation between $x_i$ and $x_j$ obtained directly from the pose graph, for this reason 
 it is affected by the accumulated error.
 
 We want to find a graph configuration (updating the poses $x=\{x_1,x_2,...,x_n\}$), in order to reduce 
 the global error, correcting some poses in order to satisfy the restrictions.
 
-To simplify notation let 
+To simplify notation let: 
 
 $$
 e(x_i,x_j,z_{ij}) = e(x_i,x_j) = e_{ij}(x)
@@ -92,10 +103,15 @@ F(x + \Delta x) =  \sum\limits_{<i,j> \in C } F_{ij}(x + \Delta x)
 
 \begin{equation}
 \simeq  c_{ij} + 2 b_{ij} \Delta x + \Delta x^T H_{ij} \Delta x
+\end{equation}
+
+\begin{equation}
 =   c + 2 b \Delta x + \Delta x^T H \Delta x
 \end{equation}
 
-Then we want to know $\Delta x^T$, this is the correction to the $x_i$ and $x_j$ nodes, in order 
+Where $c=\sum{c_{ij}}, b=\sum{b_{ij}}$ and $H=\sum{H_{ij}}$.
+
+Then we want to know $\Delta x^T$, this is the correction to nodes of the graph in order 
 to have a minimum error:
 
 \begin{equation}
@@ -119,6 +135,9 @@ damping factor and backup actions to control the convergence:
 
 The $\lambda$ factor controls the size of $ \Delta x$. Allowing to change it according to the error between the iterations.
  
+Until here the approach asumes that the spaces of parameters $x$ is Euclidean. However this is not the case for the quaternion, 
+in consequence it is necessary to apply he concept of Manifold.
+
 
 
 G2o is a library that contains non linear error functions optimization 
@@ -127,13 +146,27 @@ algorithms for graphs and is widely used in registration algorithms.
 The poses where optimized using this library and specifically the 
 Levenber-Marquardt algorithm.
 
-In the thesis the following definition for $z_{ij}$ was used:
+This correction of the poses allows to spread error among the different nodes and reduce drift. The result 
+will depend on the quality of the graph.
 
-\begin{equation}
-z_{ij} = [tx ty tz qx qy qz qw]
-\end{equation}
+\subsection{Least Squares on Manifold}
 
-Where (tx,ty,tz) is a translation vector and (qx,qy,qz,qw) is a quaternion.
+A Manifold is a topology space that is locally Euclidean. In other words each point has an neighbourhood that is 
+homeomorphic to the Euclidean space. The Manifold is not necessarily Euclidean on a global space, but can be seen 
+as Euclidean in a local scale \cite{manifold}.
+
+The translation component of the parameters vector forms an euclidean space, but the rotation component does not.
+In order to afront this problem the error minimization is applied on a Manifold. The rotation is represented as a 
+quaternion to avoid the singularities of use euler angles (Gimbal Lock), but using a quaternion we have one extra 
+dimension. Because a 3D rotation can be represented with three numbers and a quaternion has four. Applying the 
+minimization directly over the quaternions lead to errors...
+
+An alternative idea is to consider the underlying space as a manifold
+and to define an operator $\boxplus$ that maps a local variation
+$\Delta x$ in the Euclidean space to a variation on the manifold,
+
+
+
 
 \subsection{Loop Closure}
 
