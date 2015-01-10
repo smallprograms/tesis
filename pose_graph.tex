@@ -10,7 +10,7 @@ graph and each restriction between two poses represents an edge. The relative
 transformation between the two poses is used as restriction and it is possible 
 to add different kinds of restrictions if more information is available.
 
-Then we have a least squares minimization problem that can be described by the following equation:
+Then we have the least squares minimization problem that can be described by the following equation:
 
 $$ F(x) = \sum\limits_{<i,j> \in C } e(x_i,x_j,z_{ij})^T \Omega_{ij} e(x_i,x_j,z_{ij}) $$
 
@@ -40,11 +40,18 @@ because it is a direct measure between the two captures and $\Omega_{ij}$ is the
 the confidence we give to the restriction. $\Omega_{ij}$ is a 7x7 diagonal matrix, containg on its diagonal the confidence ($\in [0,1]$) for each 
 parameter of the transformation. 
 
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=1.5]{images/graph_diagram2}
+\caption{Graph of poses $(x_1,x_2,..)$ with constraints $(z_{12},z_{23},...)$ relating poses}
+\end{center}
+\end{figure}
+
 This is a non linear least squares problem and can be solved using 
 methods such as for example Gauss-Newton or Levenberg-Marquardt.
 
 
-Then $e_{ij}$ is a error vector (7x1) defined as follows:
+Then $e_{ij}$ is an error vector (7x1) defined as follows:
 
 $$
 e(x_i,x_j,z_{ij}) = z_{ij} - \hat{z_{ij}}
@@ -133,9 +140,9 @@ damping factor and backup actions to control the convergence:
 (H + \lambda I) \Delta x^* = -b
 \end{equation}
 
-The $\lambda$ factor controls the size of $ \Delta x$. Allowing to change it according to the error between the iterations.
+The $\lambda$ factor controls the size of $ \Delta x$. Allowing changing it according to the error between the iterations.
  
-Until here the approach asumes that the spaces of parameters $x$ is Euclidean. However this is not the case for the quaternion, 
+The approach asumes that the spaces of parameters $x$ is Euclidean. However, this is not the case for the quaternion, 
 in consequence it is necessary to apply he concept of Manifold.
 
 
@@ -146,16 +153,16 @@ algorithms for graphs and is widely used in registration algorithms.
 The poses where optimized using this library and specifically the 
 Levenber-Marquardt algorithm.
 
-This correction of the poses allows to spread error among the different nodes and reduce drift. The result 
+This correction of the poses allows spreading error among the different nodes and reduce drift. The result 
 will depend on the quality of the graph.
 
 \subsection{Least Squares on Manifold}
 
-A Manifold is a topology space that is locally Euclidean. In other words each point has an neighbourhood that is 
+A Manifold is a topology space that is locally Euclidean. In other words each point has a neighbourhood that is 
 homeomorphic to the Euclidean space. The Manifold is not necessarily Euclidean on a global space, but can be seen 
 as Euclidean in a local scale \cite{manifold}.
 
-The translation component of the parameters vector forms an euclidean space, but the rotation component does not.
+The translation component of the parameters vector forms a euclidean space, but the rotation component does not.
 In order to afront this problem the error minimization is applied on a Manifold. The rotation is represented as a 
 quaternion to avoid the singularities of use euler angles (Gimbal Lock), but using a quaternion we have one extra 
 dimension. Because a 3D rotation can be represented with three numbers and a quaternion has four. Applying the 
@@ -163,20 +170,53 @@ minimization directly over the quaternions lead to errors...
 
 An alternative idea is to consider the underlying space as a manifold
 and to define an operator $\boxplus$ that maps a local variation
-$\Delta x$ in the Euclidean space to a variation on the manifold,
+$\Delta x$ in the Euclidean space to a variation on the manifold, $\Delta x \mapsto x + \Delta x$. 
+Mathematical details can be found in \cite{hertzberg08}. The local variation is enconded using a minimal 
+representation, the axis part of the quaternion $(q_i,q_j,q_k)$. The operator $\boxplus$ converts the 
+resulting transformation to a full quaternion.
 
+In order to define this operator, first Lets define a composition operator $\oplus$:
 
+$$
+x_i \oplus x_j = \begin{bmatrix} t_i + q_i(t_j) \\ q_i \cdot q_j \end{bmatrix}
+$$
 
+Where $q_i(t_j)$ is the vector resulting from applying rotation represented by $q_i$ to vector $t_j$ and 
+$q_i \cdot q_j$ is the standard quaternion multiplication.
+
+Then the operator $\boxplus$ is defined as follows:
+
+$$
+x_i \boxplus \Delta x_i = x_i \oplus \begin{bmatrix} \Delta t_i \\ \Delta q_i \\ \sqrt{1-||\Delta q_i||}  \end{bmatrix}
+$$
+
+Note that $\Delta q_i$ contains only axis part of the quaternion.
+
+Using this operator a new error function can be defined:
+
+$$
+\hat{e}_{ij}(\Delta x_i,\Delta x_j) = e(x_i \boxplus \Delta x_i,x_j \boxplus \Delta x_j)
+$$
+
+$$
+= e_{ij}(x \boxplus \Delta x) \approx e_{ij} + \hat{J}_{ij} \Delta x
+$$
+
+Where the Jacobian $\hat{J}_{ij}$ can be expressed as:
+
+$$
+\hat{J}_{ij} = \frac{\partial{e_{ij}(x \boxplus \Delta x)}}{\partial{\Delta x}} \bigg|_{\Delta x=0}
+$$
 
 \subsection{Loop Closure}
 
 When the sensor vists the same region at different times, for example following 
 a circular trajectory. A restriction between two non-consecutive captures can be 
 added to the graph. In the case of a circular trajectory, the accumulated error 
-is very noticeable when the initial and the final capture are connected. If a 
+is very noticeable when the initial and the final capture are connected. When a  
 restriction between this two captures is added to the graph it is possible to 
-adjust the position of all poses in order to satisfy the restriction. This 
-is called Loop Closure.
+adjust the position of all poses in order to reduce the accumulated error. Loop Closure is 
+a restriction between two non-consecutive poses.
 
 
 \begin{figure}[!h]
@@ -186,8 +226,22 @@ is called Loop Closure.
 \end{center}
 \end{figure}
 
-\subsection{Loop Detection}
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[scale=0.65]{images/loop_detection}
+\caption{Example of loop closure constraint}
+\end{center}
+\end{figure}
+
+\subsubsection{Loop Detection}
+
+In order to add loop closure constraints it is necessary to detect areas of the scene 
+ that where previously visited. For this, images that have close euclidean distance between 
+their corresponding poses.
 
 In order to detect previously visited areas of the scene SURF \cite{Bay06surf} feature detector 
-is used. 
+is used. SURF keypoints are calculated and then the descriptors for each keypoint are obtained for 
+each image.
+
+ Then  the images are compared, using the difference between SURF descriptors.   
 

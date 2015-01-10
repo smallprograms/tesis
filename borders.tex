@@ -6,70 +6,125 @@ such as object recognition, object traking, etc.
 
 
 The Sobel filter is a wellknown edge detector. To apply this filter is necessary to 
-convolve the image with two 3x3 matrix, to find intensity changes in vertical and 
+convolve the image with two 3x3 matrices, to find intensity changes in vertical and 
 horizontal directions:
 
 \begin{center}
 \includegraphics[scale=0.35]{images/sobel}
 \end{center}
 
-Then both results are merged using the bellow expression and then a threshold is used to filter out non interest areas:
+Then both results are merged using the bellow expression and a threshold is used to filter out non interest areas:
 
 \begin{equation}
 G = \sqrt{G_x^2+ G_y^2}
 \label{eq:sobelGrad}
 \end{equation}
 
-This filter is applied directly into a grayscale representation of the original RGB image. Obtaining a binary image 
-that contains edges representing geometrical and visual changes in the scene.
+This filter was used to obtain a representative set of points, avoiding that walls and another 
+plain surfaces containing a huge amount of data, lead to an incorrect alineation.
+There are more advanced edge filtering techniques, such as the Canny edge filter, but it involves 
+a larger set of convolutions and operations. Since we don't need a high accuracy edge detection, the Sobel 
+filter is enough to reduce the set of points used in the alineation process. 
 
-%edges image
+The filter was applied directly into a grayscale representation of the original RGB image. Obtaining a binary image 
+that contains edges representing geometrical and visual changes in the scene. 
+This image can be used along with the depth map to reduce the point cloud size. Because dataset RGB and depth map images are 
+calibrated, a pixel (x,y) in the RGB image corresponds to the same (x,y) location in the depth map. Thus, we can perform filtering 
+in the RGB image and then modify depth map using the same coordinates. The binary image obtained from Sobel filter, was used 
+to reject all points not corresponding
+to these edges in the depth map. 
 
-This image can be used along with the depth map to reduce the point cloud size. Rejecting all 3D points not corresponding
-to this edges. We are interested in find correspondences between the two clouds, for this reason, edge filtering was applied
-to the image instead of the depthmap. Because using this approach it is possible to find corresponcendes between rich textured 
+Edge filtering was applied
+to the image instead of the depth map. Because using this approach it is possible to find corresponcendes between rich textured 
 surfaces, even if they don't exhibit local geometrical changes.
 
-The applied threshold was low, in order to have thicker edges. Because if too few points pass the filter, important information 
-could be lost, difficulting a correct alieation. 
+The applied threshold for the Sobel filter was low, in order to have thicker edges. Because if too few points pass the filter, important information 
+could be lost, difficulting a correct alieation
 
 
-In combination with a low threshold, more points where added, based on their 
-distance to the sensor:
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.25]{images/vecindarioDepth}
+\end{center}
+\caption{Depth map pixel neighboorhod}
+\label{fig:neighboor}
+\end{figure}
 
-\begin{equation}
-\bar{z} = \frac{1}{8} \sum \limits_{p \in neighboor} p.z
-\end{equation}
-
-The neighborhood is defined as shown in figure ~\ref{fig:neighboor}. Then points satisfying the following condition where added:
-
-\begin{equation}
-p.z <= \bar{z}
-\end{equation}
+In combination with a low threshold used in the Sobel filter applied to the grayscale image, all points of the neighborhood of the corresponding depth map pixels passing the Sobel filter were added. 
+The neighborhood is defined as shown in figure ~\ref{fig:neighboor}. The purpose of this is to have enough points even if few points
+ pass Sobel filter.
 
 This filter is applied to both, source and target captures. Making this, it is possible to apply a very useful filtering: remove 
-from the edges binary image all the points that are not simultaneously in both captures. For this, the rotation and translation 
-of the source 2D image that minimizes the distance to the target 2D image is applied and then an AND operation is applied between 
-the two images. As result, we work with two point clouds that have a huge amount of overlaping points, improving the alineation 
-result.
+from both point clouds all the points that are not in common. For this, the rotation and translation 
+of the source Sobel filtered 2D image that minimizes the distance between the closest pixels of the Sobel filtered target 2D image is found and 
+then applied to each pixel of the source depth map, 
+allowing perforing an AND operation as follows: if transformed source depth map pixel has a correspondent pixel in the target depth map and 
+the euclidean distance (in the 3D space) is less than a threshold, maintain both pixels (of source and target depth maps), in other case reject them. 
 
+ As result, we work with two point clouds that have a huge amount of overlaping points, improving the alineation 
+result. The AND ensures that both depth map pixels (from source and target depth maps) are present in the two point clouds (at least from viewing 
+perspective) and the distance filtering filters out pairs of points that pass the AND filter, but are too far in the euclidean space.
 
-A Sobel filter was used to obtain a representative set of points, avoiding that walls and another 
-plain surfaces containing a huge amount of data, lead to an incorrect alineation.
-
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.35]{images/sobel_v_h.png}
-\caption{Left: Sobel vertical filtered point cloud, Right: Sobel horizontal filtered point cloud}
-\end{center}
-
-\begin{center}
-\includegraphics[scale=0.35]{images/sobel_o_g.png}
-\caption{Left: Original point cloud, Right: Sobel filtered point cloud}
+\includegraphics[scale=0.2]{images/borders_steps.png}
+\caption{Left: Image after applying sobel filter, middle: Image after adding depth map neighborhood points, right: Image after
+applying AND operation and distance filtering between the two consecutive point clouds}
 \end{center}
 \end{figure}
 
-There are more advanced edge filtering techniques, such as the Canny edge filter, but it involve 
-a larger set of convolutions and operations. We dont need an high accuracy edge detection, the Sobel 
-filter is enough to reduce the set of points used in the alineation process.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.3]{images/borders_orig.png}
+\caption{One of the point clouds before applying filter}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.3]{images/borders_consec.png}
+\caption{Two consecutive point clouds  after border filtering}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.3]{images/borders_both.png}
+\caption{Both filtered point clouds shown in the same coordinate system}
+\end{center}
+\end{figure}
+
+
+\begin{algorithm}[H]
+\caption{Edge filtering algorithm}
+\begin{algorithmic}[1]
+\State grayImageSrc = RGBtoGray(srcImage)
+\State grayImageTgt = RGBtoGray(tgtImage)
+\State sobelSrc = sobelFilter(grayImageSrc)
+\State sobelTgt = sobelFilter(grayImageTgt)
+\State T = FindRigidTransformation(sobelSrc,sobelTgt)
+\ForAll {x in [0-640] and y in [0-320] } 
+\If {$sobelSrc(x,y) > 0$ AND $DepthMapSrc(x,y) > 0$}
+\State p = (x,y,DepthMapSrc(x,y))
+\State (projx,projy) = applyRigidTransformation(T,x,y);
+\If { $DepthMapTgt(projx,projy) > 0$}
+\State pproj = (projx,projy,DepthMapTgt(projx,projy))
+\If { $euclideanDist(p,pproj) < DMAX$}
+\State srcPointCloud.addPoint(p)
+\State tgtPointCloud.addPoint(pproj)
+\EndIf
+\EndIf
+\EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+Where sobelfilter is a threshold applied to image filtered with Sobel operators \ref{eq:sobelGrad}, T is a 3x3 rigid transformation matrix (2D rotation, 2D translation). DMAX is the maximum distance allowed between the source cloud point and corresponding target cloud point. 
+Its value was setted in 0.1 (10 cm).  This value was determined empirically.
+
+The key idea is that two consecutive images are almost identical, 
+with different orientations because they where captured from different perspectives. This allows 
+to filter from the two point clouds those points that have no match in the other point cloud.
 

@@ -39,10 +39,18 @@ follows:
 
 This equations are  obtained using triangles similarity.
 
+\section{Kinect Sensor}
+
+Kinect sensor was launched at the end of 2010 by Microsoft. A structured light camera 
+used as peripheral for the Xbox 360. With solds of more than 24 million devices at february 2013.
+The sensor gained great attention from computer vision and robotics communities, because it offers 
+accurate depth information at low cost in comparison to existing alternatives.
+
 \section{Sensor Depth Calculation}
 
 The Kinect sensor consists of an infrared laser emitter, an 
-infrared camera and an RGB camera. The laser source emits a single 
+infrared camera and an RGB camera. Both cameras can work up to 30Hz. 
+The laser source emits a single 
 beam which is split into multiple beams by a diffraction 
 grating to create a constant 
 pattern of speckles projected onto the scene. This pattern is 
@@ -83,8 +91,9 @@ corresponding disparity.
 Then $Z_k$ can be obtained from \ref{eq:disparity1} and \ref{eq:disparity2}. Where variables $Z_0$,$b$ and $f$ are known.
 
 \section{Sensor Captured Data}
+\label{sec:sensor_data}
 
-The sensor obtains two images: An RGB color image and a depth map.
+The sensor obtains two images: An RGB color image and a depth map. 
 
 The RGB color image has three channels: Red, Green and Blue. And each image color is generated 
 combining this three colors. With a resolution of 640x480 pixels and 1 byte per channel. The sensor can 
@@ -137,5 +146,7 @@ focal length, $(x,y)$ are the 2D coordinates in the depth map plane (640 pixels 
 \end{figure}
 
 In this work we will use the RGB image, the depth map and the point cloud obtained combining both.
-
-
+ 
+The RGB camera has a slightly larger angle of view than the depth camera, for this reason a calibration must be done 
+in order to have RGB images and depth maps using the same coordinates. More information about 
+this process can be found in \cite{sturm12iros}.
