@@ -17,27 +17,29 @@ In the pinhole camera all rays pass from the scene to a photosensitive material 
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.25]{images/pinhole-coordinates}
+\includegraphics[scale=1]{images/pinhole-coordinates}
 \caption{Pinhole camera coordinates system}
-\label{fig:pinhole}
+\label{fig:pinhole-c}
 \end{center}
 \end{figure}
 
+In \ref{fig:pinhole-c} the point P denotes the principal point, O is the optical center and 
+f=dist(P,O) is the focal lenght.
 
-The transformation between world coordinates point P(X,Y,Z) and image coordinates p(x,y) is described as 
+The transformation between world coordinates point (X,Y,Z) and image coordinates (x,y) is described as 
 follows:
 
 \begin{equation}
 \label{eq:disparity2}
- x = \frac{f*X}{Z}
+ x = \frac{fX}{Z},
 \end{equation}
 
 \begin{equation}
 \label{eq:disparity2}
- y = \frac{f*Y}{Z}
+ y = \frac{fY}{Z}.
 \end{equation}
 
-This equations are  obtained using triangles similarity.
+These equations are  obtained using triangles similarity.
 
 \section{Kinect Sensor}
 
@@ -71,21 +73,21 @@ corresponding disparity.
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=1]{images/kinect_triangulation}
-\caption{Schematic representation of depth-disparity relation \cite{khoshelham2011accuracy}}
+\includegraphics[scale=1.65]{images/kinect_triangulation}
+\caption{Schematic representation of depth-disparity relation. Image taken from \cite{khoshelham2011accuracy}}
 \label{fig:disparity}
 \end{center}
 \end{figure}
 
 \begin{equation}
 \label{eq:disparity1}
- \frac{D}{b} = \frac{Z_0 - Z_k}{Z_0} 
+ \frac{D}{b} = \frac{Z_0 - Z_k}{Z_0},
 \end{equation}
 
 
 \begin{equation}
 \label{eq:disparity2}
- \frac{d}{f} = \frac{D}{Z_k} 
+ \frac{d}{f} = \frac{D}{Z_k}. 
 \end{equation}
 
 Then $Z_k$ can be obtained from \ref{eq:disparity1} and \ref{eq:disparity2}. Where variables $Z_0$,$b$ and $f$ are known.
@@ -124,17 +126,17 @@ The depth map implicity contains the objects world coordinates, the relation bet
 and world coordinates is described as follows:
 
 \begin{equation}
-\label{eq:dasdf}
- X=\frac{(x-cx)*Z}{f}
+\label{eq:depthmapx}
+ X=\frac{(x-x')Z}{f},
 \end{equation}
 
 \begin{equation}
-\label{eq:dispadsfy2}
- Y=\frac{(y-cy)*Z}{f}
+\label{eq:depthmapy}
+ Y=\frac{(y-y')Z}{f}.
 \end{equation}
 
 
-Where $(cx,cy)$ is the image principal point (projection of optical center on the image plane), f is the camera 
+\noindent Where $(x',y')$ is the image principal point (projection of optical center on the image plane), f is the camera 
 focal length, $(x,y)$ are the 2D coordinates in the depth map plane (640 pixels width, 480 pixels height) and $Z$ is the distance in the viewing axis from the camera to the object that is in position $(x,y)$ of depth map.
 
 \begin{figure}[H]
@@ -148,5 +150,6 @@ focal length, $(x,y)$ are the 2D coordinates in the depth map plane (640 pixels 
 In this work we will use the RGB image, the depth map and the point cloud obtained combining both.
  
 The RGB camera has a slightly larger angle of view than the depth camera, for this reason a calibration must be done 
-in order to have RGB images and depth maps using the same coordinates. More information about 
+in order to have RGB images and depth maps using the same coordinates. The dataset already has RGB images and depth maps 
+calibrated. More information about 
 this process can be found in \cite{sturm12iros}.

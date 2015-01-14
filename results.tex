@@ -1,4 +1,37 @@
 \section{Results}
 
+     The algorithm was tested using three different datasets from \cite{sturm12iros}. 
+
+\begin{center}
+\begin{tabular}{ |l|c|}
+\hline
+\multicolumn{2}{ |c| }{Dataset Freigburg1 Desk (100 frames)} \\
+\hline
+RPE(Relative Pose Error) RMSE per second & 0.303387 m \\
+\hline
+RPE(Relative Pose Error) after graph optimization RMSE per second &  0.066331 m \\
+\hline
+ATE(Absoule Transform Error) RMSE & 0.103475 m  \\
+\hline
+ATE(Absoule Transform Error) after graph optimization RMSE & 0.040286 m \\
+\hline
+\end{tabular}
+\end{center}
 
 
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.75]{images/freiburg1_desk_1_100_movements.png}
+\caption{Freigburg 1 desk: Ground truth trajectory (black) and estimated trajetory (blue) before graph optimization}
+\label{fig:jan}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[scale=0.75]{images/freiburg1_desk_1_100_optimized.png}
+\caption{Freigburg 1 desk: Ground truth trajectory (black) and estimated trajetory (blue) after graph optimization}
+\label{fig:jan}
+\end{center}
+\end{figure}
