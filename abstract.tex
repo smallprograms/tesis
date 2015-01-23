@@ -1,0 +1,19 @@
+
+\chapter*{Abstract}
+
+3D point cloud registration is an important step in every 3D reconstruction system. This thesis proposes to register 
+3D point clouds, applying a filtering step where only edges that appear 
+in the two point clouds to be aligned pass the filter. For this purpose a combination of visual and geometrical information is 
+used along with the Iterative Closest Point (ICP)
+  algorithm and a pose graph optimization method. The proposed technique reduces the amount of calculations 
+involved because only between 10\% and 20\% of original points are used as input for the ICP algorithm, increasing 
+the quality of the alignment, working with the most representative subset of the data. At difference to other techniques 
+involving edge filtering along with ICP, this proposal increments the odds of a correct alignment filtering out non common 
+data from the pair of point clouds to be aligned. Quantitative results shows the advantages of the proposed method. A 
+public available dataset was used, 
+providing the source 
+code and all the necessary information to compare and replicate the presented results.
+
+\section*{Keywords}
+
+3D reconstruction, simultaneous location and mapping, iterative closest point, Kinect, point cloud

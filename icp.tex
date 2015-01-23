@@ -1,24 +1,21 @@
 
 \section{Iterative Closest Point}
 
-The ICP (Iterative Closest Point) algorithm \cite{mckay92} is widely used for 3D Reconstruction. This algorithm tries to find 
-the optimal rotation and translation between two sets of points (point clouds) that minimizes the distance between corresponding 
+The ICP algorithm \cite{mckay92} is widely used for 3D reconstruction. This algorithm tries to find 
+the optimal rotation and translation between two point clouds that minimizes the distance between corresponding 
 points. Corresponding points are determined assigning to each point of one cloud, the closest point in the other cloud.
 
-As result at each iteration we have a set of pairs of closest points, where each pair contains one point of each cloud. This set 
+As result at each iteration we have a set of pairs of the closest points, where each pair contains one point of each cloud. This set 
 of pairs changes from iteration to iteration, since the rotation and translation updates the points of one of the point clouds. If enough correct 
 corresponding points are find in each iteration, the algorithm converges to the correct transformation that aligns both point clouds.
 
 
-%\tiny
-R : 3x3 Rotation matrix
-
-t : 3x1 Translation vector
-
-A,A',B : Point sets $\in R^3$
-
-p : Pair set
-
+\begin{itemize}
+\item $R$ : $3\times3$ Rotation matrix
+\item $t$ : $3\times1$ Translation vector
+\item $A,A',B$ : Point sets $\in R^3$
+\item $p$ : Pair set
+\end{itemize}
 %\small
 \begin{algorithm}
 \caption{ICP algorithm}
@@ -28,7 +25,7 @@ p : Pair set
 \State p $\leftarrow$ closestPoints(A',B)
 \State $\{R,t\} \gets$ updateTransformation(p)
 \State $e_i = meanSquareError(p)$
-\If {$e_i < umbral$ OR  $i > maxIteracions$} 
+\If {$e_i < threshold$ OR  $i > maxIteracions$} 
 	\State return R,t
 \Else
 	\State go to step 2
@@ -39,9 +36,9 @@ p : Pair set
 
 We want to find R and t that minimizes the following expression:
 
-$$ \sum\limits_{i=1}^n ||R a_i -  b_i - t ||^2 $$
+$$ \sum\limits_{i=1}^n ||R a_i -  b_i - t ||^2 \ ,$$
 
-Where each $a_i,b_i$ is a vector $\in \mathbb{R}^3$, R is a 3x3 rotation matrix and t is a vector $\in \mathbb{R}^3$
+\noindent where each $a_i,b_i$ is a vector $\in \mathbb{R}^3$, R is a $3\times3$ rotation matrix and t is a vector $\in \mathbb{R}^3$
 
 
 We make a change of coordinates, placing the centroid of each cloud as origin:
@@ -49,86 +46,71 @@ We make a change of coordinates, placing the centroid of each cloud as origin:
 
 
 \begin{align*}
- \bar{a} = \frac{1}{n} \sum\limits_{i=1}^n {a_i} \\ 
-  \bar{b} = \frac{1}{n} \sum\limits_{i=1}^n {b_i} \\  
-   {a'}_i = a_i - \bar{a}\\
-   {b'}_i = b_i - \bar{b} 
+ \bar{a} = \frac{1}{n} \sum\limits_{i=1}^n {a_i} \ ,\\ 
+  \bar{b} = \frac{1}{n} \sum\limits_{i=1}^n {b_i} \ , \\  
+   {a'}_i = a_i - \bar{a} \ , \\
+   {b'}_i = b_i - \bar{b} \ ,
 \end{align*}
 
-Replacing
+\noindent replacing:
 
-\[ \sum\limits_{i=1}^n ||R a_i -  b_i - t ||^2 = \sum\limits_{i=1}^n ||R ( {a'}_i + \bar{a} ) -  ( {b'}_i  + \bar{b} ) - t ||^2  \]
+\[ \sum\limits_{i=1}^n ||R a_i -  b_i - t ||^2 = \sum\limits_{i=1}^n ||R ( {a'}_i + \bar{a} ) -  ( {b'}_i  + \bar{b} ) - t ||^2  \ . \] 
 
-The desired translation is $t = R \bar{a} - \bar{b} $. We must consider the rotation in this expression, since 
-the rotation of a cloud will change the position of all points and as consecuence the translation.
+\noindent The desired translation is $t = R \bar{a} - \bar{b} $. We must consider the rotation in this expression, since 
+the rotation of a point cloud will change the position of all points and as consequence the translation.
 
-Replacing t in our previous expression we get:
+Replacing $t$ in our previous expression we get:
 \begin{flalign*}
-&\sum\limits_{i=1}^n ||R a'_i - b'_i ||^2  \\ 
-&=\sum\limits_{i=1}^n (R a'_i - b'_i)^t (R a'_i - b'_i) \\
-&=\sum\limits_{i=1}^n ( (R a'_i)^t R a'_i - (R a'_i)^t b'_i  - b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \\
-&=\sum\limits_{i=1}^n ( a_i^{\prime t} R^t R a'_i - 2 b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \\ 
-&=\sum\limits_{i=1}^n (a_i^{\prime t} a'_i -  2 b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) 
+&\sum\limits_{i=1}^n ||R a'_i - b'_i ||^2  \ , \\ 
+&=\sum\limits_{i=1}^n (R a'_i - b'_i)^t (R a'_i - b'_i) \ , \\
+&=\sum\limits_{i=1}^n ( (R a'_i)^t R a'_i - (R a'_i)^t b'_i  - b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \ , \\
+&=\sum\limits_{i=1}^n ( a_i^{\prime t} R^t R a'_i - 2 b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \ , \\ 
+&=\sum\limits_{i=1}^n (a_i^{\prime t} a'_i -  2 b_i^{\prime t} R a'_i + b_i^{\prime t} b'_i) \ .
 \end{flalign*}
 
 
-Minimize the previous expression is equivalent to maximize:
+\noindent Minimize the previous expression is equivalent to maximize:
 
 \begin{align*}
-& \sum\limits_{i=1}^n b_i^{\prime t} R a'_i =  Trace ( \sum\limits_{i=1}^n R a'_i  b_i^{\prime t} ) = Trace (RH) \\
-& H=\sum\limits_{i=1}^n a'_i  b_i^{\prime t} 
+& \sum\limits_{i=1}^n b_i^{\prime t} R a'_i =  Trace ( \sum\limits_{i=1}^n R a'_i  b_i^{\prime t} ) = Trace (RH) \ ,\\
+& H=\sum\limits_{i=1}^n a'_i  b_i^{\prime t} \ . 
 \end{align*}
 
 
-\begin{mybox}{gray}{Lemma}
-For any positive definite matrix $A A^t$ and any orthogonal matrix B 
+Lemma (\ref{ap:lemma}): For any positive definite matrix $A A^t$ and any orthogonal matrix B
 
-\[ Trace( A A^t ) \geq Trace (B A A^t) \]
-
-\end{mybox}
+\[ Trace( A A^t ) \geq Trace (B A A^t) \ . \]
 
 
-Proof of lemma:
-
-Let $a_i$ be the ith column of A, then:
-
-\begin{align*}
-Trace( B A A^t ) = Trace (A^t B A) = \sum\limits_i a_i^t B a_i 
-\end{align*}
-
-But by the Schwarz inequality
-
-\[ a_i^t B a_i \leq \sqrt{ a_i^t a_i (a^t B^t B a_i)} = a^t a_i \]
-
-
-Now using this lema we will maximize our expression:
+\noindent Now using this lemma we will maximize our expression:
 
 
 Lets apply the SVD factorization to H, then:
 
-\[ H = U \Sigma V^t \]
+\[ H = U \Sigma V^t \ , \]
 
-Where U and V are 3x3 orthonormal matrices and $\Sigma$ is a diagonal matrix with no negative elements.
+\noindent where U and V are $3\times3$ orthonormal matrices and $\Sigma$ is a diagonal matrix with no negative elements.
 
 Let $ R = V U^t $ then :
 
 \begin{align*}
-RH = VU^t U \Sigma V^t = V \Sigma V^t = V \Sigma^{\frac{1}{2}} (V \Sigma^{\frac{1}{2}})^t
+RH = VU^t U \Sigma V^t = V \Sigma V^t = V \Sigma^{\frac{1}{2}} (V \Sigma^{\frac{1}{2}})^t \ ,
 \end{align*}
 
-Which is symetrical and positive definite.
-Therefore from Lemma, for any 3x3 orthonormal matrix B
+\noindent which is symmetrical and positive definite.
+Therefore, from lemma, for any $3\times3$ orthonormal matrix B :
 
-\[ Trace( R H ) \geq Trace( B R H ) \]
+\[ Trace( R H ) \geq Trace( B R H ) \ . \]
 
-Thus the solution for our problem is 
+Thus, the solution for our problem is :
 
 \begin{align*}
-R = V U^t \\
-t = R \bar{a} - \bar{b}
+R = V U^t \ , \\
+t = R \bar{a} - \bar{b} \ .
 \end{align*}
 
 
-This means that if we apply the rotation R and the translation t, to each point of the point cloud A, the distance between closest points of 
-transformed point cloud A with point cloud B will be minimal. When registering a set of points from a real 3D scene it allows to obtain a correct 
-align between sucesive scene captures.
+\noindent This means that if we apply the rotation $R$ and the translation $t$, to each point of the point cloud A, the distance between the
+ closest points of 
+transformed point cloud A with point cloud B will be minimal, when registering a set of points from a real 3D scene it allows aligning 
+successive scene captures.

@@ -1,40 +1,44 @@
-\section{Photoconsistency}
+\section{Photo-consistency}
+\label{sec:photocons}
 
-Having a estimation of rotation R and translation t, it is possible to reproject the 3D points to the 2D image plane using the 
+Having an estimation of rotation R and translation $t$ to align source point cloud with target point cloud, 
+it is possible to re-project the 3D points to the 2D image plane using the 
 camera parameters. If we have a point $p=(X,Y,Z)$ we can project it to the image plane using the following formula obtained 
 from the pinhole camera model:
 
 \begin{equation}
-U(p) = (\frac{fX}{Z} - c_x, \frac{fY}{Z} - cy)
+U(p) = (\frac{fX}{Z} - c_x, \frac{fY}{Z} - c_y) \ ,
 \label{eq:reproject}
 \end{equation}
 
-Where $f$ and $(cx,cy)$ denote the focal length and optical center of the pinhole camera model. 
-We can apply the transformation R,t to the point before projecting it:
+\noindent where $f$ and $(c_x,c_y)$ denote the focal length and optical center of the pinhole camera model. 
+We can apply the transformation $R,t$ to the point before projecting it:
 
 \begin{equation}
-T(R,t,p) = Rp + t = p'
+T(R,t,p) = Rp + t = p' \ .
 \end{equation}
 
-Image coordinates  $p'$ are used to obtain image color in the target image, making a reprojection of $p'$ to the image plane.
+\noindent Image coordinates  $U(p')$ are used to obtain image color in the target image, making a re-projection of $p'$ to the image plane.
 
-Then we can apply the following error formula, that represents the color differences between the reprojected image and 
+Then we can apply the following error formula, that represents the color differences between the re-projected image and 
 the target image. 
 
 \begin{equation}
-E(R,t) = \frac{1}{N} \sum\limits_{p \in pointCloudSource} |RGBsource(U(p)) - RGBtarget(U(p'))|
+E(R,t) = \frac{1}{N} \sum\limits_{p\ \in\ C_s} |I_s(U(p)) - I_t(U(p'))| \ ,
 \end{equation}
 
 
-Where:
+\noindent where:
 \begin{itemize}
 \item N is the number of points.
-\item $U(p)$ is the reprojection function \ref{eq:reproject} that returns (x,y) image coordinates of an (X,Y,Z) point.
-\item  $RGBsource(x,y)$ is function that returns a vector (R,G,B) representing image color at location (x,y). Where 
-R,G,B are positive integers between 0 and 255. The same holds for $RGBtarget(x,y)$. Both functions represent 
+\item $U(p)$ is the re-projection function \ref{eq:reproject} that returns $(x,y)$ image coordinates of an $(X,Y,Z)$ point.
+\item  $I_s(x,y)$ is function that returns a vector $(R,G,B)$ representing image color at location $(x,y)$. Where 
+R,G,B are positive integers between 0 and 255. The same holds for $I_t(x,y)$. Both functions represent 
 source and target images respectively.
+\item $C_S$ is the source point cloud.
+\item When applying the formula it must be verified that $I_t(U(p'))$ is valid.
 \end{itemize}
 
-In this case the average color difference vector norm is used, but there are many ways of measure photoconsistency, 
-for example using a color space different from RGB or using another error metric. Photoconsistency is widely used in 3D reconstuction, for example some works using it are \cite{Whelan13},\cite{kerl13icra} and \cite{Newcombe10livedense}
+In this case the average color difference vector norm is used, but there are many ways of measure photo-consistency, 
+for example using a color space different from RGB or using another error metric. Photo-consistency is widely used in 3D reconstruction, for example some works using it are \cite{Whelan13},\cite{kerl13icra} and \cite{Newcombe10livedense}.
 

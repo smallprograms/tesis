@@ -1,8 +1,33 @@
-Proposed algorithm exihibit a very good performance in small trajetories (maximum 20 captures), 
-most of the error is due to accumulated error. A more complete pose graph optimization algorithm 
-should resolve this problem.
 
-Using edges instead of the complete point cloud in order to perform the alineation of captures 
-reduces algorithm complexity and exhibit noticeable improvements in the result. 
 
+This thesis provides a registration system for RGB-D captures that uses geometrical and visual information 
+to perform the alignment between related captures.  
+
+A first estimation of the relative transformation between two suscesive captures was obtained using 
+visual information, using optical flow and SURF methods. Edge filtering over the RGB image was applied, 
+using the visual information to detect a representative subset 
+of the data. Combining this with the geometrical information provided by the depth map, filtered point clouds 
+where obtained and aligned using the ICP algorithm. 
+
+Using a representative subset instead of the complete point cloud in order to perform the alignment of captures 
+reduces necessary calculations and exhibit noticeable improvements in the result. The differences become visible 
+when adding constraints between non-consecutive frames, in this case using the filtered point cloud instead of 
+the full point cloud allows performing a better alignment, being less prone to get stuck in a local optimum. The 
+proposed filtering reduces the amount of points without correspondences between the two point clouds and removes 
+flat surfaces that with a bigger amount of points can dominate alignment towards an incorrect result.
+
+
+Promising results where obtained using a freely available dataset. The method was evaluatated quantitatively and 
+also some images of the 3D reconstructed scenes where obtained for a visual inspection of the results.
+
+\section{Future Work}
+
+  Results can be greatly improved adding some outlier detection method and making the corresponding correction when one 
+outlier appears, because one incorrect align between two captures can ruin the complete result. These problems can happen 
+when one of the captures exhibit poor visual features or there is an abrupt change in the sensor movement. 
+
+  Another important part of the system that can be improved is the pose graph, where the quality of the restrictions 
+determines the quality of the end result. For example removing some restrictions and adding restrictions obtained with a 
+different alignment method or performing some parameters tunning of the proposed method, in 
+order obtain better relative alignment when certain conditions are satisfied.
 

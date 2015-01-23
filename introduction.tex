@@ -1,39 +1,40 @@
-
-The 3D scene reconstruction problem consists in take the
+\indent The 3D scene reconstruction problem consists of taking the
 necessary information from a real scene in order to reconstruct
 it in a three dimensional space, usually to be displayed 
 in a computer. 
 
-The objetive is to represent in the most accurate way the geometric scene details, obtaining rich 
-information about the scene that is not explicity contained on a single image and then use this 
-to reconstruct the scene or use it to perform a more advanced task that depends of the scene geometry. 
-Some applications of 3D scene reconstruction are : Autonumous vehicle or robot navigation, where there is crucial to have 
-the scene geometry in order to locate paths and obstacles. Augmented Reallity, where a virtual 3D object
- is added to a real video of the scene. Parts inspection in a manufacturing plant, where is necesary to detect
- fabrication defects on some objects. Statues and Buildings preservation, in order to have a digital representation 
-of the objects and beign able to reproduce or mantain them.
+The goal is to represent in the most accurate way the geometric scene details, obtaining rich 
+information about the scene that is not explicitly contained in a single image, and then use this 
+to reconstruct the scene or to perform a more advanced task that depends on the scene geometry. 
+3D scene reconstruction has several applications, for example in the field of autonomous robot navigation it is crucial to have 
+the scene geometry in order to locate paths, obstacles and know current robot location, this problem is known as 
+Simultaneous Localization and Mapping (SLAM). Another application of 3D scene reconstruction is augmented reality, 
+where a virtual 3D object is added to a real video of the scene. 3D scene reconstruction also is useful in parts inspection 
+in a manufacturing plant, where it is necessary to detect
+ fabrication defects on some objects, another application is in statues and buildings preservation, in order to have a digital representation 
+of the objects and being able to reproduce or maintain them. There are many areas where 3D scene reconstruction is important.
 
  
 In general the information is acquired
  from the scene with optical devices, such as RGB cameras or depth sensors.
-Most of 3D scene reconstruction methods can be classified in passive methods and active methods \cite{lanman}.
-The passive method work without controlling the light in the scene, they just receipt light (ordinary cameras). 
-By the other hand active methods alter the light in the scene, with a light emisor and its corresponding 
+Most of 3D scene reconstruction methods can be classified into passive methods and active methods \cite{lanman}.
+Passive methods works without controlling the light in the scene, the sensors used by these methods just receive light (ordinary cameras). 
+On the other hand active methods alter the light in the scene, with a light transmitter and its corresponding 
 receptor, projecting patterns of light in order to simplify the matching process prior to the triangulation. 
 There are also some active methods that touch the object in order to reconstruct it, but they are beyond 
 the scope of this thesis. 
 
-Most accurate and expensive equipments to perform 3D scene reconstruction are commercial laser scanners,
+Accurate and expensive equipment to perform 3D scene reconstruction are commercial laser scanners,
  but nowadays there are emerging cheaper devices that 
 potentially could perform 
-a similar reconstruction at a pair of orders of magnitude low cost. 
+a similar reconstruction at a lower cost.
 
-One of the most classical approaches is to use multiple 2D
+One of the most classical approaches to perform 3D reconstruction is to use multiple 2D
  images taken from known camera viewpoints and estimate the distance of each
  relevant pixel with triangulation (Stereo Vision, Multiview Vision), with these 
 approaches the depth map must be generated using the geometrical information contained
- on the images. Nowadays is common to find devices that generate depth maps accesible
- to everyday users and automatize the depth map generation step, these devices are called depth sensors. 
+ on the images. Nowadays is common to find devices that generate depth maps accessible
+ to everyday users and automate the depth map generation step, these devices are called depth sensors. 
 Depth sensors give to each pixel of the image a depth value, related
 with the distance of the real object from the sensor, offering a more
 accurate data to perform 3D reconstruction. With the appearance
@@ -42,19 +43,17 @@ Kinect). There is a growing interest in the developing of low cost
 3D reconstruction systems. 
 
 
+\section{Goal of the Thesis} 
+
 One of the key steps of a 3D reconstruction algorithm is the registration, where the 3D points corresponding to
- the scene are  registered in a common coordinate system, preserving the original scene disposition. Another important 
-step is to add colour and continuity to the reconstructed scene, usually using a lot of geometric primitives such as 
-triangles, in order to generate a textured 3D model. This thesis is  about the registration step. 
+ the scene are  registered in a common coordinate system, preserving the original scene disposition. This step is 
+ fundamental in order to being able to reconstruct the scene or recover the sensor trajectory.
 
-In this proposal a dataset containing RGB-D captures is used, applying a filtering step where only edges that appear 
-in the two point clouds to be aligned pass the filter. For this purpose a combination of visual and geometrical information is 
-used in combination with the ICP algorithm. The proposed technique reduces the amount of calculations involved, increasing 
-the quality of the alineation, working with the most representative subset of the data. At difference to other techniques 
-involving edge filtering along with ICP, this proposal increments the odds of a correct alineation filtering out non common 
-data from the point clouds.
+The goal of this thesis is to propose a new technique to register point clouds in a common coordinate system, applying 
+filtering to the data and combining visual with geometrical information, in order to obtain better results with less 
+computational costs. 
 
- 
+
 
 
 

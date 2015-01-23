@@ -11,14 +11,17 @@
 \usepackage{relsize}
 \usepackage{pgf,pgfarrows,pgfnodes}
 \usepackage{tikz}
+\usepackage{pbox}
 \usepackage{rotating}
 \usepackage{tabularx}
 \usepackage{color}
 \usepackage{float}
 \usepackage{index}
 %\usepackage{wasysym}
+\usepackage{indentfirst} %always indent first paragraph after chapter or section
 \usepackage{amsmath}
 \usepackage{multirow}
+\usepackage{notoccite} %avoid citation on list of figures and tables affect order
 \usepackage{listings}
 \usepackage[pdftex,hyperindex,breaklinks]{hyperref}%,colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
 
@@ -90,7 +93,7 @@
 \newcommand{\contrib}[3]{#1\quad$<$\texttt{#2}$>$%
 {\small\\\quad\textit{#3}}\\[1ex]}
 
-\pgfdeclareimage[width=3cm]{logo-utfsm}{images/logo-utfsm}
+\pgfdeclareimage[width=5cm]{logo-utfsm}{images/logo-grande}
 
 \title{3D Scene Reconstruction}
 
@@ -108,7 +111,10 @@
 \frontmatter
 
 \include{titulo}
+
 \include{abstract}
+
+\include{resumen}
 
 \addcontentsline{toc}{section}{\contentsname}
 \tableofcontents
@@ -122,15 +128,12 @@
 
 \mainmatter
 
-\chapter{Introducction}
+\chapter{Introduction}
 \label{introduccion}
 \index{Introducction}
 \input{introduction.tex}
-
-\chapter{Problem}
-\index{Problem}
 \input{problem.tex}
-
+\input{thesis_outline.tex}
 \chapter{State of Art}
 \index{State of Art}
 \input{state_of_art.tex}
@@ -168,9 +171,9 @@
 \input{conclusions.tex}
 
 \appendix
-
+\chapter{Appendix}
 \addcontentsline{toc}{chapter}{Appendix}
-
+\input{appendix.tex}
 
 \chapter{Acronyms}
 \label{acronyms}
@@ -183,7 +186,7 @@
 \backmatter
 
 \addcontentsline{toc}{chapter}{\bibname}
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{tesis}
 
 \end{document}
