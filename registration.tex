@@ -1,19 +1,16 @@
 
 The most used algorithm to register point clouds into a common coordinate 
-system is called 
-ICP (Iterative Closest Point). Given two point clouds, 
-this algorithm find the best rigid transformation to align both clouds 
-(minimize distance between closest points). In order to make this, 
-the algorithm starts with an initial guess of the transformation. 
-At each iteration the algorithm matchs closest points between the two point clouds  and then 
-finds the rigid transformation that minimizes euclidian distance between closest points.
+system is called Iterative Closest Point (ICP) \cite{mckay92}. Given two point clouds, 
+this algorithm finds the best rigid transformation to align both clouds. 
 
-This algorithm has some drawbacks, such as beign susceptible to local minima, 
-have small convergence basin, and in general needing a high number of iterations \cite{Rusu2009}. For this reason additional 
-algorithms are used to compute a good approximation of the desired transform, in order to start the ICP iterations closer to the solution, also
- other techniques are used in combination with ICP, such as filtering, photoconsistency, graph optimization, etc. In order improve results and 
-reduce the amount of computations required to find the transformation.
+This algorithm has some drawbacks, such as being susceptible to local minimum, 
+have small convergence basin, and in general needing a high number of iterations \cite{Rusu2009}. 
+For this reason additional techniques are used in combination with ICP to compute a good approximation 
+of the desired rigid transformation. Some of these techniques involve to filter the point clouds prior 
+to apply the algorithm, look for a good initial estimation of the transformation to reduce algorithm 
+iterations, applying some optimization techniques to improve the overall result, etc. 
 
 
-This proposal consists on modificated version of ICP in order to work with RGB-D data, combining the use of geometrical and visual clues in 
-order to reduce the computational cost and improve the obtained results.
+This proposal combines ICP with filtering techniques in order to work with RGB-D data, combining the use of geometrical 
+and visual clues in order to reduce the computational cost and improve the obtained results. Also, a pose graph optimization 
+algorithm is applied, obtaining promising results.

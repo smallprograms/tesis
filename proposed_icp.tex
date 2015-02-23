@@ -40,13 +40,13 @@ SURF and optical flow work on the 2D image space, but using
 the 3D information from the depth map it is possible to get the 3D position 
 of the each pair of correspondences respect to the camera. 
 
-Having pairs of 3D points, points of the capture at time $t$ and corresponding points 
-of the capture at time $t + 1$ it is possible to obtain the rotation $R$ and translation $t$
+Having pairs of 3D points, points of the frame at time $t$ and corresponding points 
+of the frame at time $t + 1$ it is possible to obtain the rotation $R$ and translation $t$
  that minimizes the distances between them. Obtaining an initial guess 
  for ICP. 
 
 A photo-consistency measure is used to compare the quality of the initial estimations of the sensor
- position and orientation. A good estimation of the relative transform between two captures, implies 
+ position and orientation. A good estimation of the relative transform between two frames, implies 
 a small difference between the first RGB image projected using the relative transform and the second RGB 
 image. Using this calculation we can detect if ICP guess is good or not.
 
@@ -103,7 +103,7 @@ The complete registration process can be described by the following algorithm:
 \State addEdgeToGraph(i,j,R,t,informationMatrix)
 \end{algorithmic}
 \end{algorithm}
-By frame or capture we refer to all the data captured by the sensor (depth map and RGB image).
+By frame we refer to all the data captured by the sensor (depth map and RGB image).
 
 Consecutive frames are read and then both point clouds are filtered, removing plain surfaces, thus obtaining point clouds 
 with a lesser amount of points. With this ICP will work on point clouds that contains around 

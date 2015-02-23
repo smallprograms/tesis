@@ -1,15 +1,15 @@
 
 
-This thesis provides a registration system for RGB-D captures that uses geometrical and visual information 
-to perform the alignment between related captures.  
+This thesis provides a registration system for RGB-D frames that uses geometrical and visual information 
+to perform the alignment between related frames.  
 
-A first estimation of the relative transformation between two suscesive captures was obtained using 
+A first estimation of the relative transformation between two suscesive frames was obtained using 
 visual information, using optical flow and SURF methods. Edge filtering over the RGB image was applied, 
 using the visual information to detect a representative subset 
 of the data. Combining this with the geometrical information provided by the depth map, filtered point clouds 
 where obtained and aligned using the ICP algorithm. 
 
-Using a representative subset instead of the complete point cloud in order to perform the alignment of captures 
+Using a representative subset instead of the complete point cloud in order to perform the alignment of frames 
 reduces necessary calculations and exhibit noticeable improvements in the result. The differences become visible 
 when adding constraints between non-consecutive frames, in this case using the filtered point cloud instead of 
 the full point cloud allows performing a better alignment, being less prone to get stuck in a local optimum. The 
@@ -23,8 +23,8 @@ also some images of the 3D reconstructed scenes where obtained for a visual insp
 \section{Future Work}
 
   Results can be greatly improved adding some outlier detection method and making the corresponding correction when one 
-outlier appears, because one incorrect align between two captures can ruin the complete result. These problems can happen 
-when one of the captures exhibit poor visual features or there is an abrupt change in the sensor movement. 
+outlier appears, because one incorrect align between two frames can ruin the complete result. These problems can happen 
+when one of the frames exhibit poor visual features or there is an abrupt change in the sensor movement. 
 
   Another important part of the system that can be improved is the pose graph, where the quality of the restrictions 
 determines the quality of the end result. For example removing some restrictions and adding restrictions obtained with a 

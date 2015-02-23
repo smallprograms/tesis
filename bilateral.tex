@@ -13,7 +13,7 @@ The bilateral filter deals this problem, giving to each neighbor a weight based 
 to the center pixel. In a grayscale image it takes into account 
 the neighbor intensity distance and location distance (in image plane) to calculate the weight.  A depth map is very similar to a grayscale 
 image, the only difference is that the depth map represents geometrical information (3D points) and usually contains holes 
-(areas where the sensor failed to capture distance). 
+(areas where the sensor failed to measure distance). 
 
 A bilateral filter was applied to the depth maps, using the euclidean distance and the distance along the $z$ axis to calculate 
 the weight of each pixel neighbor in the depth map. 

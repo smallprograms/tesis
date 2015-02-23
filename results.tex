@@ -65,10 +65,10 @@ pose graph optimization setup is necessary to work with more frames, but this to
 \end{center}
 
 In the freiburg1\_desk dataset before applying graph optimization better results where obtained using 
-the full point cloud. This occurs because prior to graph optimization only consecutive captures are aligned, 
-consecutive captures are more likely to have a small relative movement, making the alignment between two point clouds 
+the full point cloud. This occurs because prior to graph optimization only consecutive frames are aligned, 
+consecutive frames are more likely to have a small relative movement, making the alignment between two point clouds 
 less prone to 
-errors. When graph optimization is used, non consecutive captures are aligned in order to add restrictions to the graph, 
+errors. When graph optimization is used, non consecutive frames are aligned in order to add restrictions to the graph, 
 incrementing the difficulty of 
 the alignment. Under this scenario the advantages of using the proposed filtering approach becomes clear.
 

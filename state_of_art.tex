@@ -6,10 +6,10 @@ the scene, lasers, etc.
 
 In 3D reconstruction an important part of the problem depends of the intrinsic 
 device characteristics (noise, resolution, frame-rate, etc.), the scene or object being captured, illumination, the camera location and position, etc. All this 
-factors configure different instances of the problem, difficulting the comparison and limiting the use of a common dataset. There are several datasets 
+factors lead to different instances of the problem, difficulting the comparison and limiting the use of a common dataset. There are several datasets 
 available on internet, such as for example \cite{sturm12iros},  \cite{LaiBRF11} and \cite{ShottonGZICF13}.
 
-The researchers can estimate their systems performance comparing the generated 3D model with some 
+The researchers can estimate system performance comparing the generated 3D model with some 
 ground truth model obtained with a high precision laser scanner, but not always is possible to have a ground truth model, because lasers scanners 
 are expensive equipments. Due to this it is common to measure the performance
  comparing some result obtained at an intermediate step of the reconstruction process with a ground truth measure, 
@@ -20,7 +20,7 @@ Reconstruction from a set of photographs without human assistance is performed i
 in order agrupate images corresponding to the same site, using gist features for each image along with a RGB
 descriptor in order to maintain color information. They also used geo-location information available for some  images. 
 Then in each one of the clusters they performed 3D reconstruction using only the images with mutually consistent epipolar 
-geometry. From millions of images from one city they generated thousands of 3D models of buildings. See figure \ref{fig:jan}. 
+geometry. Using millions of images from one city they generated thousands of 3D models of buildings. See figure \ref{fig:jan}. 
 
 
 \begin{figure}[h!]
@@ -51,7 +51,7 @@ between their reconstructed
 \end{figure}
 
 %done
-In \cite{may2009} a ToF camera is used in combination with an industrial robot arm (KUKA KR 16) in order to register an indor scene,
+In \cite{may2009} a ToF camera is used in combination with an industrial robot arm (KUKA KR 16) in order to register an indoor scene,
 they use an improved version of the ICP algorithm called ICP Frustum, where at each iteration the points that are not overlapping with the previous frame are removed. The industrial robot arm is used to move the camera and get a ground truth camera path to evaluate the performance of their ICP algorithm. 
 
 
@@ -60,7 +60,7 @@ they use an improved version of the ICP algorithm called ICP Frustum, where at e
  Indoor scene reconstruction is made in \cite{henry} where an RGB-D camera is used to reconstruct an indoor scene. RGB-D cameras are sensing systems that capture RGB images
  along with per pixel depth information. They use the ICP algorithm to calculate the camera location, using information from 
 the depth camera and  rich visual
- features along with Random Sample Consensus (RANSAC) verification captured by the RGB camera. They use surfels \cite{pfister} to represent the scene. See figure \ref{fig:henry}.
+ features captured by the RGB camera, along with Random Sample Consensus (RANSAC) verification. They use surfels \cite{pfister} to represent the scene. See figure \ref{fig:henry}.
 
 \begin{figure}[h!]
 \begin{center}
@@ -113,8 +113,8 @@ the geometrical problem of aligning several clouds of points, it also had to gen
 
 A more recent work was made in \cite{Steinbrucker_2013_ICCV} where large indoor reconstructions were performed 
 with RGB-D data, with a multi-scale octree representation of a signed distance function and a GPU to work in real time. They use 
-the same scene representation than  \cite{izadi}, but a different alignment process. Instead of aligning the captures to the reconstructed 
-model, they use dense alignment between consecutive captures, 
+the same scene representation than  \cite{izadi}, but a different alignment process. Instead of aligning the frames to the reconstructed 
+model, they use dense alignment between consecutive frames, 
 using both depth and intensity images with an error  minimization approach. They claim that their alignment procedure is less prone to drift than
  the used by \cite{izadi}. A database was used, exposing quantitative results and comparisons. Another work 
 extending the \cite{izadi} proposal is \cite{Whelan13} where visual odometry is used along with a volumetric representation. In \cite{KerlSC13} also RGB-D data with dense alignment was used, they integrated keyframes to the process in order to reduce drift. Other 

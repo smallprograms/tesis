@@ -54,7 +54,7 @@ In combination with a low threshold used in the Sobel filter applied to the gray
 The neighborhood is defined as shown in figure ~\ref{fig:neighbor}. The purpose of this is to have enough points even if few points
  pass Sobel filter.
 
-This filter is applied to both, source and target captures. Making this, it is possible to apply a very useful filtering: remove 
+This filter is applied to both, source and target frames. Making this, it is possible to apply a very useful filtering: remove 
 from both point clouds all the points that are not in common. For this, the rotation and translation 
 of the source Sobel filtered 2D image that minimizes the distance between the closest pixels of the Sobel filtered target 2D image is found and 
 then applied to each pixel of the source depth map, 

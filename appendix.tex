@@ -1,0 +1,20 @@
+\section{Trace Lemma}\label{ap:lemma}
+\begin{mybox}{gray}{Lemma}
+For any positive definite matrix $A A^t$ and any orthogonal matrix B 
+
+\[ Trace( A A^t ) \geq Trace (B A A^t) \]
+
+\end{mybox}
+
+
+Proof of lemma:
+
+Let $a_i$ be the ith column of A, then:
+
+\begin{align*}
+Trace( B A A^t ) = Trace (A^t B A) = \sum\limits_i a_i^t B a_i 
+\end{align*}
+
+But by the Schwarz inequality
+
+\[ a_i^t B a_i \leq \sqrt{ a_i^t a_i (a^t B^t B a_i)} = a^t a_i \]

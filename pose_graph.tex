@@ -1,6 +1,6 @@
 \section{Pose Graph Optimization}
 \label{sec:posegraph}
-When the amount of registered captures increments, the accumulated error 
+When the amount of registered frames increments, the accumulated error 
 becomes visible. There is a drift respect to the real sensor trajectory. 
 In order to deal with this problem the most common approach is to use a pose graph 
 optimization algorithm. 
@@ -12,8 +12,8 @@ transformation between two poses is used as restriction.
 
 
 The first pose of the graph can be arbitrary, in our case is set as the identity. Subsequent 
-poses are determined by using sensor captures and relative transformations between pairs of captures, applying 
-proposed technique. Each sensor capture corresponds to a graph pose. 
+poses are determined by using relative transformations between pairs of frames, applying 
+proposed technique. Each sensor frame corresponds to a graph pose. 
 
 We have a non-linear least squares minimization problem that can be described by the following equation:
 
@@ -24,8 +24,8 @@ $$ x^* = \mathop{\rm argmin}_x F(x) \ ,$$
 \noindent where $x=\{x_1,x_2,...,x_n\}$ and each $x_i$ represents a parameter block , $z_{i,j}$ and $\Omega_{ij}$ represents the mean  
  and the information matrix  of a constraint 
 relating parameters $x_i$ and $x_j$. In our case $x_i$ corresponds to a sensor pose, $z_{ij}$ is the 
-relative transformation between $i$-$esim$ and $j$-$esim$ sensor capture, it is not affected by the accumulated error 
-because it is a direct measure between the two captures and $\Omega_{ij}$ is the weight or 
+relative transformation between $i$-$esim$ and $j$-$esim$ sensor frame, it is not affected by the accumulated error 
+because it is a direct measure between the two frames and $\Omega_{ij}$ is the weight or 
 the confidence we give to the restriction. $\Omega_{ij}$ is a $7\times7$ diagonal matrix, containing on its diagonal the confidence ($\in [0,1]$) for each 
 parameter of the transformation. 
 
@@ -206,10 +206,10 @@ will depend on the quality of the graph. A detailed explanation of this method i
 \subsection{Loop Closure}
 
 When the sensor visits the same region at different times, for example following 
-a circular trajectory. A restriction between two non-consecutive captures can be 
+a circular trajectory. A restriction between two non-consecutive frames can be 
 added to the graph. In the case of a circular trajectory, the accumulated error 
-is very noticeable when the initial and the final capture are connected. Adding a 
-restriction between this two captures to the graph allows adjusting 
+is very noticeable when the initial and the final frame are connected. Adding a 
+restriction between this two frames to the graph allows adjusting 
 the position of all poses in order to reduce the accumulated error. Loop Closure is 
 a restriction between two non-consecutive poses.
 
