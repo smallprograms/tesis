@@ -18,8 +18,8 @@ In general, when the sensor is collecting the 3D points from the scene,
 able to infer the correct position of each new frame, it is necessary to have an overlapping area with a previous one. 
  
 The overlapping areas of the different views of a scene must be correctly 
-aligned when registering the points in a common coordinate system, 
-thus with each new frame more information is added to the scene, 
+aligned when registering the points in a common coordinate system. 
+Thus with each new frame more information is added to the scene, 
 getting closer to the desired result. 
 
 \section{Mathematical Definition}
@@ -43,9 +43,9 @@ In the case that the two sets are identical, the previous expression will have a
 
 We are interested in applying this minimization scheme to real life data, specifically to consecutive 
 point clouds (with very small rotation and translation), registering a global 3D model of 
-a real scene. In order to being able to align this point clouds, it is necessary to have an important overlapping 
-area which is equivalent to have a very small rotation and translation of the sensor capturing the point clouds, 
-because this area will allow minimizing distances between pairs of points corresponding to the same real world position.
+a real scene. In order to align the point clouds, it is necessary to have an important overlapping 
+area, which is equivalent to a very small rotation and translation of the sensor capturing the point clouds, 
+this area will allow minimizing distances between pairs of points corresponding to the same real world position.
 
 
 \begin{figure}[H]

@@ -5,7 +5,7 @@ and geometry, for this reason edges are features that are useful for several tas
 such as object recognition, object tracking, etc.
 
 
-The Sobel filter is a well known edge detector. To apply this filter is necessary to 
+The Sobel filter is a well known edge detector. To apply this filter, is necessary to 
 convolve the image with two $3\times3$ matrices, to find intensity changes in vertical and 
 horizontal directions:
 
@@ -23,7 +23,7 @@ G = \sqrt{G_x^2+ G_y^2}\ .
 This filter was used to obtain a representative set of points, avoiding that walls and another 
 plain surfaces containing a huge amount of data, lead to an incorrect alignment.
 There are more advanced edge filtering techniques, such as the Canny edge filter, but it involves 
-a larger set of convolutions and operations. Since we don't need a high accuracy edge detection, the Sobel 
+a larger set of convolutions and operations. Since we do not need a high accuracy edge detection, the Sobel 
 filter is enough to reduce the set of points used in the alignment process. 
 
 The filter was applied directly into a grayscale representation of the original RGB image. Obtaining a binary image 
@@ -35,8 +35,8 @@ to reject all points not corresponding
 to these edges in the depth map. 
 
 Edge filtering was applied
-to the image instead of the depth map. Because using this approach it is possible to find correspondences between rich textured 
-surfaces, even if they don't exhibit local geometrical changes.
+to the image instead of the depth map. Because using this approach, it is possible to find correspondences between rich textured 
+surfaces, even if they do not exhibit local geometrical changes.
 
 The applied threshold for the Sobel filter was low, in order to have thicker edges. Because if too few points pass the filter, important information 
 could be lost, difficulting a correct alignment.
@@ -56,7 +56,7 @@ The neighborhood is defined as shown in figure ~\ref{fig:neighbor}. The purpose 
 
 This filter is applied to both, source and target frames. Making this, it is possible to apply a very useful filtering: remove 
 from both point clouds all the points that are not in common. For this, the rotation and translation 
-of the source Sobel filtered 2D image that minimizes the distance between the closest pixels of the Sobel filtered target 2D image is found and 
+of the source Sobel filtered 2D image that minimizes the distance to the closest pixels of the Sobel filtered target 2D image is found and 
 then applied to each pixel of the source depth map, 
 allowing to apply an AND operation as follows: if transformed source depth map pixel has a correspondent pixel in the target depth map and 
 the euclidean distance (in the 3D space) is less than a threshold, maintain both pixels (of source and target depth maps), in other case reject them. 
@@ -108,9 +108,9 @@ applying AND operation and distance filtering between the two consecutive point 
 \State T = FindRigidTransformation(sobelSrc,sobelTgt)
 \ForAll {x in [0-640] and y in [0-320]} 
 \If {$sobelSrc(x,y) > 0$ AND $DepthMapSrc(x,y) > 0$}
-\State p = (3Dprojx(x),3Dprojy(y),DepthMapSrc(x,y))
 \State (projx,projy) = applyRigidTransformation(T,x,y);
 \If { $DepthMapTgt(projx,projy) > 0$}
+\State p = (3Dprojx(x),3Dprojy(y),DepthMapSrc(x,y))
 \State pproj = (3Dprojx(projx),3Dprojy(projy),DepthMapTgt(projx,projy))
 \If { $euclideanDist(p,pproj) < DMAX$}
 \State srcPointCloud.addPoint(p)

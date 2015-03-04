@@ -99,7 +99,7 @@ The sensor obtains two images: An RGB color image and a depth map.
 
 The RGB color image has three channels: Red, Green and Blue. And each image color is generated 
 combining this three colors. With a resolution of 640x480 pixels and 1 byte per channel. The sensor can 
-capture color images at higher resolutions, but in our case we need just one color per depth map pixel.
+capture color images at higher resolutions, but in our case, we need just one color per depth map pixel.
 
 The depth map is like a gray scale image, where the value of each pixel is the object distance to the sensor in the viewing axis. 
 A depth map is an image with a resolution of 640x480 and one channel of 2 bytes. We use meters as distance unit.
@@ -148,7 +148,8 @@ focal length, $(x,y)$ are the 2D coordinates in the depth map plane (640 pixels 
 \end{figure}
 
 In this work we will use the RGB image, the depth map and the point cloud obtained combining both. The concept depth map pixel will 
-refer to a discrete $(x,y)$  location on the depth map plane with a z-axis distance in meters and a 3D point will be a $(X,Y,Z)$ coordinate, 
+refer to a discrete $(x,y)$  location on the depth map plane, containing the value of a z-axis distance in meters. A 3D point 
+will be a $(X,Y,Z)$ coordinate, 
 obtained converting $(x,y)$ values to $(X,Y)$ using previous equations, along with the z-axis distance of the depth map as $Z$ component.
  
 RGB camera has a slightly larger angle of view than the depth camera, for this reason a calibration must be done 
