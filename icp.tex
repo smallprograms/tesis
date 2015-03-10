@@ -13,17 +13,17 @@ corresponding points are found in each iteration, the algorithm converges to the
 \begin{itemize}
 \item $R$ : $3\times3$ Rotation matrix
 \item $t$ : $3\times1$ Translation vector
-\item $A,A',B$ : Point sets $\in R^3$
-\item $p$ : Pair set
+\item $srcPointCloud,srcPointCloud',tgtPointCloud$ : Point sets $\in R^3$
+\item $pointPairs$ : Pair set
 \end{itemize}
 %\small
 \begin{algorithm}
 \caption{ICP algorithm}
 \begin{algorithmic}[1]
 \State init(R,t)
-\State A' $\leftarrow$ transform(A,R,t) 
-\State p $\leftarrow$ closestPoints(A',B)
-\State $\{R,t\} \gets$ updateTransformation(p)
+\State srcPointCloud' $\leftarrow$ transform(srcPointCloud,R,t) 
+\State pointPairs $\leftarrow$ closestPoints(srcPointCloud',tgtPointCloud)
+\State $\{R,t\} \gets$ updateTransformation(pointPairs)
 \State $e_i = meanSquareError(p)$
 \If {$e_i < threshold$ OR  $i > maxIteracions$} 
 	\State return R,t

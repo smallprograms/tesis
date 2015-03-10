@@ -5,23 +5,23 @@
 \begin{algorithm}
 \caption{Proposed ICP algorithm}
 \begin{algorithmic}[1]
-\State $\{R_1,t_1\}$ = opticalFlowEstimatedTransf(imageA,imageB)
-\State $P_1$ = photoconsistency(A,imageA,B,imageB,$R_1,t_1$)
+\State $\{R_1,t_1\}$ = opticalFlowEstimatedTransf(srcImage,tgtImage)
+\State $P_1$ = photoconsistency(srcPointCloud,srcImage,tgtImage,$R_1,t_1$)
 \State $R=R_1$
 \State $t=t_1$
 \If $\ P_1 > IDEAL$
-    \State $\{R_2,t_2\}$ = SURFestimatedTransf(imageA,imageB)
-    \State  $P_2$ = photoconsistency(A,imageA,B,imageB,$R_2,t_2$)
+    \State $\{R_2,t_2\}$ = SURFestimatedTransf(srcImage,tgtImage)
+    \State  $P_2$ = photoconsistency(srcPointCloud,srcImage,tgtImage,$R_2,t_2$)
     \If $\ P_2 < P_1$
         \State $R=R_2$
         \State $t=t_2$
     \EndIf
 \EndIf
-\State A = edgeFilter(A)
-\State B = edgeFilter(B)
-\State A' $\leftarrow$ transform(A,R,t) 
-\State p $\leftarrow$ closestPoints(A',B)
-\State $\{R,t\} \gets$ updateTransformation(p)
+\State srcPointCloud = edgeFilter(srcPointCloud)
+\State tgtPointCloud = edgeFilter(tgtPointCloud)
+\State srcPointCloud' $\leftarrow$ transform(srcPointCloud,R,t) 
+\State pointPairs $\leftarrow$ closestPoints(srcPointCloud',B)
+\State $\{R,t\} \gets$ updateTransformation(pointPairs)
 \State $e_i = meanSquareError(p)$
 \If {$e_i < umbral$ OR  $i > maxIterations$} 
 	\State return R,t

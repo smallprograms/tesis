@@ -1,10 +1,10 @@
 
 \chapter*{Resumen}
 
-El registro de nubes de puntos 3D es una parte importante en todo sistema de reconstrucci\'on 3D. Esta tesis propone 
-registrar nubes de puntos 3D, aplicando un paso de filtrado donde s\'olo los bordes que aparecen en las dos nubes de puntos 
-que estan siendo alineadas pasan el filtro. Una combinaci\'on de informaci\'on visual y geom\'etrica es 
-usada junto con el algoritmo de b\'usqueda iterativa de puntos cercanos (ICP) y un m\'etodo de optimizaci\'on de grafos. 
+En general un sistema de reconstrucci\'on 3D tiene tres pasos principales: adquisici\'on de datos, registro y reconstrucci\'on. Durante el paso de registro los puntos 3D son registrados en un sistema de coordenadas com\'un. El algoritmo de b\'usqueda iterativa de puntos cercanos (ICP) es 
+ampliamente usado para realizar el registro de los puntos, sin embargo es computacionalmente costoso y propenso a converger a un m\'inimo local. Esta tesis propone enfrentar estos problemas, aplicando un paso de filtrado donde solo los bordes que aparecen en las dos nubes de puntos 
+que est\'an siendo alineadas pasan el filtro. Una combinaci\'on de informaci\'on visual y geom\'etrica es 
+usada junto con ICP y un m\'etodo de optimizaci\'on de grafos. 
 La t\'ecnica propuesta 
 disminuye la cantidad de c\'omputos necesarios porque s\'olo entre un 10\% y un 20\% de los puntos originales son usados 
 como entrada para el algoritmo ICP, 
