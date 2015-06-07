@@ -64,6 +64,29 @@ pose graph optimization setup is necessary to work with more frames, but this to
 \end{table}
 \end{center}
 
+\begin{center}
+\begin{figure}
+\begin{tikzpicture}[scale=1.5]
+\begin{axis}[
+    ybar,
+    enlargelimits=0.15,
+    legend style={at={(0.5,-0.15)},
+      anchor=north,legend columns=-1},
+    ylabel={execution time (minutes)},
+    symbolic x coords={Fr1Desk,Fr2Desk,Fr1Room},
+    xtick=data,
+    nodes near coords,
+    nodes near coords align={vertical},
+    ]
+\addplot coordinates {(Fr1Desk,15.16) (Fr2Desk,38.29) (Fr1Room,17.04)};
+\addplot coordinates {(Fr1Desk,48.95) (Fr2Desk,344.32) (Fr1Room,116.49)};
+\legend{filtered,non-filtered}
+\end{axis}
+\end{tikzpicture}
+\caption{Average execution time with 100 frames in three different datasets} 
+\end{figure}
+\end{center}
+
 In the freiburg1\_desk dataset before applying graph optimization better results where obtained using 
 the full point cloud. This occurs because prior to graph optimization only consecutive frames are aligned, 
 consecutive frames are more likely to have a small relative movement, making the alignment between two point clouds 
