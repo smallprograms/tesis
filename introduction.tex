@@ -8,11 +8,11 @@ information about the scene that is not explicitly contained in a single image, 
 to reconstruct the scene or to perform a more advanced task that depends on the scene geometry. 
 3D scene reconstruction has several applications, for example in the field of autonomous robot navigation it is crucial to have 
 the scene geometry in order to locate paths, obstacles and know current robot location, this problem is known as 
-Simultaneous Localization and Mapping (SLAM). Another application of 3D scene reconstruction is augmented reality, 
+Simultaneous Localization and Mapping (SLAM) \cite{SLAM06}. Another application of 3D scene reconstruction is augmented reality, 
 where a virtual 3D object is added to a real video of the scene. 3D scene reconstruction is also useful in parts inspection 
 in a manufacturing plant, where it is necessary to detect
  fabrication defects on some objects, another application is in statues and buildings preservation, in order to have a digital representation 
-of the objects and being able to reproduce or maintain them. There are many areas where 3D scene reconstruction is important.
+of the objects and being able to reproduce or maintain them. There are many areas where 3D scene reconstruction is important \cite{apps2009}.
 
  
 In general the information is acquired
@@ -27,19 +27,18 @@ the scope of this thesis.
 Accurate and expensive equipment to perform 3D scene reconstruction are commercial laser scanners,
  but nowadays there are emerging cheaper devices that 
 potentially could perform 
-a similar reconstruction at a lower cost.
+a similar reconstruction at a lower cost \cite{kinectReview13}.
 
 One of the most classical approaches to perform 3D reconstruction is to use multiple 2D
- images taken from known camera viewpoints and estimate the distance of each
+ images taken from similar camera viewpoints and estimate the distance of each
  relevant pixel with triangulation (Stereo Vision, Multiview Vision), with these 
 approaches the depth map must be generated using the geometrical information contained
- in the images. Nowadays, it is common to find devices that generate depth maps accessible
+ in the images \cite{Newcombe10livedense}. Nowadays, it is common to find devices that generate depth maps accessible
  to everyday users, automating the depth map generation step, these devices are called depth sensors. 
 Depth sensors give to each pixel of the image a depth value, related
 with the distance of the real object from the sensor, offering  more
 accurate data to perform 3D reconstruction. With the appearance
-of cheap depth sensors for gaming and entertainment (such as
-Kinect). There is a growing interest in the development of low cost
+of cheap depth sensors for gaming and entertainment, there is a growing interest in the development of low cost
 3D reconstruction systems. 
 
 
