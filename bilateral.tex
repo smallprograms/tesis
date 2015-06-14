@@ -5,8 +5,8 @@ The depth maps captured by a low cost RGB-D camera usually contains noise, this 
 consequence of materials reflectance, device imperfections, object fast movement, distance to the 
 sensor, etc. 
 
-In order to reduce the effect of noise, is natural to use some kind of filter, as usual in computer 
-vision, a typical filter will take information of a pixel and its neighborhood to generate a result. 
+In order to reduce the effect of noise, it is natural to use some kind of filter, as usual in computer 
+vision, a typical filter will take information of a pixel and its neighborhood to generate a new image. 
 If the image is smooth, without abrupt changes in intensity, a simple average could be enough. However, this 
 is not the case in the presence of edges or corners, areas where the intensity changes sharply. 
 The bilateral filter deals this problem, giving to each neighbor a weight based on its closeness  
@@ -32,11 +32,11 @@ $$ z(p,q) = |p_z - q_z|\ , $$
 $$ p = (p_x,p_y,p_z)\ , $$ 
 $$ q = (q_x,q_y,q_z)\ . $$
 
-\noindent $p$ is the central point 3D coordinate and $q$ the 3D coordinate of one of its neighbors. 3D coordinates are obtained using
- the depth map and equations \ref{eq:depthmapx} and \ref{eq:depthmapy}.  Each point has a weight that depends on its euclidean distance and
+\noindent $p$ is the 3D coordinate of central point and $q$ the 3D coordinate of one of its neighbors. 3D coordinates are obtained using
+ the depth map and equations (\ref{eq:depthmapx}) and (\ref{eq:depthmapy}).  Each point has a weight that depends on its euclidean distance and
  the distance along the $z$ axis, to the central point. The parameter $\sigma_d$ defines 
 the neighborhood, all points of the depth map that are at euclidean distance $2*\sigma_d$ or less from the central point are considered, the 
-central point itself also is considered as part of the neighborhood.
+central point itself also is considered as part of the neighborhood. Parameters $\sigma_d$ and $\sigma_z$ are obtained empirically.
 
 
 Let 

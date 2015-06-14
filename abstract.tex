@@ -1,12 +1,12 @@
 
 \chapter*{Abstract}
 
-In general a 3D reconstruction system has three main steps: data acquisition, registration and reconstruction. During the registration step the 3D points are registered to a common coordinate system. The Iterative Closest Point (ICP) algorithm is widely used to perform registration, however it 
+In general a 3D reconstruction system has three main steps: data acquisition, registration, and reconstruction. During the registration, 3D points are registered to a common coordinate system. The Iterative Closest Point (ICP) algorithm is widely used to perform registration, however it 
 is computationally expensive and susceptible to local minimum. This thesis proposes to address these issues, 
 applying a filtering step where only edges that appear 
 in the two point clouds to be aligned pass the filter. For this purpose a combination of visual and geometrical information is 
 used along with the ICP
-  algorithm and a pose graph optimization method. The proposed technique reduces the amount of calculations 
+  algorithm and a pose graph optimization method. The proposed algorithm reduces the amount of calculations 
 involved, because only between 10\% and 20\% of original points are used as input for the ICP algorithm, increasing 
 the quality of the alignment, working with the most representative subset of the data. At difference to other techniques 
 involving edge filtering along with ICP, this proposal increments the odds of a correct alignment filtering out non common 

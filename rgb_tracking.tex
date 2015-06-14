@@ -70,8 +70,8 @@ E(u,v) \approx \begin{bmatrix} u & v \end{bmatrix} \sum\limits_{x,y} w(x,y) \und
 $$
 
 
-Eigenvalues of H can be used to detect corners. When both eigenvalues have large magnitude, the window contains a corner. If just one 
-eigenvalue has large magnitude we have an edge and if both eigenvalues have small magnitude we have a plain surface.
+Eigenvalues of H can be used to detect corners. When both eigenvalues have large magnitude, the window contains a corner (intensity changes in two directions). If just one 
+eigenvalue has large magnitude we have an edge and if both eigenvalues have small magnitude we have a plain surface. An empirically determined threshold is used to detect when an eigenvalue has a large magnitude.
 
 Once we have corners, we can find the movement of each corner between two successive images using Optical Flow. The objective 
 is to find correspondences (common points) between the two images.
@@ -137,8 +137,9 @@ $$ I(x,y,t) + \frac{\partial I}{\partial y} \Delta y + \
 
 
 $$ \frac{\partial I}{\partial y} \Delta y + \
- \frac{\partial I}{\partial x} \Delta x  + \frac{\partial I}{\partial t} \Delta t \approx 0 \hspace{0.5cm} \backslash \cdot \frac{1}{\Delta t}\ ,  $$
+ \frac{\partial I}{\partial x} \Delta x  + \frac{\partial I}{\partial t} \Delta t \approx 0 \hspace{0.5cm},  $$
 
+\noindent dividing by $\Delta t$:
 
 $$ \frac{\partial I}{\partial y} \frac{\Delta y}{\Delta t} + \
  \frac{\partial I}{\partial x} \frac{\Delta x}{\Delta t}  + \frac{\partial I}{\partial t}  \approx 0 \ , $$
@@ -231,8 +232,7 @@ x = (A^T A)^{-1} A^T b \ .
 $$
 
 
-\noindent $A^T A$ will be invertible depending on the pixels of the image. Even if $A^T A $ is invertible, 
-if its values are very small it can be ill conditioned. For this reason it is necessary to check the eigenvalues of $A^T A$, if they are zero or very small, then it is not possible to find a solution.
+\noindent $A^T A$ will be invertible depending on the pixels of the image. Even if $A^T A $ is invertible, it can be ill conditioned. For this reason it is necessary to check the eigenvalues of $A^T A$, if they are zero or very small, then it is not possible to find a numerical solution.
 
 In order to increment the odds of obtaining a solution the Lukas Kanade method works only in the corners detected on the image, because corners are better points to be tracked.
 

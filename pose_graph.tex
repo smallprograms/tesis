@@ -49,7 +49,7 @@ We want to find a graph configuration (updating the poses $x=\{x_1,x_2,...,x_n\}
  correcting some poses in order to satisfy the restrictions.
 
 This  non-linear least squares problem can be solved using 
-methods such as for example Gauss-Newton or Levenberg-Marquardt.
+methods such as for example Gauss-Newton or Levenberg-Marquard \cite{numericalOptBook}.
 
 \begin{figure}[!h]
 \begin{center}
@@ -145,7 +145,7 @@ in consequence it is necessary to apply the concept of manifold.
 \subsection{Least Squares on Manifold}
 
 A manifold is a topology space that is locally euclidean. In other words, each point has a neighborhood that is 
-homeomorphic to the euclidean space. The manifold is not necessarily euclidean on a global space, but can be seen 
+homeomorphic to the euclidean space. The manifold is not necessarily euclidean on a global scale, but can be seen 
 as euclidean in a local scale \cite{manifold}.
 
 The translation component of the parameters vector forms a euclidean space, but the rotation component does not.
@@ -194,7 +194,7 @@ $$
 $$
 
 
-G2o is a library that contains non linear error functions optimization 
+G2o \cite{g2o} is a library that contains non linear error functions optimization 
 algorithms for graphs and is widely used in registration algorithms. 
 
 The poses where optimized using this library and specifically the 
