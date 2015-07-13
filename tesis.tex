@@ -27,7 +27,7 @@
 \usepackage{notoccite} %avoid citation on list of figures and tables affect order
 \usepackage{listings}
 \usepackage[pdftex,hyperindex,breaklinks]{hyperref}%,colorlinks,urlcolor=blue,linkcolor=blue]{hyperref}
-
+\usepackage[justification=centering]{caption}
 \usepackage[left=4cm,top=3.0cm,right=3.4cm,bottom=3.9cm]{geometry}
 
 %Para activar el doble espacio
@@ -111,9 +111,24 @@
 \makeindex
 
 \begin{document}
+    \newenvironment{dedication}
+        {\vspace{6ex}\begin{quotation}\begin{center}\begin{em}}
+        {\par\end{em}\end{center}\end{quotation}}
+
 \frontmatter
 
 \include{titulo}
+
+\begin{dedication}
+A mi madre por inculcarme la importancia de la educaci\'on,
+
+A mi padre por demostrarme el valor de la creatividad,
+
+A mi hermana por su apoyo incondicional,
+
+A Carolina por compartir su vida conmigo.
+\end{dedication}
+
 
 \include{abstract}
 

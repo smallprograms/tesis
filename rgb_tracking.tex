@@ -81,7 +81,7 @@ is to find correspondences (common points) between the two images.
 The optical flow methods are used to calculate motion between two successive image captures which are taken
  at two different times: $t$ and $t + \Delta t$.
 
-These methods have two main assumptions about the frames \cite{sonka2007}:
+These methods have two main assumptions about the images \cite{sonka2007}:
 
 \begin{enumerate}
 \item The observed brightness of any object point is constant over time.
@@ -90,8 +90,19 @@ These methods have two main assumptions about the frames \cite{sonka2007}:
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[scale=0.6]{images/oflow}
-\caption{Image at time $t$, image at time $t + \Delta t$ and optical flow.}
+\begin{subfigure}[b]{0.22\textwidth}
+\includegraphics[scale=0.6]{images/oflow1}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.22\textwidth}
+\includegraphics[scale=0.6]{images/oflow2}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.22\textwidth}
+\includegraphics[scale=0.6]{images/oflow3}
+\caption{}
+\end{subfigure}
+\caption{a: image at time $t$, b: image at time $t + \Delta t$, c: optical flow.}
 \label{fig:oflow}
 \end{center}
 \end{figure}
@@ -103,7 +114,7 @@ Dense optical flow is computationally expensive and is difficult to find the dir
 for plain color areas. For example in an image of a white paper or a wall
 there are a lot of pixels with the same properties and it is necessary to perform some kind of interpolation to give a direction vector
  to each one of those pixels. 
-By the other hand, sparse optical flow just consider pixels with more odds of matching between the two frames.
+By the other hand, sparse optical flow just consider pixels with more odds of matching between the two images.
 
 \subsection{Lukas-Kanade Method}
 \label{sec:oflow}
@@ -161,7 +172,7 @@ $$ I_x V_x + I_y V_y = -I_t \ ,$$
 \nabla{\vec{I}} \cdot \vec{V} = -I_t \ .
 \end{equation}
 
-We have an equation with two unknowns $V_x$ and $V_y$, we can't solve it without additional restrictions.
+We have an equation with two unknowns $V_x$ and $V_y$, we can not solve it without additional restrictions.
 
 The Lukas-Kanade method assumes that all the pixels inside a window satisfy this equation for the same 
 values of $V_x$ and $V_y$. Thus, if we have a $5\times5$ window, we have 25 equations with two unknowns :
@@ -234,7 +245,7 @@ $$
 
 \noindent $A^T A$ will be invertible depending on the pixels of the image. Even if $A^T A $ is invertible, it can be ill conditioned. For this reason it is necessary to check the eigenvalues of $A^T A$, if they are zero or very small, then it is not possible to find a numerical solution.
 
-In order to increment the odds of obtaining a solution the Lukas Kanade method works only in the corners detected on the image, because corners are better points to be tracked.
+In order to increment the odds of obtaining a solution the Lukas-Kanade method works only in the corners detected on the image, because corners are better points to be tracked.
 
 \subsection{Speeded Up Robust Features}
 \label{sec:surf}

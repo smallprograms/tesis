@@ -23,7 +23,7 @@ In the pinhole camera all rays pass from the scene to a photosensitive material 
 \end{center}
 \end{figure}
 
-In \ref{fig:pinhole-c} the point $P$ denotes the principal point, $O$ is the optical center and 
+In \ref{fig:pinhole-c} there are two coordinate systems, a 3D orthogonal coordinate system with its origin at $O$ and a 2D coordinate, where the 3D world is projected through the aperture of the camera. The point $P$ denotes the principal point, $O$ is the optical center and 
 $f=dist(P,O)$ is the focal length.
 
 The transformation between world coordinates point $(X,Y,Z)$ and image coordinates $(x,y)$ is described as 
@@ -43,7 +43,7 @@ These equations are  obtained using triangles similarity.
 
 \section{Kinect Sensor}
 
-Kinect sensor was launched at the end of 2010 by Microsoft. A structured light camera 
+Kinect sensor was launched at the end of 2010 by Microsoft \cite{KinectWeb}. A structured light camera 
 used as peripheral for the Xbox 360. With sales of more than 24 million devices at February 2013.
 The sensor gained great attention from computer vision and robotics communities, because it offers 
 accurate depth information at low cost in comparison to existing alternatives.
@@ -51,7 +51,7 @@ accurate depth information at low cost in comparison to existing alternatives.
 \section{Sensor Depth Calculation}
 
 The Kinect sensor consists of an infrared laser emitter, an 
-infrared camera and an RGB camera. Both cameras can work up to 30Hz. 
+infrared camera and an RGB camera. Both cameras can work up to 30 Hz. 
 The laser source emits a single 
 beam which is split into multiple beams by a diffraction 
 grating to create a constant 
@@ -61,7 +61,7 @@ reference pattern. The reference pattern is obtained by capturing
 a plane at a known distance from the sensor, and is stored in the 
 memory of the sensor. When a speckle is projected on an object 
 whose distance to the sensor is smaller or larger than that of the 
-reference plane the position of the speckle in the infrared image 
+reference plane, the position of the speckle in the infrared image 
 will be shifted in the direction of the baseline between the laser 
 projector and the perspective center of the infrared camera. 
 These shifts are measured for all speckles by a simple image 
@@ -74,7 +74,7 @@ corresponding disparity.
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[scale=1.65]{images/kinect_triangulation}
-\caption{Schematic representation of depth-disparity relation. Image taken from \cite{khoshelham2011accuracy}.}
+\caption{Schematic representation of depth-disparity relation (top view). Image taken from \cite{khoshelham2011accuracy}.}
 \label{fig:disparity}
 \end{center}
 \end{figure}
@@ -106,8 +106,15 @@ A depth map is an image with a resolution of 640x480 and one channel of 2 bytes.
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.3]{images/color_depth.png}
-\caption{Left: RGB image. Right: depth map converted to a grayscale image (0-255 values) for visualization purposes.}
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[scale=0.3]{images/color_depth1.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[scale=0.3]{images/color_depth2.png}
+\caption{}
+\end{subfigure}
+\caption{a: RGB image. b: depth map converted to a grayscale image (0-255 values) for visualization purposes.}
 \label{fig:colordepth}
 \end{center}
 \end{figure}
@@ -115,7 +122,18 @@ A depth map is an image with a resolution of 640x480 and one channel of 2 bytes.
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.25]{images/3d_point_cloud.png}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[scale=0.25]{images/3d_point_cloud1.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[scale=0.25]{images/3d_point_cloud2.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[scale=0.25]{images/3d_point_cloud3.png}
+\caption{}
+\end{subfigure}
 \caption{Different perspectives of 3D color point cloud obtained by combining the RGB image colors and the depth map 3D points.}
 \label{fig:colorpcloud}
 \end{center}

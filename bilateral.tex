@@ -9,7 +9,7 @@ In order to reduce the effect of noise, it is natural to use some kind of filter
 vision, a typical filter will take information of a pixel and its neighborhood to generate a new image. 
 If the image is smooth, without abrupt changes in intensity, a simple average could be enough. However, this 
 is not the case in the presence of edges or corners, areas where the intensity changes sharply. 
-The bilateral filter deals this problem, giving to each neighbor a weight based on its closeness  
+The bilateral filter deals with this problem, giving to each neighbor a weight based on its closeness  
 to the center pixel. In a grayscale image it takes into account 
 the neighbor intensity distance and location distance (in image plane) to calculate the weight.  A depth map is very similar to a grayscale 
 image, the only difference is that the depth map represents geometrical information (3D points) and usually contains holes 
@@ -51,11 +51,4 @@ $$p_z' = \frac{1}{W}\sum\limits_{q\ \in\ p\ neighborhood}{w(p,q,\sigma_d,\sigma_
 
 After applying this filter we obtain a smoothed version of the depth map, without loosing edges and important geometrical information.
 A detailed explanation of the bilateral filter can be found in \cite{TomasiBilateral}.
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[scale=0.35]{images/bilateral}
-\end{center}
-\caption{Left: point cloud without filtering. Right: point cloud with bilateral filtering. Noticeable effects at first sight next to the borders of objects}
-\end{figure}
 

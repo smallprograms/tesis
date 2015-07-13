@@ -20,7 +20,7 @@
 \State srcPointCloud = edgeFilter(srcPointCloud)
 \State tgtPointCloud = edgeFilter(tgtPointCloud)
 \State srcPointCloud' $\leftarrow$ transform(srcPointCloud,R,t) 
-\State pointPairs $\leftarrow$ closestPoints(srcPointCloud',B)
+\State pointPairs $\leftarrow$ closestPoints(srcPointCloud',tgtPointCloud)
 \State $\{R,t\} \gets$ updateTransformation(pointPairs)
 \State $e_i = meanSquareError(p)$
 \If {$e_i < umbral$ OR  $i > maxIterations$} 
@@ -47,8 +47,8 @@ of the frame at time $t + 1$ it is possible to obtain the rotation $R$ and trans
 
 A photo-consistency measure is used to compare the quality of the initial estimations of the sensor
  position and orientation. A good estimation of the relative transform between two frames, implies 
-a small difference between the first RGB image projected using the relative transform and the second RGB 
-image. Using this calculation we can detect if ICP guess is good or not.
+a small difference between the source RGB image projected using the relative transform and the target RGB 
+image. Comparing this images we can detect if ICP guess is good or not.
 
 After obtaining a first estimation of $R,t$ the two point clouds are filtered using the proposed edge 
 filtering method (\ref{alg:edges}) and then the ICP algorithm iterates to find the desired transformation.
@@ -84,7 +84,7 @@ The complete registration process can be described by the following algorithm:
 \State index=prevFrameIndex-10
 \EndIf
 \ForAll {oldFrame in firstFrameIndex to index  } 
-\State detectLoopSURF(frame,oldFrame) //check if images are similar
+\State loopDetected = detectLoopSURF(frame,oldFrame) //check if images are similar
 \If {loopDetected}
 \State addGraphEdge(frame,oldFrame)
 \EndIf

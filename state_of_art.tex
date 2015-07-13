@@ -1,11 +1,11 @@
  
-Nowadays there is a growing interest on the 3D scene reconstruction field, due to the increasing computational power and the reduction of 
+Nowadays there is a growing interest in the 3D scene reconstruction field, due to the increasing computational power and the reduction of 
 the costs of the capturing devices. There are many approaches to deal with this problem, for example 3D reconstruction 
 from a video, from a set of images taken with an unknown camera and orientation, using active devices that project patterns of light into 
 the scene, lasers, etc. 
 
 In 3D reconstruction an important part of the problem depends of the intrinsic 
-device characteristics (noise, resolution, frame-rate, etc.), the scene or object being captured, illumination, the camera location and position, etc. All this 
+device characteristics (noise, resolution, frame-rate, etc.), the scene, the object being captured, illumination, camera location and position, etc. All these 
 factors lead to different instances of the problem, difficulting the comparison and limiting the use of a common dataset. There are several datasets 
 available on internet, such as for example \cite{sturm12iros},  \cite{LaiBRF11} and \cite{ShottonGZICF13}.
 
@@ -13,7 +13,7 @@ The researchers can estimate system performance comparing the generated 3D model
 ground truth model obtained with a high precision laser scanner, but is not always possible to have a ground truth model, because lasers scanners 
 are expensive equipments. Due to this, it is common to measure the performance
  comparing some result obtained at an intermediate step of the reconstruction process with a ground truth measure, 
-such as the camera estimated path with camera real path.   
+such as sensor trajectory.   
 
 %done
 Reconstruction from a set of photographs without human assistance is performed in \cite{jan}, they demonstrated the first system able to deliver dense geometry for Internet scale photo collections with millions of images of an entire city within the span of a day on a single PC. They used appearance-based clustering in multiple CPU and GPU cores 
@@ -57,7 +57,7 @@ they use an improved version of the ICP algorithm called ICP Frustum, where at e
 
 
 %revisar nuevamente
- Indoor scene reconstruction is made in \cite{henry} where an RGB-D camera is used to reconstruct an indoor scene. RGB-D cameras are sensing systems that capture RGB images
+ Indoor scene reconstruction is made in \cite{henry} using an RGB-D camera. RGB-D cameras are sensing systems that capture RGB images
  along with per pixel depth information. They use the ICP algorithm to calculate the camera location, using information from 
 the depth camera and  rich visual
  features captured by the RGB camera, along with Random Sample Consensus (RANSAC) verification. They use surfels \cite{pfister} to represent the scene. See figure \ref{fig:henry}.
@@ -71,12 +71,12 @@ the depth camera and  rich visual
 
 %
 In \cite{cui} a ToF camera is used to reconstruct 3D objects. A combination of 3D superresolution method with a 
-probabilistic scan alignment (iterative Expectation Maximization) approach that takes into account the sensor's 
+probabilistic scan alignment (iterative expectation maximization) approach that takes into account the sensor's 
 noise characteristics is used. Their method is not in real time and the resulting models contains undesirable 
 artifacts due to  the noise of the captured depth maps, they use a low resolution device (176x144), 
 improving the resolution using a superresolution method. They captured a ground truth model with a laser 3D scanner, 
 obtaining differences below 1 cm in most areas between their model and the ground truth model. Their scanning 
-procedure doesn't allow a free movement around the object, the object must be at the center of view of the camera 
+procedure does not allow a free movement around the object, the object must be at the center of view of the camera 
 and the distance between the object and camera must be almost constant. See figure \ref{fig:cui}.
 
 \begin{figure}[h!]
@@ -90,7 +90,7 @@ and the distance between the object and camera must be almost constant. See figu
 In \cite{huhle} a ToF camera and a RGB camera are used to generate a 3D model, they combine geometric and color information, 
 using SIFT to determine matching features between the RGB images, 
 this 2D points are then converted into 3D points using the depth information. They use  Normal Distributions Transform (NDT) \cite{biber03} to exploit the geometrical 
-information. NDT is a registration algorithm that use a different principle than ICP, it doesn't need point matches 
+information. NDT is a registration algorithm that use a different principle than ICP, it does not need point matches 
 between successive frames. NDT build a grid on the 2D depth image, calculating the mean and the covariance matrix for each 
  cell. The respective normal distributions are used to estimate the probability of any transformed point $T(x_i)$ to fall 
 inside some cell. Then they define a function that depends on the RGB matching features and NDT, in order to find the desired 
@@ -105,14 +105,14 @@ as new depth measurements are added. They apply color textures to the reconstruc
 realistic models. Their system is able to perform rigid body collisions 
 simulations during the reconstruction, allowing thousands of virtual particles to interact with the scene. Also, a 
 user can interact with the scene during the reconstruction process. This was one of the most advanced low cost 
-reconstruction system for its date, due to its unique features. A precursor work of \cite{izadi} is \cite{Newcombe10livedense}, where 
+reconstruction systems for its date, due to its unique features. A precursor work of \cite{izadi} is \cite{Newcombe10livedense}, where 
  just an RGB camera is used, obtaining impresive results. In order to perform the reconstruction a set of frames around 
 a reference frame are used, generating a local model. Then a global model is generated merging all the local reconstructions.
 The global model is deformed and gets more detail with every new local model added. This work not just confronted 
 the geometrical problem of aligning several clouds of points, it also had to generate the point clouds from RGB images.
 
-A more recent work was made in \cite{Steinbrucker_2013_ICCV} where large indoor reconstructions were performed 
-with RGB-D data, with a multi-scale octree representation of a signed distance function and a GPU to work in real time. They use 
+A more recent work is \cite{Steinbrucker_2013_ICCV} where large indoor reconstructions were performed 
+with RGB-D data, using a multi-scale octree representation of a signed distance function and a GPU to work in real time. They use 
 the same scene representation than  \cite{izadi}, but a different alignment process. Instead of aligning the frames to the reconstructed 
 model, they use dense alignment between consecutive frames, 
 using both depth and intensity images with an error  minimization approach. They claim that their alignment procedure is less prone to drift than

@@ -2,7 +2,7 @@
 \label{sec:posegraph}
 When the amount of registered frames increments, the accumulated error 
 becomes visible. There is a drift respect to the real sensor trajectory. 
-In order to deal with this problem, the most common approach is to use a pose graph 
+In order to deal with this problem, a widely used approach is to use a pose graph 
 optimization algorithm. 
 
 
@@ -12,7 +12,7 @@ transformation between two poses is used as restriction.
 
 
 The first pose of the graph can be arbitrary, in our case is set as the identity. Subsequent 
-poses are determined by using relative transformations between pairs of frames, applying 
+poses are determined by using relative transformations between pairs of frames, applying the
 proposed technique. Each sensor frame corresponds to a graph pose. 
 
 We have a non-linear least squares minimization problem that can be described by the following equation:
@@ -150,13 +150,13 @@ as euclidean in a local scale \cite{manifold}.
 
 The translation component of the parameters vector forms a euclidean space, but the rotation component does not.
 In order to affront this problem the error minimization is applied on a manifold. The rotation is represented as a 
-quaternion to avoid the singularities of use Euler angles (gimbal lock), but using a quaternion we have one extra 
+quaternion to avoid the singularities of Euler angles (gimbal lock), but using a quaternion we have one extra 
 dimension. Because a 3D rotation can be represented with three numbers and a quaternion has four. Applying the 
 minimization using an overparametrized representation can lead to errors.
 
 An alternative idea is to consider the underlying space as a manifold
 and to define an operator $\boxplus$ that maps a local variation
-$\Delta x$ in the Euclidean space to a variation on the manifold, $\Delta x \mapsto x + \Delta x$. 
+$\Delta x$ in the Euclidean space to a variation on the manifold, $\Delta x \mapsto x \boxplus \Delta x$. 
 Mathematical details can be found in \cite{hertzberg08}. The local variation is encoded using a minimal 
 representation, the axis part of the quaternion $(q_i,q_j,q_k)$. The operator $\boxplus$ converts the 
 resulting transformation to a full quaternion.

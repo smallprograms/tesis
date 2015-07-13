@@ -5,7 +5,7 @@ and geometry, for this reason edges are features that are useful for several tas
 such as object recognition, object tracking, etc.
 
 
-The Sobel filter is a well known edge detector. To apply this filter, is necessary to 
+The Sobel filter is a well known edge detector. To apply this filter, it is necessary to 
 convolve the image with two $3\times3$ matrices, to find intensity changes in vertical and 
 horizontal directions:
 
@@ -13,7 +13,7 @@ horizontal directions:
 \includegraphics[scale=0.35]{images/sobel}
 \end{center}
 
-Then both results are merged using the expression below and a threshold to filter out borderless areas:
+Then both results are merged using the expression below and a threshold is used to filter out borderless areas:
 
 \begin{equation}
 G = \sqrt{G_x^2+ G_y^2}\ .
@@ -55,7 +55,7 @@ The neighborhood is defined as shown in figure ~\ref{fig:neighbor}. The purpose 
  pass Sobel filter.
 
 This filter is applied to both, source and target frames. Making this, it is possible to apply a very useful filtering: remove 
-from both point clouds all the points that are not in common. For this, the rotation and translation 
+from both point clouds all the points that are not overlapping. For this, the rotation and translation 
 of the source Sobel filtered 2D image that minimizes the distance to the closest pixels of the Sobel filtered target 2D image is found and 
 then applied to each pixel of the source depth map, 
 allowing to apply an AND operation as follows: if transformed source depth map pixel has a correspondent pixel in the target depth map and 
@@ -67,24 +67,48 @@ perspective) and the distance filtering filters out pairs of points that pass th
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.2]{images/borders_steps.png}
-\caption{Left: image after applying sobel filter. Middle: image after adding depth map neighborhood points. Right: image after
-applying AND operation and distance filtering between the two consecutive point clouds.}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[scale=0.2]{images/borders_steps1.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[scale=0.2]{images/borders_steps2.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[scale=0.2]{images/borders_steps3.png}
+\caption{}
+\end{subfigure}
+\caption{a: image after applying sobel filter, b: image after adding depth map neighborhood points, 
+c: image after applying AND operation and distance filtering between the two consecutive point clouds.}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[scale=0.3]{images/borders_orig1.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[scale=0.3]{images/borders_orig2.png}
+\caption{}
+\end{subfigure}
+\caption{Point cloud before applying filter. a: point cloud, b: colored point cloud.}
 \end{center}
 \end{figure}
 
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.3]{images/borders_orig.png}
-\caption{One of the point clouds before applying filter.}
-\end{center}
-\end{figure}
-
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[scale=0.3]{images/borders_consec.png}
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[scale=0.3]{images/borders_consec1.png}
+\caption{}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\includegraphics[scale=0.3]{images/borders_consec2.png}
+\caption{}
+\end{subfigure}
 \caption{Two consecutive point clouds  after edge filtering.}
 \end{center}
 \end{figure}
