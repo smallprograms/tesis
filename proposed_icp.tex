@@ -106,8 +106,8 @@ The complete registration process can be described by the following algorithm:
 By frame we refer to all the data captured by the sensor (depth map and RGB image).
 
 Consecutive frames are read and then both point clouds are filtered, removing plain surfaces, thus obtaining point clouds 
-with a lesser amount of points. With this ICP will work on point clouds that contains around 
-only 10\% or 20\% of the original points depending on the scene. But these points are highly representative for registration purposes.
+with a lesser amount of points. With this ICP will work on point clouds that contains  
+between 10\% and 20\% of the original points depending on the scene. But these points are highly representative for registration purposes.
 
 Finally, the classical ICP algorithm is applied to the point clouds.
 

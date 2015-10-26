@@ -5,7 +5,7 @@
 proposal is the filtering method, removing points that are unlikely to be present in the two point clouds and are not 
 near edges extracted from the RGB image. For this reason, experiments were conducted to compare the whole system performance 
 with and without filtering. In the three datasets the proposed method with filtering has significantly better performance after 
-graph optimization. System was tested using only 100 frames to maintain accumulated error low, outliers detection and a more advanced  
+graph optimization. The system was tested using only 100 frames to maintain accumulated error low, outliers detection and a more advanced  
 pose graph optimization setup is necessary to work with more frames, but this topic is beyond the scope of this thesis.
 
 \subsection{Quantitative Results}
@@ -87,7 +87,7 @@ pose graph optimization setup is necessary to work with more frames, but this to
 \end{figure}
 \end{center}
 
-In the freiburg1\_desk dataset before applying graph optimization better results where obtained using 
+In the freiburg1\_desk dataset, before applying graph optimization, better results were obtained using 
 the full point cloud. This occurs because prior to graph optimization only consecutive frames are aligned, 
 consecutive frames are more likely to have a small relative movement, making the alignment between two point clouds 
 less prone to 
@@ -168,5 +168,5 @@ closer to ground truth. Better results are obtained working with a representativ
 can be greatly improved with a better setup of the pose graph. Reconstructed scenes shown the potential of the method and the quantitative 
 results can be verified through a visual inspection. 
 
-The best results where obtained in the freiburg2\_desk dataset, possibly due to the visual richness of the images more clues where obtained 
+The best results were obtained in the freiburg2\_desk dataset, possibly due to the visual richness of the images more clues were obtained 
 to find the relative transformations.

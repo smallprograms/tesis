@@ -1,16 +1,16 @@
 
 
-This thesis provides a registration algorithm for RGB-D frames that uses geometrical and visual information 
-to perform the alignment between related frames.  
+This thesis provides a registration algorithm that uses geometrical and visual information 
+to perform the alignment between RGB-D frames.  
 
-A first estimation of the relative transformation between two suscesive frames was obtained using 
+A first estimation of the relative transformation between each pair of successive frames was obtained using 
 visual information, with optical flow and SURF methods. An edge filtering technique was applied to detect a representative subset 
-of the data, using only around 20\% of original points as input to ICP algorithm. Finally a pose graph optimization method increases overall result quality.
+of the data, using only between 10\% and 20\% of original points as input to ICP algorithm. Finally a pose graph optimization method increases overall result quality.
 
-The proposed algorithm reduces the execution time and takes advantage of rich textured surfaces to align point clouds. The data filtering technique removes flat surfaces with poor visual clues, working with a representative subset and increasing the quality of point clouds alignment.
+The proposed algorithm reduces the execution time and takes advantage of rich textured surfaces to align point clouds. The edge filtering technique removes flat surfaces with poor visual clues, taking advantage of the RGB images captured by the sensor in order to filter the point clouds, working with a representative subset in order to increase the alignment quality.
 
 
-Promising results were obtained using a freely available dataset. The method was evaluatated quantitatively and 
+Promising results were obtained using a freely available dataset. The method was evaluated quantitatively and 
 also some images of the 3D reconstructed scenes were obtained for a visual inspection of the results.
 
 \section{Future Work}

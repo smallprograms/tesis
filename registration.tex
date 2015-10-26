@@ -12,18 +12,18 @@ of the desired rigid transformation.
 This proposal combines ICP with graph optimization and filtering techniques in order to work with RGB-D data, combining the use of geometrical 
 and visual clues in order to reduce the computational cost and improve the obtained results.
 
-\section{System overview}
+\section{System Overview}
 
+Bilateral filter reduces depth map noise, obtaining smoother surfaces. Edge filtering removes areas with poor textures (i.e. plain color areas), 
+allowing to reduce the amount of points used by ICP to align the point clouds. 
 
-Bilateral filter is used to reduce noise and get a smoother depth map. The edge filtering removes areas with plain textures, 
-reducing amount of points used by ICP. SURF and Optical Flow are applied to get a first rotation and translation estimation, 
- photo-consistency is used to determine the quality of the estimation. ICP uses the estimated transformation and the filtered 
-point clouds to calculate the desired rotation and translation. Finally the overall result is improved with pose graph optimization.
+SURF and Optical Flow are applied to get a first rotation and translation estimation, photo-consistency is used to determine the quality of the estimation. ICP uses the estimated transformation and the filtered 
+point clouds to calculate the desired rotation and translation. Finally the overall result is improved with pose graph optimization, creating constraints between successive and non-successive frames, in order to apply a global error minimization approach.
 
-\begin{figure}[h!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.45]{images/complete_system}
-\caption{Complete system}
+\caption{Complete system overview: main components of the system, visual data (RGB images) and geometric data (depth maps)}
 \end{center}
 \end{figure}
 
